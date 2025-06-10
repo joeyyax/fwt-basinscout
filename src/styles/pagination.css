@@ -1,0 +1,202 @@
+/**
+ * Pagination component styles
+ * Enhanced for Tailwind CSS v4.1 with CSS class-based state management
+ *
+ * Structure:
+ * 1. Shared pagination properties
+ * 2. Section pagination (side navigation)
+ * 3. Panel pagination (vertical page indicators)
+ */
+
+/* ===== SHARED PAGINATION PROPERTIES ===== */
+
+/* Base pagination container */
+.pagination {
+  @apply flex flex-col items-center h-full;
+  /* No transition - GSAP handles all animations */
+}
+
+/* Shared pagination dot base styles */
+.pagination-dot {
+  @apply cursor-pointer;
+  /* No transition - GSAP handles all animations */
+}
+
+/* Shared interaction states */
+.pagination-dot:focus {
+  /* @apply outline-2 outline-white outline-offset-2;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.3); */
+}
+
+.pagination-dot:focus-visible {
+  /* @apply outline-2 outline-white outline-offset-2;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5); */
+}
+
+/* ===== SECTION PAGINATION (Side Navigation) ===== */
+
+/* Section pagination container - fixed side navigation */
+.pagination-section {
+  @apply flex flex-col items-center justify-center gap-4;
+  position: fixed !important;
+  left: 2rem !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 50 !important;
+  /* Ensure full viewport height centering */
+  height: auto;
+  max-height: 100vh;
+  padding: 1rem 0;
+}
+
+/* Section pagination dots - circular, prominent */
+.pagination-dot[data-type='section'] {
+  @apply rounded-full border-2 border-white/40 bg-transparent;
+  width: 14px;
+  height: 14px;
+  /* No transition - GSAP handles all animations */
+}
+
+.pagination-dot[data-type='section']:hover {
+  @apply border-white/60 scale-110;
+}
+
+.pagination-dot[data-type='section'].section-active {
+  @apply bg-white border-white;
+}
+
+.pagination-dot[data-type='section'].section-inactive {
+  @apply bg-transparent border-white/50;
+}
+
+/* ===== PANEL PAGINATION (Vertical Page Indicators) ===== */
+
+/* Panel pagination container - vertical column with full height distribution */
+.pagination-panel {
+  @apply flex flex-col items-center justify-between h-full w-full z-20;
+}
+
+/* Height-matched panel pagination */
+.pagination-panel[data-match-height] {
+  @apply h-auto overflow-visible;
+  max-height: none; /* Will be set by HeightMatcher */
+}
+
+/* Panel pagination dots - horizontal lines, subtle */
+.pagination-dot[data-type='panel'] {
+  @apply flex justify-center w-full rounded-none border-0 bg-transparent py-4;
+
+  &:first-of-type {
+    @apply pt-0;
+  }
+
+  &:last-of-type {
+    @apply pb-0;
+  }
+
+  &:before {
+    content: '';
+    @apply block w-full h-px bg-white/30;
+    transition: background-color 0.2s ease;
+  }
+}
+
+.pagination-dot[data-type='panel']:hover {
+  &:before {
+    @apply bg-white/50;
+  }
+}
+
+.pagination-dot[data-type='panel'].panel-active {
+  @apply before:bg-white;
+}
+
+.pagination-dot[data-type='panel'].panel-inactive {
+  @apply before:bg-white/30;
+}
+
+/* ===== UTILITY & COMPATIBILITY ===== */
+
+/* Ensure pagination column is centered */
+.column:first-child {
+  @apply justify-center items-center;
+}
+
+/* Legacy interaction utility classes - GSAP will handle section states */
+.pagination-dot.hover-active:hover {
+  /* GSAP will handle hover states for sections */
+}
+
+.pagination-dot[data-type='section'].click-feedback:active {
+  /* GSAP will handle click feedback for sections only */
+}
+
+.pagination-dot.immediate-feedback {
+  /* GSAP handles immediate feedback */
+}
+
+.pagination-dot[data-type='section'].loading {
+  /* GSAP handles loading states for sections only */
+}
+
+/* Legacy nav dot classes for backward compatibility */
+.nav-dot.active {
+  @apply bg-white;
+}
+
+.nav-dot.inactive {
+  @apply bg-transparent;
+}
+
+/* ===== GSAP ANIMATION STATES ===== */
+
+.pagination-dot.entering {
+  @apply opacity-0;
+  /* GSAP will handle transforms */
+}
+
+.pagination-dot.visible {
+  @apply opacity-100;
+  /* GSAP will handle transforms */
+}
+
+.pagination-dot.exiting {
+  @apply opacity-0;
+  /* GSAP will handle transforms */
+}
+
+.pagination-panel.appearing {
+  @apply opacity-100 visible;
+}
+
+.pagination-panel.disappearing {
+  @apply opacity-0 invisible;
+}
+
+/* ===== ACCESSIBILITY & RESPONSIVE DESIGN ===== */
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .pagination-dot {
+    /* No transitions to disable */
+  }
+
+  .pagination-dot[data-type='section'].loading {
+    @apply opacity-80;
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .pagination-dot {
+    @apply border-4 outline-2 outline-white;
+  }
+
+  .pagination-dot.section-active,
+  .pagination-dot.panel-active {
+    @apply shadow-lg;
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+  }
+}

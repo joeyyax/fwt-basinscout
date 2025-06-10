@@ -1,0 +1,357 @@
+/**
+ * Button components
+ * Tailwind utility-first button styles for consistent UI
+ */
+
+/* Base button class with common properties */
+.btn {
+  @apply inline-flex items-center justify-center
+         px-4 py-2 text-sm font-semibold
+         border border-transparent rounded-md
+         transition-all duration-200 ease-in-out
+         focus:outline-none focus:ring-2 focus:ring-offset-2
+         cursor-pointer select-none
+         disabled:opacity-50 disabled:cursor-not-allowed
+         active:scale-95
+         no-underline;
+
+  /* Performance optimizations */
+  will-change: transform, opacity, background-color;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Ensure buttons override prose link styles globally using higher specificity */
+.prose .btn,
+.prose a.btn,
+a.btn {
+  @apply no-underline;
+}
+
+.prose .btn:hover,
+.prose .btn:focus,
+.prose a.btn:hover,
+.prose a.btn:focus,
+a.btn:hover,
+a.btn:focus {
+  @apply no-underline;
+}
+
+/* Primary button - main call-to-action */
+.btn-primary {
+  background-color: var(--color-action);
+  color: black;
+  @apply hover:drop-shadow-lg
+         focus:ring-4 focus:outline-none
+         active:scale-95 transition-all duration-200;
+
+  /* Use CSS custom properties for hover and focus states */
+  &:hover {
+    background-color: var(--color-action-light);
+  }
+
+  &:active {
+    background-color: var(--color-action-dark);
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 3px rgb(250 196 0 / 0.5);
+  }
+
+  /* Higher specificity to override prose link colors */
+  .prose &,
+  .prose a&,
+  a& {
+    @apply text-black;
+
+    &:hover {
+      @apply text-black;
+    }
+  }
+}
+
+/* Secondary button - secondary actions */
+.btn-secondary {
+  @apply bg-transparent text-white border-white/30
+         hover:bg-white/10 hover:border-white/50 hover:drop-shadow-md
+         focus:ring-white/30
+         active:bg-white/20;
+
+  /* Higher specificity to override prose link colors */
+  .prose &,
+  .prose a&,
+  a& {
+    @apply text-white;
+
+    &:hover {
+      @apply text-white;
+    }
+  }
+}
+
+/* Ghost button - minimal styling */
+.btn-ghost {
+  @apply bg-transparent text-white border-transparent
+         hover:bg-white/10 hover:drop-shadow-sm
+         focus:ring-white/20
+         active:bg-white/20;
+
+  /* Higher specificity to override prose link colors */
+  .prose &,
+  .prose a&,
+  a& {
+    @apply text-white;
+
+    &:hover {
+      @apply text-white;
+    }
+  }
+}
+
+/* Danger button - destructive actions */
+.btn-danger {
+  @apply bg-red-600 text-white
+         hover:bg-red-700 hover:drop-shadow-lg
+         focus:ring-red-500/50
+         active:bg-red-800;
+
+  /* Higher specificity to override prose link colors */
+  .prose &,
+  .prose a&,
+  a& {
+    @apply text-white;
+
+    &:hover {
+      @apply text-white;
+    }
+  }
+}
+
+/* Success button - positive actions */
+.btn-success {
+  @apply bg-green-600 text-white
+         hover:bg-green-700 hover:drop-shadow-lg
+         focus:ring-green-500/50
+         active:bg-green-800;
+
+  /* Higher specificity to override prose link colors */
+  .prose &,
+  .prose a&,
+  a& {
+    @apply text-white;
+
+    &:hover {
+      @apply text-white;
+    }
+  }
+}
+
+/* Button sizes */
+.btn-xs {
+  @apply px-2 py-1 text-xs;
+}
+
+.btn-sm {
+  @apply px-3 py-1.5 text-sm;
+}
+
+.btn-md {
+  @apply px-4 py-2 text-base;
+}
+
+.btn-lg {
+  @apply px-6 py-3 text-lg;
+}
+
+.btn-xl {
+  @apply px-8 py-4 text-xl;
+}
+
+/* Button shapes */
+.btn-pill {
+  @apply rounded-full;
+}
+
+.btn-square {
+  @apply rounded-none;
+}
+
+/* Icon buttons */
+.btn-icon {
+  @apply p-2 rounded-full;
+
+  &.btn-xs {
+    @apply p-1;
+  }
+
+  &.btn-sm {
+    @apply p-1.5;
+  }
+
+  &.btn-lg {
+    @apply p-3;
+  }
+
+  &.btn-xl {
+    @apply p-4;
+  }
+}
+
+/* Full width button */
+.btn-block {
+  @apply w-full;
+}
+
+/* Loading state */
+.btn-loading {
+  @apply opacity-75 cursor-wait;
+
+  &::before {
+    content: '';
+    @apply inline-block w-4 h-4 mr-2 border-2 border-current border-t-transparent
+           rounded-full animate-spin;
+  }
+}
+
+/* Button groups */
+.btn-group {
+  @apply inline-flex rounded-md shadow-sm;
+
+  .btn {
+    @apply rounded-none border-r-0 focus:z-10;
+
+    &:first-child {
+      @apply rounded-l-md;
+    }
+
+    &:last-child {
+      @apply rounded-r-md border-r;
+    }
+
+    &:only-child {
+      @apply rounded-md border-r;
+    }
+  }
+}
+
+/* Floating action button */
+.btn-fab {
+  @apply fixed bottom-6 right-6 z-50 rounded-full
+         w-14 h-14 p-0 shadow-lg
+         bg-white text-black no-underline
+         hover:shadow-xl hover:scale-105
+         focus:ring-4 focus:ring-white/30;
+
+  /* Higher specificity to override prose link colors */
+  .prose &,
+  .prose a&,
+  a& {
+    @apply text-black no-underline;
+
+    &:hover {
+      @apply text-black no-underline;
+    }
+  }
+}
+
+/* Link buttons - styled like buttons but behave like links */
+.btn-link {
+  @apply bg-transparent text-white border-transparent
+         hover:text-white/80 hover:underline
+         focus:ring-white/20
+         active:text-white/60
+         underline;
+
+  /* This button type SHOULD have underlines */
+  .prose &,
+  .prose a&,
+  a& {
+    @apply underline;
+
+    &:hover {
+      @apply underline;
+    }
+  }
+}
+
+/* Responsive button adjustments */
+@media (max-width: 640px) {
+  .btn-responsive {
+    @apply w-full;
+  }
+
+  .btn-group-responsive {
+    @apply flex-col;
+
+    .btn {
+      @apply rounded-none border-r border-b-0;
+
+      &:first-child {
+        @apply rounded-t-md;
+      }
+
+      &:last-child {
+        @apply rounded-b-md border-b;
+      }
+    }
+  }
+}
+
+/* Accessibility enhancements */
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    @apply transition-none;
+
+    &.btn-loading::before {
+      @apply animate-none;
+    }
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .btn {
+    @apply border-2;
+  }
+
+  .btn-primary {
+    @apply border-black;
+  }
+
+  .btn-secondary,
+  .btn-ghost {
+    @apply border-white;
+  }
+}
+
+/* Focus visible for keyboard users */
+.btn:focus-visible {
+  @apply ring-2 ring-offset-2;
+}
+
+/* Button with icons */
+.btn-with-icon {
+  .btn-icon-left {
+    @apply mr-2 -ml-1;
+  }
+
+  .btn-icon-right {
+    @apply ml-2 -mr-1;
+  }
+}
+
+/* Animated buttons */
+.btn-animated {
+  @apply relative overflow-hidden;
+
+  &::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent
+           transform -skew-x-12 -translate-x-full
+           transition-transform duration-700 ease-out;
+  }
+
+  &:hover::before {
+    @apply translate-x-full;
+  }
+}

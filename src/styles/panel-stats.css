@@ -1,0 +1,148 @@
+/**
+ * Panel Stats Styles
+ * Styling for panel-specific statistics and donut charts
+ * Renamed from inline-stats for better semantic clarity
+ */
+
+/* Panel stats container */
+.panel-stats,
+.stats-container {
+  @apply flex flex-col gap-4;
+  @apply p-4 bg-white/90 backdrop-blur-sm;
+  @apply rounded-lg shadow-lg;
+  @apply border border-gray-200;
+}
+
+/* Individual stat items */
+.stat {
+  @apply flex items-center gap-3;
+  @apply p-2 rounded;
+  @apply transition-all duration-200;
+}
+
+.stat:hover {
+  @apply bg-gray-50;
+}
+
+/* Stat values and labels */
+.stat-value {
+  @apply text-3xl font-bold text-emphasis;
+  @apply tabular-nums;
+}
+
+.stat-label {
+  @apply text-sm text-gray-600;
+  @apply font-semibold;
+}
+
+/* Donut chart container */
+.stat-donut-chart {
+  @apply relative w-16 h-16;
+  @apply flex items-center justify-center;
+}
+
+.stat-donut-chart svg {
+  @apply w-full h-full;
+}
+
+/* Donut chart circle styles */
+.stat-donut-chart .circle {
+  @apply fill-none stroke-current;
+  @apply transition-all duration-300;
+  stroke-width: 20;
+  stroke-linecap: round;
+}
+
+.stat-donut-chart .circle.background {
+  @apply stroke-gray-200;
+}
+
+.stat-donut-chart .circle.progress {
+  stroke: var(--color-emphasis);
+}
+
+/* Donut chart center text */
+.stat-donut-chart .center-text {
+  @apply absolute inset-0;
+  @apply flex items-center justify-center;
+  @apply text-xs font-bold text-gray-700;
+  @apply pointer-events-none;
+}
+
+/* Responsive behavior */
+@media (max-width: 768px) {
+  .panel-stats,
+  .stats-container {
+    @apply p-3 gap-3;
+  }
+
+  .stat-value {
+    @apply text-xl;
+  }
+
+  .stat-donut-chart {
+    @apply w-12 h-12;
+  }
+
+  .stat-donut-chart .circle {
+    stroke-width: 15;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .panel-stats,
+  .stats-container {
+    @apply border-2 border-black;
+    @apply bg-white;
+  }
+
+  .stat-donut-chart .circle.background {
+    @apply stroke-gray-400;
+  }
+
+  .stat-donut-chart .circle.progress {
+    @apply stroke-black;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .stat,
+  .stat-donut-chart .circle {
+    @apply transition-none;
+  }
+}
+
+/* Focus states for accessibility */
+.stat:focus-within {
+  @apply ring-2 ring-blue-500 ring-blue-500/50;
+  @apply outline-none;
+}
+
+/* Loading states */
+.panel-stats.loading .stat {
+  @apply opacity-50 animate-pulse;
+}
+
+/* Error states */
+.panel-stats.error {
+  @apply border-red-200 bg-red-50/90;
+}
+
+.panel-stats.error .stat-value {
+  @apply text-red-700;
+}
+
+/* Print styles */
+@media print {
+  .panel-stats,
+  .stats-container {
+    @apply bg-white border-black;
+    @apply shadow-none;
+  }
+
+  .stat-donut-chart .circle.progress {
+    @apply stroke-black;
+  }
+}

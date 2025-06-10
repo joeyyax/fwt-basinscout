@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;500;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <title>BasinScout - The Freshwater Trust</title>
+  </head>
+  <body>
+    <!-- Background container (outside app for independence) -->
+    <div id="background-container" class="fixed inset-0 -z-10"></div>
+
+    <div id="app">
+      <!-- Sticky Header -->
+      <header class="sticky top-0 w-full z-40 pointer-events-none">
+        <div class="container">
+          <div class="pointer-events-auto py-4">
+            <a
+              href="https://thefreshwatertrust.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="/img/the-freshwater-trust.svg"
+                alt="The Freshwater Trust"
+                class="h-16 w-auto hover:opacity-80 transition-opacity duration-200"
+              />
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <!-- Section Navigation -->
+      <nav
+        class="pagination pagination-section"
+        aria-label="Section navigation"
+        role="navigation"
+      ></nav>
+
+      <!-- Main Content -->
+      <main
+        id="sections-container"
+        data-use-pagination="true"
+        role="main"
+        aria-label="Main content sections"
+      >
+        <section
+          id="intro"
+          class="section section-intro"
+          data-background="/img/bg/2a Base Map Medium.jpg"
+          data-background-scale="1.6 1.0"
+          data-background-rotate="5deg 0deg"
+          data-background-opacity="0 1"
+          data-title-animation="fade-up"
+          aria-labelledby="section-1-title"
+        >
+          <div class="container">
+            <div class="title-wrapper">
+              <h1 id="section-1-title">
+                BasinScout<sup class="font-light">&reg;</sup>
+              </h1>
+            </div>
+            <div class="content-wrapper">
+              <div class="panels-container" data-panel-border="true">
+                <div class="panel">
+                  <div class="prose">
+                    <h2>
+                      Turning Data into Action and Action into Sustainability
+                    </h2>
+                    <p>
+                      In a world where conservation dollars often miss their
+                      mark, The Freshwater Trust challenges the status
+                      quo—delivering effective, efficient freshwater restoration
+                      that drives measurable change.
+                    </p>
+                    <h2 class="pretitle">The Problem</h2>
+                    <div
+                      class="stats grid grid-cols-1 sm:grid-cols-11 gap-12 sm:gap-8"
+                      data-stagger-children="true"
+                    >
+                      <a
+                        class="stat stat-donut col-span-1 sm:col-span-4"
+                        href="https://thehill.com/changing-america/sustainability/environment/600070-about-half-of-us-water-too-polluted-for-swimming/"
+                        target="_blank"
+                      >
+                        <div class="stat-donut-chart">
+                          <svg viewBox="0 0 42 42" class="circular-chart">
+                            <path
+                              class="circle-bg"
+                              d="M21 5 a 16 16 0 1 0 0 32 a 16 16 0 1 0 0 -32"
+                            ></path>
+                            <path
+                              class="circle"
+                              stroke-dasharray="0, 100"
+                              d="M21 5 a 16 16 0 1 0 0 32 a 16 16 0 1 0 0 -32"
+                              data-target-value="51"
+                            ></path>
+                          </svg>
+                        </div>
+                        <div class="stat-content">
+                          <div class="stat-value">>51%</div>
+                          <div class="stat-label">
+                            of U.S. waterways are too polluted for swimming or
+                            drinking
+                            <span class="text-xs underline">(source)</span>
+                          </div>
+                        </div>
+                      </a>
+                      <a
+                        class="stat stat-standard col-span-1 sm:col-span-3"
+                        href="https://www.epa.gov/nps/nonpoint-source-agriculture"
+                        target="_blank"
+                      >
+                        <div class="stat-content">
+                          <div class="stat-value">#1</div>
+                          <div class="stat-label">
+                            cause of water quality impacts is agricultural
+                            runoff
+                            <span class="text-xs underline">(source)</span>
+                          </div>
+                        </div>
+                      </a>
+                      <a
+                        class="stat stat-donut col-span-1 sm:col-span-4"
+                        href="https://sgp.fas.org/crs/misc/R44158.pdf"
+                        target="_blank"
+                      >
+                        <div class="stat-donut-chart">
+                          <svg viewBox="0 0 42 42" class="circular-chart">
+                            <path
+                              class="circle-bg"
+                              d="M21 5 a 16 16 0 1 0 0 32 a 16 16 0 1 0 0 -32"
+                            ></path>
+                            <path
+                              class="circle"
+                              stroke-dasharray="0, 100"
+                              d="M21 5 a 16 16 0 1 0 0 32 a 16 16 0 1 0 0 -32"
+                              data-target-value="38"
+                            ></path>
+                          </svg>
+                        </div>
+                        <div class="stat-content">
+                          <div class="stat-value">38%</div>
+                          <div class="stat-label">
+                            of U.S. farms still use outdated irrigation methods
+                            <span class="text-xs underline">(source)</span>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel">
+                  <div class="prose">
+                    <h2 class="pretitle">The Solution</h2>
+                    <h3>Sustainability and clean water</h3>
+                    <p>
+                      Modern irrigation systems minimize pollution by reducing
+                      nutrient runoff into freshwater systems.
+                    </p>
+                    <h2 class="pretitle">How We Do It</h2>
+                    <h3>Better irrigation, better farms</h3>
+                    <p>
+                      BasinScout analytics identify fields where the biggest
+                      improvements cost the least. Modern irrigation saves
+                      water, reduces costs, and improves soil health and crop
+                      yields.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="map"
+          class="section section-map"
+          data-background="/img/bg/2a Base Map Medium.jpg"
+          data-background-blur="3px"
+          data-title-animation="slide-right"
+          data-use-pagination="true"
+        >
+          <div class="container">
+            <div class="title-wrapper">
+              <h1>Understanding the Landscape</h1>
+            </div>
+            <div class="content-wrapper">
+              <div class="columns grid grid-cols-24 gap-8 w-full">
+                <div class="column col-span-1">
+                  <div
+                    class="pagination pagination-panel"
+                    data-match-height=".media-stack .media-item:first-of-type"
+                  ></div>
+                </div>
+                <div class="column col-span-15">
+                  <div class="media-stack">
+                    <!-- Media items will be dynamically added here -->
+                  </div>
+                </div>
+                <div class="column col-span-8">
+                  <div class="panels-container">
+                    <div
+                      class="panel"
+                      data-media="/img/2_Base and Stage Maps/TFT-Map_2b_Fields-Overview_Map-Behind.png"
+                    >
+                      <div class="prose">
+                        <p>
+                          BasinScout can quickly map an entire basin by
+                          integrating public datasets—such as soils, crop types,
+                          slope and weather—with vetted models for reducing
+                          nitrogen and phosphorus (fertilizer) runoff,
+                          pinpointing priorities based on the biggest benefits
+                          for the lowest cost.
+                        </p>
+                        <p class="mt-auto">
+                          * This is a simulation of BasinScout.
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- Panel 2: How BasinScout Works -->
+                    <div
+                      class="panel"
+                      data-title="How BasinScout Works"
+                      data-media="/img/3_Stage Maps/TFT-Map_3a_One-Color-Fields.png"
+                    >
+                      <div class="prose">
+                        <p>
+                          The tool processes data—along with satellite imagery
+                          and other remote sensing inputs—<strong
+                            >across thousands of agricultural fields
+                            simultaneously</strong
+                          >, significantly improving the scale and efficiency of
+                          analysis.
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- Panel 3: Irrigation Upgrades -->
+                    <div
+                      class="panel"
+                      data-media="/img/3_Stage Maps/TFT-Map_3b_Upgradable-vs-Non.png"
+                    >
+                      <div class="prose">
+                        <p>
+                          For irrigated farm fields, BasinScout identifies
+                          opportunities to upgrade to an irrigation method that
+                          uses less water.
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- Panel 4: Field Analysis -->
+                    <div
+                      class="panel"
+                      data-media="/img/4_Stage Maps/TFT-Map_4_Selected-Field.png"
+                      data-marker="square,44,67"
+                      data-marker-shape=""
+                      data-="/img/4_Stage Maps/4_Stats/TFT_4_Stat-1.png,Water quality improvement data;/img/4_Stage Maps/4_Stats/TFT_4_Stat-2.png,Cost analysis report;/img/4_Stage Maps/4_Stats/TFT_4_Stat-3.png,Timeline projection;/img/4_Stage Maps/4_Stats/TFT_4_Stat-4.png,Environmental impact metrics;/img/4_Stage Maps/4_Stats/TFT_4_Stat-5.png,Field upgrade recommendations;/img/4_Stage Maps/4_Stats/TFT_4_Stat-6.png,Implementation strategy"
+                    >
+                      <div class="prose">
+                        <p>
+                          Additional modeling and analysis consider water goals,
+                          costs and timelines.
+                        </p>
+                        <p>
+                          This analysis can tell us everything from what type of
+                          irrigation upgrade is available for each field to how
+                          much an upgrade will reduce runoff and improve water
+                          quality.
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- Panel 5: Connecting the Dots -->
+                    <div
+                      class="panel"
+                      data-title="Connecting the Dots"
+                      data-media="/img/5_Stage Maps/TFT-Map_5-6-7_Supply+Drain+Dots_Animation.gif"
+                    >
+                      <div class="prose">
+                        <p>
+                          An additional variable in this analysis is
+                          <strong
+                            >how water flows from the river to the
+                            fields.</strong
+                          >
+                        </p>
+                        <p>
+                          And, more importantly,
+                          <strong
+                            >how water from the fields returns to the
+                            river</strong
+                          >.
+                        </p>
+                        <p>
+                          This allows The Freshwater Trust to identify
+                          <strong>agricultural drains</strong> connected to
+                          multiple upgradable fields with the most potential to
+                          benefit the river.
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- Panel 6: Water Quality Impact -->
+                    <div
+                      class="panel"
+                      data-media="/img/7_Stage Maps/TFT-Map_7a_Drain-Canals+Drain-Dots.png"
+                    >
+                      <div class="prose">
+                        <p>
+                          Excess phosphorus and nitrogen combine from different
+                          sources. Without natural processes to slow or filter
+                          them, even small amounts of these elements can add up
+                          and significantly impair water quality. For example,
+                          they can create algae blooms that are harmful to
+                          humans, animals and fish.
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- Panel 7: Single Drain Analysis -->
+                    <div
+                      class="panel"
+                      data-media="/img/7_Stage Maps/TFT-Map_7b_3_1-with-Fields.png"
+                      data-marker="circle,21.5,38.5"
+                    >
+                      <div class="prose">
+                        <p>
+                          Now, we can observe all the agricultural fields linked
+                          to a river through
+                          <strong>a single drain.</strong> This allows us to
+                          determine which combination of fields to prioritize
+                          and begin collaborating with water users to secure
+                          funding and make changes.
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- Panel 8: Deciphering the Data -->
+                    <div
+                      class="panel"
+                      data-title="Deciphering the Data"
+                      data-marker="circle,38,38"
+                      data-media="/img/8_Stage Maps/TFT-Map_8_3_1-with-Fields.png"
+                    >
+                      <div class="prose">
+                        <p>
+                          In this basin, we have mapped more than
+                          <strong
+                            >600,000 acres to determine the 50,000 that matter
+                            most.</strong
+                          >
+                          BasinScout lets us quickly see the fields and drains
+                          that have the biggest impact on the river.
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- Panel 9: Drain Scorecard -->
+                    <div
+                      class="panel"
+                      data-media="/img/8_Stage Maps/TFT-Map_8_3_1-with-Fields.png"
+                      data-marker="circle,38,38"
+                      data-stats="/img/9_Stage Maps/9a_Stats/TFT_9a_Stat-1.png,Drain scorecard overview;/img/9_Stage Maps/9a_Stats/TFT_9a_Stat-2.png,Field connectivity data;/img/9_Stage Maps/9a_Stats/TFT_9a_Stat-3.png,Acreage coverage statistics;/img/9_Stage Maps/9a_Stats/TFT_9a_Stat-4.png,Phosphorus reduction metrics;/img/9_Stage Maps/9a_Stats/TFT_9a_Stat-5.png,Nitrogen reduction analysis;/img/9_Stage Maps/9a_Stats/TFT_9a_Stat-6.png,Upgrade impact summary"
+                    >
+                      <div class="prose">
+                        <p>
+                          Each drain comes with a scorecard of information. In
+                          this example, this drain connects to 369 upgradable
+                          fields covering 10,000 acres.
+                        </p>
+                        <p>
+                          The total amount of phosphorus and nitrogen reduced is
+                          also calculated.
+                        </p>
+                        <p>
+                          Field upgrades connected to this single drain move us
+                          20% closer to
+                          <strong
+                            >our goal of restoring 50,000 high-impact
+                            acres.</strong
+                          >
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- Panel 10: Strategic Implementation -->
+                    <div
+                      class="panel"
+                      data-media="/img/9_Stage Maps/TFT-Map_9b_3_2-with-Fields.png"
+                      data-marker="circle,38,38;circle,64,69"
+                      data-stats="/img/9_Stage Maps/9b_Stats/TFT-Map_9b_Stat-1.png,Strategic priority drainage analysis;/img/9_Stage Maps/9b_Stats/TFT-Map_9b_Stat-2.png,High-impact field identification;/img/9_Stage Maps/9b_Stats/TFT-Map_9b_Stat-3.png,Cost-effective upgrade pathways;/img/9_Stage Maps/9b_Stats/TFT-Map_9b_Stat-4.png,Basin-wide runoff reduction projections;/img/9_Stage Maps/9b_Stats/TFT-Map_9b_Stat-5.png,Implementation timeline and milestones;/img/9_Stage Maps/9b_Stats/TFT-Map_9b_Stat-6.png,Long-term sustainability metrics"
+                    >
+                      <div class="prose">
+                        <p>
+                          Focusing on a few high-priority drains and upgrading
+                          irrigation across those fields allows water users to
+                          <strong
+                            >reduce the majority of the basin's excess runoff in
+                            a strategic, cost-effective way.</strong
+                          >
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="results"
+          class="section section-results"
+          data-background="/img/bg/results.jpg"
+          data-title-animation="fade-up"
+        >
+          <div class="container">
+            <div class="title-wrapper">
+              <h1>Results</h1>
+            </div>
+            <div class="content-wrapper">
+              <div class="panels-container" data-panel-border="true">
+                <div class="panel">
+                  <div class="prose">
+                    <h2>Better Water, Better Land, Better Future</h2>
+                    <p>
+                      The current conservation funding system is broken.
+                      Billions of dollars are spent annually on projects that
+                      don't yield substantial improvements for farmers and
+                      rivers.
+                    </p>
+                    <p>The Freshwater Trust is changing the game.</p>
+                    <p>
+                      By leveraging refined data insights, we pinpoint high-risk
+                      areas, determine how to get the biggest improvements for
+                      the lowest cost and ensure every dollar drives maximum
+                      impact. Through partnerships with supply chains—like
+                      irrigation equipment suppliers—we implement strategic
+                      upgrades for maximum return on investment while enabling
+                      farmers to identify, prioritize and effectively guide
+                      projects to maximize water savings.
+                    </p>
+                    <p>
+                      This is one example of how The Freshwater Trust is using
+                      data to simplify complicated funding systems, make better
+                      use of government resources, and deliver the best value
+                      for every dollar spent.
+                    </p>
+                    <p>
+                      Our proven approach has unlocked over $1 billion in
+                      conservation funding—but there's still more to do.
+                    </p>
+                    <p>
+                      <a
+                        class="btn btn-primary"
+                        href="https://thefreshwatertrust.org/donate"
+                        >Support Our Work</a
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Return to top button -->
+    <button
+      id="return-to-top"
+      class="fixed bottom-8 right-8 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 opacity-0 pointer-events-none z-50"
+      aria-label="Return to top"
+    >
+      <svg
+        class="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M5 10l7-7m0 0l7 7m-7-7v18"
+        ></path>
+      </svg>
+    </button>
+
+    <!-- Scroll instruction template -->
+    <template id="scroll-instruction-template">
+      <div class="scroll-instruction flex flex-row gap-2 mt-8">
+        <div class="scroll-arrow animate-bounce">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            class="w-6 h-6 text-action"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3"
+            />
+          </svg>
+        </div>
+        <span class="text-action font-semibold">Scroll to discover more</span>
+      </div>
+    </template>
+    <script type="module" src="/src/scripts/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,110 @@
+/**
+ * Animation utilities
+ * Enhanced for Tailwi/* Remove duplicate animation-running class */
+
+/* Loading state with pure CSS animation (not conflicting with GSAP) */
+rformance optimizations and modern CSS
+ * Note: Section, panel, and pagination-specific styles moved to dedicated files
+ */
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Global animation performance optimizations */
+:root {
+  /* Animation performance variables */
+  --gpu-acceleration: translateZ(0);
+  --animation-fill-mode: both;
+  --animation-timing: var(--ease-gsap, cubic-bezier(0.25, 0.1, 0.25, 1));
+}
+
+/* GSAP pre-defined states - no CSS transitions (GSAP handles all timing) */
+.animate-fade-up {
+  @apply opacity-0;
+  transform: translateY(2rem) translateZ(0);
+}
+
+.animate-slide-right {
+  @apply opacity-0;
+  transform: translateX(-2rem) translateZ(0);
+}
+
+/* Performance-optimized states - no transitions, GSAP handles everything */
+.animation-paused {
+  @apply opacity-50;
+  animation-play-state: paused;
+  will-change: auto;
+}
+
+.animation-running {
+  @apply opacity-100;
+  animation-play-state: running;
+  will-change: transform, opacity;
+}
+
+/* Enhanced loading states with CSS-only animations */
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  }
+  50% {
+    opacity: 0.7;
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.6);
+  }
+}
+
+.animation-running {
+  @apply opacity-100;
+  animation-play-state: running;
+  will-change: transform, opacity;
+}
+
+/* Loading state with pure CSS animation (not conflicting with GSAP) */
+.loading-pulse {
+  @apply shadow-lg;
+  animation: pulse-glow 2s ease-in-out infinite;
+  will-change: opacity, box-shadow;
+}
+
+/* Reduced motion preferences support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Maintain essential functionality while respecting motion preferences */
+  .section,
+  .panel,
+  .title-wrapper h1,
+  .prose * {
+    will-change: auto;
+    transform: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .title-wrapper h1 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  }
+
+  .prose h3,
+  .prose p {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+  }
+}

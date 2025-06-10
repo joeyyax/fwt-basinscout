@@ -1,0 +1,52 @@
+/**
+ * Panel component styles
+ * Enhanced for Tailwind CSS v4.1 with performance optimizations
+ * Pure GSAP-driven animations - no conflicting CSS transitions
+ */
+
+/* Panels container with optional border system */
+.panels-container {
+  @apply relative;
+
+  /* When border is enabled, add padding to accommodate border */
+  &[data-panel-border='true'] {
+    .panel {
+      @apply pl-8;
+    }
+  }
+
+  /* Panel border animation styles - positioned on left side */
+  .panel-border {
+    @apply absolute left-0 top-0 w-0.5 bg-white h-full opacity-0;
+
+    /* Minimal performance optimizations for GSAP */
+    will-change: transform, opacity;
+    transform: translateZ(0);
+  }
+}
+
+/* Enhanced panel structure - GSAP controlled */
+.panel {
+  @apply flex items-start justify-start relative w-full h-full opacity-100;
+
+  /* GSAP performance optimizations only */
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Panel animation states for GSAP optimization */
+.panel.animating {
+  @apply will-change-transform;
+}
+
+/* Performance optimizations for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .panel-border {
+    @apply will-change-auto;
+    transform: none !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
