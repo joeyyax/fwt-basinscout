@@ -1,0 +1,100 @@
+/**
+ * Media Stats component styles
+ * Vertical stacking of statistics on the right side of media items
+ * Uses Tailwind utilities wherever possible
+ */
+
+/* Stats container positioned on the right side of media items */
+.media-stats {
+  @apply absolute -right-4 top-0 bottom-0 flex flex-col justify-evenly items-end opacity-0 pointer-events-none m-0 p-0 w-[25%] z-10;
+
+  /* Performance optimizations - no Tailwind equivalent */
+  will-change: transform, opacity;
+  transform: var(--gpu-acceleration, translateZ(0));
+  backface-visibility: hidden;
+}
+
+.media-stats.active {
+  @apply opacity-100 transition-opacity duration-500 ease-out;
+}
+
+/* Individual stat item styling */
+.stat-item {
+  @apply opacity-0 transition-all duration-300 ease-out max-h-[15%];
+
+  /* Performance optimizations - no Tailwind equivalent */
+  will-change: transform, opacity;
+  transform: var(--gpu-acceleration, translateZ(0));
+  backface-visibility: hidden;
+}
+
+.stat-item.active {
+  @apply opacity-100;
+}
+
+.stat-item img {
+  @apply w-full h-auto object-contain drop-shadow-lg;
+
+  /* Performance optimizations - no Tailwind equivalent */
+  will-change: transform, filter;
+  transform: var(--gpu-acceleration, translateZ(0));
+  backface-visibility: hidden;
+}
+
+/* Stats entrance animations */
+.stat-item.entering {
+  @apply opacity-0;
+  transform: translateX(20px) scale(0.9);
+}
+
+.stat-item.entered {
+  @apply opacity-100;
+  transform: translateX(0) scale(1);
+}
+
+.stat-item.exiting {
+  @apply opacity-0;
+  transform: translateX(20px) scale(0.9);
+}
+
+/* Interactive stats for future functionality */
+.stat-item.interactive {
+  @apply cursor-pointer pointer-events-auto hover:scale-105;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .stat-item img {
+    @apply contrast-125 brightness-110;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .media-stats,
+  .stat-item {
+    transition-duration: 0.01ms !important;
+  }
+
+  .stat-item.entering,
+  .stat-item.entered,
+  .stat-item.exiting {
+    transform: none !important;
+  }
+
+  .stat-item.interactive:hover {
+    transform: none !important;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .stat-item img {
+    @apply brightness-90;
+  }
+}
+
+/* Focus states for accessibility */
+.stat-item.interactive:focus {
+  @apply outline-none ring-2 ring-blue-500 ring-offset-2;
+}

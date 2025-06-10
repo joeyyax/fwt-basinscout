@@ -1,0 +1,75 @@
+/**
+ * Base styles and CSS resets
+ * Enhanced for Tailwind CSS v4.1 with modern features
+ */
+
+/* CSS Reset with v4.1 optimizations */
+* {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Modern CSS custom properties for dynamic theming */
+:root {
+  /* Animation timing compatible with GSAP */
+  --ease-gsap: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-power2: cubic-bezier(0.64, 0, 0.78, 0);
+  --ease-back: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+
+  /* Dynamic spacing scale */
+  --spacing-unit: 1rem;
+  --spacing-xs: calc(var(--spacing-unit) * 0.5);
+  --spacing-sm: calc(var(--spacing-unit) * 1);
+  --spacing-md: calc(var(--spacing-unit) * 1.5);
+  --spacing-lg: calc(var(--spacing-unit) * 2);
+  --spacing-xl: calc(var(--spacing-unit) * 3);
+}
+
+/* Tailwind 4.1 @theme directive for custom colors, fonts, and breakpoints */
+@theme {
+  --font-family-sans: 'Source Sans Pro', system-ui, -apple-system, sans-serif;
+  --breakpoint-sm: 480px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1400px;
+  --color-emphasis-light: #99d7cf;
+  --color-emphasis: #71c9bf;
+  --color-emphasis-dark: #447d73;
+  --color-action-light: #ffd633;
+  --color-action: #fac400;
+  --color-action-dark: #cc9e00;
+}
+
+html,
+body {
+  height: 100vh;
+  width: 100vw;
+  overflow: visible; /* Allow content to extend beyond viewport */
+  font-family: var(--font-family-sans);
+  /* Enable hardware acceleration for better performance */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  /* Support for dynamic viewport units */
+  height: 100dvh;
+  background: #000;
+}
+
+body {
+  background: #000;
+  /* Optimize for animations */
+  will-change: scroll-position;
+}
+
+/* Enhanced scrollbar hiding with modern CSS */
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}

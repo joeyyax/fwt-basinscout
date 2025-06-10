@@ -1,0 +1,126 @@
+/**
+ * Media Markers component styles
+ * Positioning and styling for markers overlaid on media images
+ * Uses Tailwind utilities wherever possible
+ */
+
+/* Base marker positioning and visibility */
+.media-marker {
+  @apply absolute pointer-events-none transition-all duration-300 opacity-0;
+  
+  /* Position markers using transform for precise placement */
+  transform: translate(-50%, -50%);
+  
+  /* Performance optimizations - no Tailwind equivalent */
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.media-marker.active {
+  @apply opacity-100;
+}
+
+/* Circle marker style - using @apply for Tailwind utilities */
+.media-marker.circle {
+  @apply bg-orange-500 rounded-full border-2 border-white shadow-lg;
+  width: 12px;
+  height: 12px;
+  
+  /* Responsive sizing - no Tailwind equivalent for custom responsive values */
+  @media (min-width: 768px) {
+    width: 16px;
+    height: 16px;
+  }
+  
+  @media (min-width: 1024px) {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Square marker style - using @apply for Tailwind utilities */
+.media-marker.square {
+  @apply bg-blue-500 border-2 border-white shadow-lg;
+  width: 12px;
+  height: 12px;
+  
+  /* Responsive sizing - no Tailwind equivalent for custom responsive values */
+  @media (min-width: 768px) {
+    width: 16px;
+    height: 16px;
+  }
+  
+  @media (min-width: 1024px) {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Interactive marker states for future functionality */
+.media-marker.interactive {
+  @apply cursor-pointer pointer-events-auto;
+  
+  &:hover {
+    @apply scale-125;
+  }
+}
+
+/* Marker animations for entrance/exit effects */
+.media-marker.entering {
+  @apply opacity-0;
+  transform: translate(-50%, -50%) scale(0.8);
+}
+
+.media-marker.entered {
+  @apply opacity-100;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.media-marker.exiting {
+  @apply opacity-0;
+  transform: translate(-50%, -50%) scale(0.8);
+}
+
+/* High contrast mode support for markers */
+@media (prefers-contrast: high) {
+  .media-marker.circle {
+    @apply bg-yellow-400 border-black;
+  }
+  
+  .media-marker.square {
+    @apply bg-yellow-400 border-black;
+  }
+}
+
+/* Reduced motion support for markers */
+@media (prefers-reduced-motion: reduce) {
+  .media-marker {
+    transition-duration: 0.01ms !important;
+  }
+  
+  .media-marker.interactive:hover {
+    transform: translate(-50%, -50%) !important;
+  }
+  
+  .media-marker.entering,
+  .media-marker.entered,
+  .media-marker.exiting {
+    transform: translate(-50%, -50%) !important;
+  }
+}
+
+/* Marker focus states for accessibility */
+.media-marker.interactive:focus {
+  @apply outline-none ring-2 ring-blue-500 ring-offset-2;
+}
+
+/* Dark mode support for markers */
+@media (prefers-color-scheme: dark) {
+  .media-marker.circle {
+    @apply border-gray-800;
+  }
+  
+  .media-marker.square {
+    @apply border-gray-800;
+  }
+}

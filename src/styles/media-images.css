@@ -1,0 +1,55 @@
+/**
+ * Media Images Styles
+ * Core styling for media images within media stacks
+ * Handles image display, loading states, and responsive behavior
+ */
+
+.media-image {
+  @apply w-full h-full object-cover;
+  /* Images are always at full opacity - container handles visibility */
+  opacity: 1 !important;
+}
+
+/* Loading states - handle at container level, not image level */
+.media-item.loaded {
+  /* Container can be shown when loaded */
+}
+
+.media-item:not(.loaded) {
+  /* Container is hidden when not loaded */
+}
+
+.media-item.error {
+  /* Container shows error state */
+}
+
+/* Animated content optimization */
+.media-image.animated-content {
+  @apply will-change-auto;
+}
+
+/* Responsive image behavior */
+@media (max-width: 768px) {
+  .media-image {
+    @apply object-contain;
+  }
+}
+
+/* High DPI display optimization */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .media-image {
+    @apply antialiased;
+  }
+}
+
+/* Focus states for accessibility */
+.media-item:focus-within .media-image {
+  @apply ring-2 ring-blue-500;
+}
+
+/* Print styles */
+@media print {
+  .media-image {
+    @apply max-h-screen;
+  }
+}

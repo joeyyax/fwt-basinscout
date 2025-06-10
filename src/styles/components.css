@@ -1,0 +1,111 @@
+/**
+ * Interactive components
+ * Enhanced for Tailwind CSS v4.1 with advanced container queries and modern CSS
+ */
+
+/* Navigation dots with Tailwind utilities and custom properties for dynamic theming */
+.nav-dot {
+  /* Custom properties for dynamic sizing */
+  --dot-size: 0.75rem;
+  --dot-scale-hover: 1.2;
+
+  @apply rounded-full border-2 border-white/20 bg-transparent cursor-pointer transition-all duration-300;
+
+  width: var(--dot-size);
+  height: var(--dot-size);
+
+  /* Performance optimizations */
+  will-change: transform, background-color, border-color;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  container-type: inline-size;
+
+  &:hover {
+    @apply border-white/80;
+    transform: scale(var(--dot-scale-hover)) translateZ(0);
+  }
+
+  &.active {
+    @apply bg-white border-white;
+    transform: scale(1.1) translateZ(0);
+  }
+
+  /* Enhanced responsive sizing with container queries */
+  @container (min-width: 480px) {
+    --dot-size: 0.875rem;
+  }
+
+  @container (min-width: 768px) {
+    --dot-size: 1rem;
+  }
+
+  @container (min-width: 1024px) {
+    --dot-size: 1.25rem;
+    --dot-scale-hover: 1.15;
+  }
+  @container (min-width: 1400px) {
+    --dot-size: 1.5rem;
+  }
+}
+
+/* Enhanced button components using Tailwind utilities */
+.button {
+  /* Custom properties for consistent theming */
+  --button-padding: 0.75rem 1.5rem;
+  --button-font-size: 1rem;
+
+  @apply bg-white/10 text-white border border-white/30
+         cursor-pointer transition-all duration-300
+         backdrop-blur-lg select-none;
+
+  padding: var(--button-padding);
+  font-size: var(--button-font-size);
+  border-radius: 0.375rem;
+
+  /* Performance optimizations */
+  will-change: transform, background-color, border-color;
+  transform: translateZ(0);
+  container-type: inline-size;
+
+  &:hover {
+    @apply bg-white/20 shadow-lg;
+    transform: translateY(-2px) translateZ(0);
+  }
+
+  &:active {
+    @apply bg-white/30;
+    transform: translateY(0) translateZ(0);
+  }
+
+  /* Container query responsive button sizing */
+  @container (min-width: 768px) {
+    --button-padding: 1rem 2rem;
+    --button-font-size: 1.125rem;
+    --button-border-radius: 0.5rem;
+  }
+
+  @container (min-width: 1024px) {
+    --button-padding: 1.25rem 2.5rem;
+    --button-font-size: 1.25rem;
+  }
+}
+
+/* Loading states and micro-interactions using Tailwind utilities */
+.loading {
+  @apply relative pointer-events-none;
+
+  &::after {
+    @apply absolute inset-0 rounded-[inherit];
+    content: '';
+    background: conic-gradient(transparent, rgba(255, 255, 255, 0.3));
+    animation: spin 1s linear infinite;
+    mask: radial-gradient(circle at center, transparent 60%, black 60%);
+    -webkit-mask: radial-gradient(circle at center, transparent 60%, black 60%);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
