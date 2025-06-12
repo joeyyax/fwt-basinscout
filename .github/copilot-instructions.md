@@ -43,11 +43,11 @@ This is a modern web development project that will be **integrated into a Craft 
 ### **Development Workflow**
 
 - ✅ **Check dev server** before starting new one (`curl -s http://localhost:5173/`)
-- ✅ **Test changes** with `npm run build` before finalizing
-- ✅ **Run tests** with `npm test` (unit) and `npm run test:e2e` (E2E) before commits
+- ✅ **Test changes** with `pnpm run build` before finalizing
+- ✅ **Run tests** with `pnpm test` (unit) and `pnpm run test:e2e` (E2E) before commits
 - ✅ **Fix ESLint issues** - Follow existing linting rules and patterns
 - ✅ **Don't create summary/completion files** unless requested
-- ✅ **Use only current packages** - no unnecessary dependencies
+- ✅ **Use pnpm package manager** - correct package manager for this project
 - ✅ **Clean up temp files** regularly
 - ✅ **Don't be overly verbose** - concise communication
 
@@ -128,7 +128,7 @@ This is a modern web development project that will be **integrated into a Craft 
 
 ## Craft CMS Integration Notes
 
-- **Build Output**: `npm run build` generates `dist/` folder for CMS integration
+- **Build Output**: `pnpm run build` generates `dist/` folder for CMS integration
 - **Asset Structure**: Built CSS/JS will be imported into Craft templates
 - **Component-Based**: Current architecture supports CMS template integration
 - **Data Attributes**: Use data attributes for CMS field binding

@@ -284,10 +284,16 @@ export class PaginationController {
             PaginationAnimationController.resetDotsToVisible(container);
           }
         } else {
-          // Hide entire containers for non-current sections
+          // Hide entire containers for non-current sections, except if they've been visited before
           const container = dot.closest('.pagination-panel');
           if (container && container.style.display !== 'none') {
-            PaginationAnimationController.animateContainerOut(container, 0);
+            const containerSectionIndex = parseInt(dot.dataset.sectionIndex);
+            const containerId = `section-${containerSectionIndex}`;
+
+            // Only hide if this section hasn't been visited before
+            if (!this.animatedContainers.has(containerId)) {
+              PaginationAnimationController.animateContainerOut(container, 0);
+            }
           }
         }
       });

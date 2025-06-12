@@ -8,10 +8,10 @@ import { SectionAnimationController } from './sections.js';
 import { PanelAnimationController } from './panels.js';
 import { TitleAnimationController } from './titles.js';
 import { MediaStackController } from './media-stack.js';
-import { MediaImagesController } from './media-images.js';
-import { MediaMarkersController } from './media-markers.js';
-import { MediaStatsController } from './media-stats.js';
-import { BackgroundController } from './backgrounds.js';
+import { MediaImagesController as _MediaImagesController } from './media-images.js';
+import { MediaMarkersController as _MediaMarkersController } from './media-markers.js';
+import { MediaStatsController as _MediaStatsController } from './media-stats.js';
+import { BackgroundController as _BackgroundController } from './backgrounds.js';
 import { PaginationAnimationController } from './pagination.js';
 // PanelStatsAnimationController imported but not used yet - keeping for future features
 // eslint-disable-next-line no-unused-vars
@@ -167,14 +167,14 @@ export class AnimationController {
           targetSectionEl
         );
 
-      // Trigger pagination animation for new section (first time only)
+      // Handle pagination for section transitions
       const containerId = `section-${targetSectionIndex}`;
-      if (!PaginationController.animatedContainers.has(containerId)) {
-        // Find pagination container for this section
-        const paginationContainer =
-          targetSectionEl.querySelector('.pagination-panel');
-        if (paginationContainer) {
-          // Initialize dots and animate in
+      const paginationContainer =
+        targetSectionEl.querySelector('.pagination-panel');
+
+      if (paginationContainer) {
+        if (!PaginationController.animatedContainers.has(containerId)) {
+          // First time - initialize dots and animate in
           PaginationAnimationController.initializeDotsForAnimation(
             paginationContainer
           );
@@ -183,6 +183,14 @@ export class AnimationController {
             0.1
           );
           PaginationController.animatedContainers.add(containerId);
+        } else {
+          // Returning to previously visited section - restore visibility
+          if (paginationContainer.style.display === 'none') {
+            paginationContainer.style.display = 'flex';
+            PaginationAnimationController.resetDotsToVisible(
+              paginationContainer
+            );
+          }
         }
       }
 
