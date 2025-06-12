@@ -7,59 +7,163 @@
 /* Base marker positioning and visibility */
 .media-marker {
   @apply absolute pointer-events-none transition-all duration-300 opacity-0;
-  
+
   /* Position markers using transform for precise placement */
   transform: translate(-50%, -50%);
-  
+
   /* Performance optimizations - no Tailwind equivalent */
   will-change: transform, opacity;
   backface-visibility: hidden;
+
+  /* Setup for radar pulse effect - marker appears above pulse */
+  z-index: 10;
+}
+
+/* Radar pulse effect - radiates from underneath the marker */
+.media-marker::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  border: 2px solid;
+  border-color: white; /* White pulse for all markers */
+  border-radius: inherit; /* Inherit shape from parent marker */
+  background: transparent;
+  transform: translate(-50%, -50%);
+  animation: radar-pulse 2s ease-out infinite;
+  z-index: -1; /* Behind the marker */
+  opacity: 0;
+}
+
+/* Secondary pulse for layered effect */
+.media-marker::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  border: 2px solid;
+  border-color: white; /* White pulse for all markers */
+  border-radius: inherit; /* Inherit shape from parent marker */
+  background: transparent;
+  transform: translate(-50%, -50%);
+  animation: radar-pulse 2s ease-out infinite 0.6s; /* Delayed start */
+  z-index: -1; /* Behind the marker */
+  opacity: 0;
+}
+
+/* Remove the color override since all markers now use white */
+
+@keyframes radar-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(4);
+    opacity: 0;
+  }
 }
 
 .media-marker.active {
   @apply opacity-100;
 }
 
-/* Circle marker style - using @apply for Tailwind utilities */
+/* Circle marker style - using specific circle marker color */
 .media-marker.circle {
-  @apply bg-orange-500 rounded-full border-2 border-white shadow-lg;
-  width: 12px;
-  height: 12px;
-  
+  @apply rounded-full ring ring-white ring-offset-1 shadow-lg;
+  /* Outer container with white ring */
+  width: 16px;
+  height: 16px;
+
   /* Responsive sizing - no Tailwind equivalent for custom responsive values */
   @media (min-width: 768px) {
-    width: 16px;
-    height: 16px;
-  }
-  
-  @media (min-width: 1024px) {
     width: 20px;
     height: 20px;
+  }
+
+  @media (min-width: 1024px) {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Inner marker styling */
+  .marker-inner {
+    @apply rounded-full;
+    background-color: var(--color-marker-circle);
+    border-color: var(--color-marker-circle); /* For radar pulse inheritance */
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    /* Responsive sizing for inner marker */
+    @media (min-width: 768px) {
+      width: 16px;
+      height: 16px;
+    }
+
+    @media (min-width: 1024px) {
+      width: 20px;
+      height: 20px;
+    }
   }
 }
 
-/* Square marker style - using @apply for Tailwind utilities */
+/* Square marker style - using specific square marker color */
 .media-marker.square {
-  @apply bg-blue-500 border-2 border-white shadow-lg;
-  width: 12px;
-  height: 12px;
-  
+  @apply ring ring-white ring-offset-1 shadow-lg;
+  /* Outer container with white ring */
+  width: 16px;
+  height: 16px;
+
   /* Responsive sizing - no Tailwind equivalent for custom responsive values */
   @media (min-width: 768px) {
-    width: 16px;
-    height: 16px;
-  }
-  
-  @media (min-width: 1024px) {
     width: 20px;
     height: 20px;
+  }
+
+  @media (min-width: 1024px) {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Inner marker styling */
+  .marker-inner {
+    background-color: var(--color-marker-square);
+    border-color: var(--color-marker-square); /* For radar pulse inheritance */
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    /* Responsive sizing for inner marker */
+    @media (min-width: 768px) {
+      width: 16px;
+      height: 16px;
+    }
+
+    @media (min-width: 1024px) {
+      width: 20px;
+      height: 20px;
+    }
   }
 }
 
 /* Interactive marker states for future functionality */
 .media-marker.interactive {
   @apply cursor-pointer pointer-events-auto;
-  
+
   &:hover {
     @apply scale-125;
   }
@@ -84,11 +188,13 @@
 /* High contrast mode support for markers */
 @media (prefers-contrast: high) {
   .media-marker.circle {
-    @apply bg-yellow-400 border-black;
+    background-color: var(--color-marker-circle);
+    @apply ring-black;
   }
-  
+
   .media-marker.square {
-    @apply bg-yellow-400 border-black;
+    background-color: var(--color-marker-square);
+    @apply ring-black;
   }
 }
 
@@ -97,11 +203,20 @@
   .media-marker {
     transition-duration: 0.01ms !important;
   }
-  
+
+  .media-marker::before,
+  .media-marker::after {
+    animation: none !important;
+  }
+
+  .media-marker.active {
+    @apply animate-none;
+  }
+
   .media-marker.interactive:hover {
     transform: translate(-50%, -50%) !important;
   }
-  
+
   .media-marker.entering,
   .media-marker.entered,
   .media-marker.exiting {
@@ -117,10 +232,10 @@
 /* Dark mode support for markers */
 @media (prefers-color-scheme: dark) {
   .media-marker.circle {
-    @apply border-gray-800;
+    @apply ring-gray-800;
   }
-  
+
   .media-marker.square {
-    @apply border-gray-800;
+    @apply ring-gray-800;
   }
 }

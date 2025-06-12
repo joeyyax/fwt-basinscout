@@ -48,6 +48,11 @@ export class MediaMarkersController {
     markerElement.className = `media-marker ${marker.shape}`;
     markerElement.dataset.markerIndex = markerIndex;
 
+    // Create inner marker for the colored square/circle
+    const innerMarker = document.createElement('div');
+    innerMarker.className = 'marker-inner';
+    markerElement.appendChild(innerMarker);
+
     // Position marker using percentage coordinates
     // CSS transform: translate(-50%, -50%) centers the marker on the coordinates
     markerElement.style.left = `${marker.x}%`;
