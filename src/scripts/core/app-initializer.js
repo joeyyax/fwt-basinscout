@@ -5,7 +5,10 @@
 
 import { CONFIG } from '../constants.js';
 import { appState } from '../state.js';
-import { AnimationController } from '../animations.js';
+import {
+  AnimationController,
+  SectionAnimationController,
+} from '../animations.js';
 import { PaginationController } from '../pagination.js';
 import { AccessibilityController } from '../accessibility.js';
 import { HeightMatcher } from '../utils/height-matcher.js';
@@ -62,7 +65,7 @@ export class AppInitializer {
   static initializeBackgroundSystem() {
     // Initialize background system and let each layer animate when its image loads
     // This allows background animations to showcase during app initialization delay
-    AnimationController.sections.initializeBackgroundSystem();
+    SectionAnimationController.initializeBackgroundSystem();
   }
 
   // Hide the main content (keep header and nav visible during background showcase)

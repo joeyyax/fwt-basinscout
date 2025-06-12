@@ -55,8 +55,11 @@
   @apply outline-2 outline-white/50 outline-offset-2;
 }
 
-.stat:active {
+.stat:active,
+.stat.click-feedback {
   /* transform: scale(0.98) translateZ(0); - Removed, GSAP handles this */
+  filter: brightness(0.9);
+  transition: filter 0.2s ease;
 }
 
 /* Donut chart container using Tailwind utilities */
@@ -236,7 +239,7 @@
 
 /* Focus states for accessibility */
 .stat:focus-within {
-  @apply ring-2 ring-blue-500 ring-blue-500/50;
+  @apply ring-2 ring-blue-500/50;
   @apply outline-none;
 }
 

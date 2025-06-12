@@ -17,11 +17,11 @@
 
 /* Section visibility states using Tailwind utilities */
 .section.active {
-  @apply z-10 opacity-100;
+  @apply z-10 opacity-100 pointer-events-auto;
 }
 
 .section.inactive {
-  @apply z-[1] opacity-0;
+  @apply z-0 opacity-0 pointer-events-none; /* Prevent inactive sections from blocking clicks */
 }
 
 /* Enhanced title animation optimizations */
