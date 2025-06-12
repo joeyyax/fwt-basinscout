@@ -39,15 +39,17 @@ export class TitleAnimationController {
 
   // Create animated border element for slide-right titles
   static createTitleBorder(titleElement) {
-    const titleWrapper = titleElement.closest('.title-wrapper');
-    if (!titleWrapper) return;
+    if (!titleElement) return;
 
-    // Check if border already exists to prevent duplicates
-    if (titleWrapper.querySelector('.title-border')) {
+    // Check if border already exists inside h1 to prevent duplicates
+    if (titleElement.querySelector('.title-border')) {
       return;
     }
 
-    // Create border element with Tailwind classes - positioned outside h1
+    // Ensure h1 takes full width of its container to prevent layout shifts
+    titleElement.style.width = '100%';
+
+    // Create border element with Tailwind classes - positioned inside h1
     const borderElement = document.createElement('div');
     borderElement.className =
       'title-border absolute bottom-0 left-0 h-1 bg-white w-full';
@@ -63,14 +65,14 @@ export class TitleAnimationController {
       opacity: 0,
     });
 
-    // Make title wrapper relatively positioned if not already
-    const wrapperComputedStyle = window.getComputedStyle(titleWrapper);
-    if (wrapperComputedStyle.position === 'static') {
-      titleWrapper.style.position = 'relative';
+    // Make h1 relatively positioned if not already
+    const titleComputedStyle = window.getComputedStyle(titleElement);
+    if (titleComputedStyle.position === 'static') {
+      titleElement.style.position = 'relative';
     }
 
-    // Append border to title wrapper (not inside h1)
-    titleWrapper.appendChild(borderElement);
+    // Append border inside the h1 element
+    titleElement.appendChild(borderElement);
 
     // Update border visibility based on current title content
     this.updateBorderVisibility(titleElement);
@@ -78,10 +80,9 @@ export class TitleAnimationController {
 
   // Remove title border element
   static removeTitleBorder(titleElement) {
-    const titleWrapper = titleElement.closest('.title-wrapper');
-    if (!titleWrapper) return;
+    if (!titleElement) return;
 
-    const existingBorder = titleWrapper.querySelector('.title-border');
+    const existingBorder = titleElement.querySelector('.title-border');
     if (existingBorder) {
       existingBorder.remove();
     }
@@ -89,10 +90,9 @@ export class TitleAnimationController {
 
   // Update border visibility based on title content
   static updateBorderVisibility(titleElement) {
-    const titleWrapper = titleElement.closest('.title-wrapper');
-    if (!titleWrapper) return;
+    if (!titleElement) return;
 
-    const existingBorder = titleWrapper.querySelector('.title-border');
+    const existingBorder = titleElement.querySelector('.title-border');
     if (!existingBorder) return;
 
     const titleText = titleElement.textContent.trim();
@@ -146,9 +146,8 @@ export class TitleAnimationController {
       // Create animated border element for slide-right animation
       this.createTitleBorder(titleElement);
 
-      // Get the border element from the title wrapper
-      const titleWrapper = titleElement.closest('.title-wrapper');
-      const borderElement = titleWrapper?.querySelector('.title-border');
+      // Get the border element from inside the h1
+      const borderElement = titleElement.querySelector('.title-border');
 
       // Create timeline for coordinated parallax animations
       const timeline = gsap.timeline();
@@ -222,18 +221,16 @@ export class TitleAnimationController {
     const titleElement = section.querySelector('.title-wrapper h1');
     if (!titleElement) return;
 
-    const titleWrapper = titleElement.closest('.title-wrapper');
-    const borderElement = titleWrapper?.querySelector('.title-border');
+    const borderElement = titleElement.querySelector('.title-border');
     const animationType = this.getTitleAnimationType(sectionIndex);
 
     if (animationType === 'slide-right' && borderElement) {
       // Create timeline for coordinated fade out
       const timeline = gsap.timeline();
 
-      // Fade out both border and title text together
+      // Fade out border in place (no sliding movement)
       timeline.to(borderElement, {
         opacity: 0,
-        xPercent: CONFIG.ANIMATION.TITLE_BORDER_EXIT_X_PERCENT,
         duration:
           CONFIG.ANIMATION.TITLE_EXIT_DURATION *
           CONFIG.ANIMATION.TITLE_BORDER_DURATION_MULTIPLIER,
@@ -412,7 +409,7 @@ export class TitleAnimationController {
   }
 
   /**
-   * Update title for a specific panel with fade transition
+   * Update title for a specific panel with fade transition using duplicate elements
    * @param {number} sectionIndex - Index of the section
    * @param {number} panelIndex - Index of the panel
    * @param {number} delay - Delay before starting title animation
@@ -435,37 +432,206 @@ export class TitleAnimationController {
       return null;
     }
 
-    log.debug(EVENTS.TITLE, 'Updating panel title', {
+    log.debug(EVENTS.TITLE, 'Updating panel title with duplicates', {
       sectionIndex,
       panelIndex,
       from: currentTitle,
       to: newTitle,
     });
 
-    const timeline = gsap.timeline();
+    const titleWrapper = titleElement.closest('.title-wrapper');
+    const animationType = this.getTitleAnimationType(sectionIndex);
 
-    // Step 1: Animate out current title
-    const fadeOutTimeline = this.animateTitleOut(sectionIndex);
-    if (fadeOutTimeline) {
-      timeline.add(fadeOutTimeline, delay);
+    // Create duplicate elements for smooth transition
+    const duplicateTitle = titleElement.cloneNode(true);
+    duplicateTitle.className = `${titleElement.className} title-duplicate`;
+    duplicateTitle.textContent = newTitle;
+
+    let duplicateBorder = null;
+    let originalBorder = null;
+
+    if (animationType === 'slide-right') {
+      originalBorder = titleElement.querySelector('.title-border');
+      if (originalBorder) {
+        // Remove any existing border from duplicate title to avoid conflicts
+        const existingDuplicateBorder =
+          duplicateTitle.querySelector('.title-border');
+        if (existingDuplicateBorder) {
+          existingDuplicateBorder.remove();
+        }
+
+        // Create fresh border inside the duplicate title
+        duplicateBorder = originalBorder.cloneNode(true);
+        duplicateBorder.className = `${originalBorder.className} border-duplicate`;
+
+        // Set duplicate border to initial state
+        gsap.set(duplicateBorder, {
+          xPercent: CONFIG.ANIMATION.TITLE_BORDER_INITIAL_X_PERCENT,
+          opacity: 0,
+        });
+
+        // Append border inside the duplicate h1 element
+        duplicateTitle.appendChild(duplicateBorder);
+      }
     }
 
-    // Step 2: Change title text after fade out completes
-    timeline.call(
-      () => {
-        titleElement.textContent = newTitle;
-        // Update border visibility after title text changes
-        this.updateBorderVisibility(titleElement);
-      },
-      null,
-      `+=${CONFIG.ANIMATION.TITLE_EXIT_DURATION}`
-    );
+    // Get positioning information for absolute placement
+    const titleRect = titleElement.getBoundingClientRect();
+    const wrapperRect = titleWrapper.getBoundingClientRect();
 
-    // Step 3: Animate in new title (slightly before panel content)
-    const panelContentDelay = CONFIG.ANIMATION.TITLE_PANEL_LEAD_TIME;
-    const fadeInTimeline = this.animateTitleIn(sectionIndex, 0);
-    if (fadeInTimeline) {
-      timeline.add(fadeInTimeline, `+=${panelContentDelay}`);
+    // Position duplicates with absolute positioning to overlay originals
+    duplicateTitle.style.cssText = `
+      position: absolute;
+      top: ${titleRect.top - wrapperRect.top}px;
+      left: 0;
+      width: 100%;
+      height: ${titleRect.height}px;
+      margin: 0;
+      z-index: 20;
+      pointer-events: none;
+    `;
+
+    // Position duplicates initially hidden and with new content
+    gsap.set(duplicateTitle, {
+      opacity: 0,
+      x: animationType === 'slide-right' ? 100 : 0,
+      y: animationType === 'slide-right' ? 0 : 30,
+    });
+
+    // Ensure title wrapper is positioned relatively
+    const wrapperComputedStyle = window.getComputedStyle(titleWrapper);
+    if (wrapperComputedStyle.position === 'static') {
+      titleWrapper.style.position = 'relative';
+    }
+
+    // Insert duplicates into DOM
+    titleWrapper.appendChild(duplicateTitle);
+
+    const timeline = gsap.timeline({
+      onComplete: () => {
+        // Clean up: replace original with duplicate content and remove duplicates
+        titleElement.textContent = newTitle;
+        this.updateBorderVisibility(titleElement);
+
+        // Reset original title to final position
+        gsap.set(titleElement, {
+          opacity: 0.9,
+          x: 0,
+          y: 0,
+        });
+
+        // For slide-right animations, ensure original title always has a border for future animations
+        if (animationType === 'slide-right') {
+          // Make sure the original title has a border (create if missing)
+          this.createTitleBorder(titleElement);
+          const currentBorder = titleElement.querySelector('.title-border');
+          if (currentBorder) {
+            gsap.set(currentBorder, {
+              xPercent: 0,
+              opacity: 1,
+            });
+          }
+        }
+
+        // Remove duplicates
+        duplicateTitle.remove();
+      },
+    });
+
+    // Step 1: Animate out original elements
+    if (animationType === 'slide-right' && originalBorder) {
+      // Animate out both original title and border (fade only, no sliding)
+      timeline.to(
+        originalBorder,
+        {
+          opacity: 0,
+          duration:
+            CONFIG.ANIMATION.TITLE_EXIT_DURATION *
+            CONFIG.ANIMATION.TITLE_BORDER_DURATION_MULTIPLIER,
+          ease: 'power2.in',
+        },
+        delay
+      );
+
+      timeline.to(
+        titleElement,
+        {
+          opacity: 0,
+          duration: CONFIG.ANIMATION.TITLE_EXIT_DURATION,
+          ease: 'power2.in',
+        },
+        delay
+      ); // Start at same time as border
+    } else {
+      // Default fade out for original title
+      timeline.to(
+        titleElement,
+        {
+          opacity: 0,
+          duration: CONFIG.ANIMATION.TITLE_EXIT_DURATION,
+          ease: 'power2.in',
+        },
+        delay
+      );
+    }
+
+    // Step 2: Animate in duplicate elements with new content
+    const fadeInDelay = delay + CONFIG.ANIMATION.TITLE_EXIT_DURATION * 0.5; // Start halfway through fade out
+
+    if (animationType === 'slide-right' && duplicateBorder) {
+      // Animate in duplicate border first
+      timeline.fromTo(
+        duplicateBorder,
+        {
+          xPercent: CONFIG.ANIMATION.TITLE_BORDER_INITIAL_X_PERCENT,
+          opacity: 0,
+        },
+        {
+          xPercent: 0,
+          opacity: 1,
+          duration:
+            CONFIG.ANIMATION.TITLE_ENTER_DURATION *
+            CONFIG.ANIMATION.TITLE_BORDER_DURATION_MULTIPLIER,
+          ease: 'power2.out',
+        },
+        fadeInDelay
+      );
+
+      // Animate in duplicate title
+      timeline.fromTo(
+        duplicateTitle,
+        {
+          opacity: 0,
+          x: 100,
+          y: 0,
+        },
+        {
+          opacity: 0.9,
+          x: 0,
+          y: 0,
+          duration: CONFIG.ANIMATION.TITLE_ENTER_DURATION,
+          ease: 'power2.out',
+        },
+        fadeInDelay + CONFIG.ANIMATION.TITLE_BORDER_TITLE_OVERLAP
+      );
+    } else {
+      // Default fade-up animation for duplicate title
+      timeline.fromTo(
+        duplicateTitle,
+        {
+          opacity: 0,
+          x: 0,
+          y: 30,
+        },
+        {
+          opacity: 0.9,
+          x: 0,
+          y: 0,
+          duration: CONFIG.ANIMATION.TITLE_ENTER_DURATION,
+          ease: 'back.out(1.2)',
+        },
+        fadeInDelay
+      );
     }
 
     return timeline;

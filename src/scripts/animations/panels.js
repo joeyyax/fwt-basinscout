@@ -355,9 +355,10 @@ export class PanelAnimationController {
               0 // No additional delay, starts immediately after content exit
             );
           if (titleUpdateTimeline) {
+            // Start title animation slightly before content finishes exiting to ensure fade-out is visible
             timeline.add(
               titleUpdateTimeline,
-              `+=${CONFIG.ANIMATION.CONTENT_EXIT_DURATION}`
+              `+=${CONFIG.ANIMATION.CONTENT_EXIT_DURATION * 0.5}` // Start halfway through content exit
             );
           }
         }
