@@ -48,6 +48,9 @@ export class PanelStatsAnimationController {
 
         // Always set to 0 progress for animation starting point
         circle.setAttribute('stroke-dasharray', '0, 100');
+
+        // Initialize associated stat value to 0 for counting animation
+        this.initializeStatValue(circle);
       });
 
       log.debug(EVENTS.ANIMATION, 'Panel donut charts initialized', {
@@ -58,6 +61,43 @@ export class PanelStatsAnimationController {
         error,
         'Failed to initialize panel donut charts'
       );
+    }
+  }
+
+  // Initialize stat value to 0 for counting animation
+  static initializeStatValue(circle) {
+    try {
+      const statElement = circle.closest('.stat');
+      if (!statElement) return;
+
+      const statValueElement = statElement.querySelector('.stat-value');
+      if (!statValueElement) return;
+
+      // Store original text if not already stored
+      if (!statValueElement.dataset.originalText) {
+        statValueElement.dataset.originalText = statValueElement.textContent;
+      }
+
+      const originalText = statValueElement.dataset.originalText;
+
+      // Extract numeric value and units from original text
+      const numberMatch = originalText.match(/(\d+(?:\.\d+)?)/);
+      if (!numberMatch) return;
+
+      const prefix = originalText.substring(0, numberMatch.index);
+      const suffix = originalText.substring(
+        numberMatch.index + numberMatch[0].length
+      );
+
+      // Set initial display to 0
+      statValueElement.textContent = `${prefix}0${suffix}`;
+
+      log.debug(EVENTS.ANIMATION, 'Stat value initialized to 0', {
+        originalText,
+        initialDisplay: statValueElement.textContent,
+      });
+    } catch (error) {
+      ErrorHandler.handleError(error, 'Failed to initialize stat value');
     }
   }
 
@@ -108,6 +148,9 @@ export class PanelStatsAnimationController {
           },
         });
 
+        // Animate the associated stat value number
+        this.animateStatValue(circle, targetValue, timeline);
+
         log.debug(EVENTS.ANIMATION, 'Panel donut chart animated', {
           index,
           targetValue,
@@ -115,6 +158,66 @@ export class PanelStatsAnimationController {
       });
     } catch (error) {
       ErrorHandler.handleError(error, 'Failed to animate panel donut charts');
+    }
+  }
+
+  // Animate stat value number counting up from 0 to target
+  static animateStatValue(circle, targetValue, timeline) {
+    try {
+      const statElement = circle.closest('.stat');
+      if (!statElement) return;
+
+      const statValueElement = statElement.querySelector('.stat-value');
+      if (!statValueElement) return;
+
+      // Store original text if not already stored
+      if (!statValueElement.dataset.originalText) {
+        statValueElement.dataset.originalText = statValueElement.textContent;
+      }
+
+      const originalText = statValueElement.dataset.originalText;
+
+      // Extract numeric value and units from original text
+      const numberMatch = originalText.match(/(\d+(?:\.\d+)?)/);
+      if (!numberMatch) return;
+
+      const targetNumber = parseFloat(numberMatch[1]);
+      const prefix = originalText.substring(0, numberMatch.index);
+      const suffix = originalText.substring(
+        numberMatch.index + numberMatch[0].length
+      );
+
+      // Create an object to animate for the counter
+      const counter = { value: 0 };
+
+      // Add number counting animation to the same timeline
+      timeline.to(
+        counter,
+        {
+          value: targetNumber,
+          duration: CONFIG.ANIMATION.STATS_NUMBER_COUNT_DURATION,
+          ease: CONFIG.ANIMATION.DONUT_EASE,
+          onUpdate() {
+            // Update the displayed number with proper formatting
+            const currentValue = Math.round(counter.value);
+            statValueElement.textContent = `${prefix}${currentValue}${suffix}`;
+          },
+          onComplete() {
+            // Ensure final value is exact
+            statValueElement.textContent = originalText;
+          },
+        },
+        '<'
+      ); // Start at the same time as the donut animation
+
+      log.debug(EVENTS.ANIMATION, 'Stat value animation added', {
+        originalText,
+        targetNumber,
+        prefix,
+        suffix,
+      });
+    } catch (error) {
+      ErrorHandler.handleError(error, 'Failed to animate stat value');
     }
   }
 
@@ -131,6 +234,9 @@ export class PanelStatsAnimationController {
             'stroke-dasharray': '0, 100',
           },
         });
+
+        // Reset associated stat value to 0
+        this.resetStatValue(circle);
       });
 
       log.debug(EVENTS.ANIMATION, 'Panel donut charts reset', {
@@ -138,6 +244,39 @@ export class PanelStatsAnimationController {
       });
     } catch (error) {
       ErrorHandler.handleError(error, 'Failed to reset panel donut charts');
+    }
+  }
+
+  // Reset stat value to 0
+  static resetStatValue(circle) {
+    try {
+      const statElement = circle.closest('.stat');
+      if (!statElement) return;
+
+      const statValueElement = statElement.querySelector('.stat-value');
+      if (!statValueElement) return;
+
+      const originalText = statValueElement.dataset.originalText;
+      if (!originalText) return;
+
+      // Extract numeric value and units from original text
+      const numberMatch = originalText.match(/(\d+(?:\.\d+)?)/);
+      if (!numberMatch) return;
+
+      const prefix = originalText.substring(0, numberMatch.index);
+      const suffix = originalText.substring(
+        numberMatch.index + numberMatch[0].length
+      );
+
+      // Reset display to 0
+      statValueElement.textContent = `${prefix}0${suffix}`;
+
+      log.debug(EVENTS.ANIMATION, 'Stat value reset to 0', {
+        originalText,
+        resetDisplay: statValueElement.textContent,
+      });
+    } catch (error) {
+      ErrorHandler.handleError(error, 'Failed to reset stat value');
     }
   }
 
