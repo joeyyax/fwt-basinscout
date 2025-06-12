@@ -11,11 +11,9 @@
 @import './layout.css'; /* Layout components */
 @import './typography.css'; /* Typography and text styles */
 @import './buttons.css'; /* Button component styles */
-@import './components.css'; /* Interactive components */
 @import './sections.css'; /* Section component styles */
 @import './panels.css'; /* Panel component styles */
 @import './pagination.css'; /* Pagination component styles */
 @import './media-stack.css'; /* Media stack component styles */
 @import './panel-stats.css'; /* Panel-specific statistics */
-@import './stats.css'; /* Statistical components (donut charts, stats grid) */
 @import './animations.css'; /* Animation utilities */

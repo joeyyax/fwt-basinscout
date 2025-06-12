@@ -58,7 +58,7 @@
 
 /* Donut chart container using Tailwind utilities */
 .stat-donut-chart {
-  @apply mb-0 w-16 h-16 flex-shrink-0;
+  @apply mb-0 w-24 h-24 flex-shrink-0;
 
   /* Performance optimizations for SVG animations */
   will-change: transform;
@@ -78,6 +78,10 @@
   stroke: rgba(255, 255, 255, 0.15);
   stroke-width: 8;
   fill: none;
+
+  /* Add backdrop blur effect */
+  filter: blur(0.5px);
+  backdrop-filter: blur(2px);
 }
 
 .stat-donut-chart .circular-chart .circle {
@@ -102,7 +106,7 @@
 
 /* Stat value using Tailwind utilities */
 .stat-value {
-  @apply text-3xl font-bold text-emphasis tracking-tight;
+  @apply text-5xl font-bold text-emphasis tracking-tight;
 
   /* Enhanced typography */
   font-feature-settings:
@@ -153,12 +157,12 @@
   }
 
   .stat-donut-chart {
-    width: 5rem;
-    height: 5rem;
+    width: 7rem;
+    height: 7rem;
   }
 
   .stat-value {
-    font-size: 2.25rem;
+    font-size: 3.75rem;
   }
 
   .stat-label {
@@ -176,12 +180,12 @@
   }
 
   .stat-donut-chart {
-    width: 6rem;
-    height: 6rem;
+    width: 8rem;
+    height: 8rem;
   }
 
   .stat-value {
-    font-size: 2.75rem;
+    font-size: 4.5rem;
   }
 
   .stat-label {

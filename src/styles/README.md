@@ -6,12 +6,20 @@ This directory contains all CSS files organized following Tailwind CSS v4 best p
 
 ```
 src/styles/
-├── style.css       # Main entry point with Tailwind v4 import
-├── base.css        # Base styles, resets, and global foundations
-├── layout.css      # Layout components with native container queries
-├── typography.css  # Typography with Tailwind v4 responsive design
-├── components.css  # Interactive UI components with container queries
-└── animations.css  # Animation utilities and performance optimizations
+├── style.css           # Main entry point with Tailwind v4 import
+├── base.css            # Base styles, resets, and global foundations
+├── layout.css          # Layout components with native container queries
+├── typography.css      # Typography with Tailwind v4 responsive design
+├── buttons.css         # Button component styles with variants
+├── sections.css        # Section component styles
+├── panels.css          # Panel component styles
+├── pagination.css      # Pagination component styles
+├── media-stack.css     # Media stack component (imports media-*.css)
+│   ├── media-images.css    # Image component styles
+│   ├── media-markers.css   # Map marker styles
+│   └── media-stats.css     # Media-related statistics
+├── panel-stats.css     # Panel statistics (includes main content stats)
+└── animations.css      # Animation utilities and performance optimizations
 ```
 
 ## Tailwind CSS v4 Implementation

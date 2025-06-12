@@ -73,10 +73,21 @@ Section 3: Results
 
 #### Scripts (`/src/scripts/`)
 
-- **`main.js`** - Entry point, initialization, and application setup
+- **`main.js`** - Lightweight entry point, plugin registration, and initialization
 - **`state.js`** - Tracks current position and navigation state
 - **`navigation.js`** - Handles user input and section switching
 - **`events.js`** - Manages scroll, touch, and keyboard events
+
+#### Core Modules (`/src/scripts/core/`)
+
+- **`app-initializer.js`** - Application lifecycle and initialization orchestration
+- **`content-manager.js`** - Content wrappers and data attribute management
+
+#### Utilities (`/src/scripts/utils/`)
+
+- **`structure-validator.js`** - CMS validation, debugging, and structure analysis
+- **`error-handler.js`** - Global error handling and monitoring
+- **`logger.js`** - Centralized logging and event system
 
 #### Animations (`/src/scripts/animations/`)
 
