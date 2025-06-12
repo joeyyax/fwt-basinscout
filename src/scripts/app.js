@@ -196,10 +196,20 @@ export class AppInitializer {
     const navDots = appState.getNavDots();
     const issues = [];
 
-    // Check section count vs nav dots
-    if (sections.length !== navDots.length) {
+    // Check if pagination is disabled globally
+    const sectionsContainer = document.getElementById('sections-container');
+    const usePagination =
+      sectionsContainer?.getAttribute('data-use-pagination') !== 'false';
+
+    // Only check section count vs nav dots if pagination is enabled
+    if (usePagination && sections.length !== navDots.length) {
       issues.push(
         `⚠️  Section count (${sections.length}) doesn't match navigation dots (${navDots.length})`
+      );
+    } else if (!usePagination) {
+      log.debug(
+        EVENTS.APP,
+        'Pagination disabled - skipping navigation dots validation'
       );
     }
 
