@@ -108,7 +108,7 @@ export const CONFIG = {
     DONUT_STAGGER_DELAY: 0.2, // Creates wave effect across multiple donut charts
 
     /** Easing function for donut chart animations */
-    DONUT_EASE: 'power2.out', // Smooth deceleration for satisfying circular progress
+    DONUT_EASE: 'power0.inOut', // Linear easing for constant speed donut filling (power0 = linear)
 
     // ----- Media Item Animations -----
 
