@@ -48,7 +48,7 @@
 /* Donut chart circle styles */
 .stat-donut-chart .circle {
   @apply fill-none stroke-current;
-  @apply transition-all duration-300;
+  /* No CSS transitions - GSAP handles all animations */
   stroke-width: 20;
   stroke-linecap: round;
 }

@@ -134,7 +134,7 @@ export class PanelStatsAnimationController {
         // Animate the donut chart progress
         timeline.to(circle, {
           duration: CONFIG.ANIMATION.DONUT_ANIMATION_DURATION,
-          ease: CONFIG.ANIMATION.DONUT_EASE,
+          ease: 'none', // Force linear easing directly
           attr: {
             'stroke-dasharray': `${targetValue}, 100`,
           },
@@ -148,8 +148,8 @@ export class PanelStatsAnimationController {
           },
         });
 
-        // Animate the associated stat value number
-        this.animateStatValue(circle, targetValue, timeline);
+        // Animate the associated stat value number independently
+        this.animateStatValue(circle, targetValue, index);
 
         log.debug(EVENTS.ANIMATION, 'Panel donut chart animated', {
           index,
@@ -162,7 +162,7 @@ export class PanelStatsAnimationController {
   }
 
   // Animate stat value number counting up from 0 to target
-  static animateStatValue(circle, targetValue, timeline) {
+  static animateStatValue(circle, targetValue, index) {
     try {
       const statElement = circle.closest('.stat');
       if (!statElement) return;
@@ -190,25 +190,22 @@ export class PanelStatsAnimationController {
       // Create an object to animate for the counter
       const counter = { value: 0 };
 
-      // Add number counting animation to the same timeline
-      timeline.to(
-        counter,
-        {
-          value: targetNumber,
-          duration: CONFIG.ANIMATION.STATS_NUMBER_COUNT_DURATION,
-          ease: CONFIG.ANIMATION.DONUT_EASE,
-          onUpdate() {
-            // Update the displayed number with proper formatting
-            const currentValue = Math.round(counter.value);
-            statValueElement.textContent = `${prefix}${currentValue}${suffix}`;
-          },
-          onComplete() {
-            // Ensure final value is exact
-            statValueElement.textContent = originalText;
-          },
+      // Create independent animation with same timing as donut chart
+      gsap.to(counter, {
+        value: targetNumber,
+        duration: CONFIG.ANIMATION.STATS_NUMBER_COUNT_DURATION,
+        ease: 'none', // Force linear easing directly
+        delay: index * CONFIG.ANIMATION.DONUT_STAGGER_DELAY, // Match donut stagger
+        onUpdate() {
+          // Update the displayed number with proper formatting
+          const currentValue = Math.round(counter.value);
+          statValueElement.textContent = `${prefix}${currentValue}${suffix}`;
         },
-        '<'
-      ); // Start at the same time as the donut animation
+        onComplete() {
+          // Ensure final value is exact
+          statValueElement.textContent = originalText;
+        },
+      });
 
       log.debug(EVENTS.ANIMATION, 'Stat value animation added', {
         originalText,
