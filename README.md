@@ -132,10 +132,9 @@ The application will be available at `http://localhost:5173`
 ```
 src/
 ├── scripts/              # JavaScript modules
-│   ├── main.js          # Application entry point
+│   ├── main.js          # Application entry point & initialization
 │   ├── constants.js     # Configuration and constants
 │   ├── state.js         # Centralized state management
-│   ├── app.js           # Application initialization & data attributes
 │   ├── animations.js    # GSAP animations & title effects
 │   ├── navigation.js    # Navigation logic
 │   └── events.js        # Event handlers
@@ -320,7 +319,7 @@ npm run format:check
 ```
 ├── public/          # Static assets
 ├── src/
-│   ├── main.js      # Application entry point
+│   ├── main.js      # Application entry point & initialization
 │   └── style.css    # Global styles with Tailwind directives
 ├── index.html       # HTML template
 ├── tailwind.config.js  # Tailwind configuration

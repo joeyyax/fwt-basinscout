@@ -73,8 +73,7 @@ Section 3: Results
 
 #### Scripts (`/src/scripts/`)
 
-- **`main.js`** - Entry point, initializes everything
-- **`app.js`** - Main application setup and validation
+- **`main.js`** - Entry point, initialization, and application setup
 - **`state.js`** - Tracks current position and navigation state
 - **`navigation.js`** - Handles user input and section switching
 - **`events.js`** - Manages scroll, touch, and keyboard events
