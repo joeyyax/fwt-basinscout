@@ -53,9 +53,13 @@ describe('TitleAnimationController - Border Enhancement', () => {
       const titleWrapper = titleElement.closest('.title-wrapper');
       const borderElement = titleWrapper.querySelector('.title-border');
 
-      expect(borderElement.style.transform).toBe(
-        `translateX(${CONFIG.ANIMATION.TITLE_BORDER_INITIAL_X_PERCENT}%)`
-      );
+      // Verify that gsap.set was called with correct parameters for initial transform
+      expect(globalThis.gsap.set).toHaveBeenCalledWith(borderElement, {
+        xPercent: CONFIG.ANIMATION.TITLE_BORDER_INITIAL_X_PERCENT,
+        opacity: 0,
+      });
+
+      // Check inline styles that are set directly (not via GSAP)
       expect(borderElement.style.opacity).toBe('0');
       expect(borderElement.style.willChange).toBe('transform, opacity');
       expect(borderElement.style.zIndex).toBe('1');
