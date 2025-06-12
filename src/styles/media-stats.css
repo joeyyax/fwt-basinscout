@@ -59,7 +59,27 @@
 
 /* Interactive stats for future functionality */
 .stat-item.interactive {
-  @apply cursor-pointer pointer-events-auto hover:scale-105;
+  @apply cursor-pointer pointer-events-auto;
+
+  /* Smooth hover transition */
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease;
+}
+
+.stat-item.interactive:hover {
+  @apply scale-105;
+  filter: brightness(1.1);
+}
+
+.stat-item.interactive:focus {
+  @apply outline-none ring-2 ring-blue-500 ring-offset-2;
+}
+
+.stat-item.interactive:active,
+.stat-item.click-feedback {
+  @apply scale-95;
+  filter: brightness(0.9);
 }
 
 /* High contrast mode support */

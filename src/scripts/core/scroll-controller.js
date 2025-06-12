@@ -43,6 +43,7 @@ export class ScrollController {
       'touchstart',
       (e) => {
         // Only handle single finger touches on non-interactive elements
+        // Check the target and all its parents for interactive elements
         if (e.touches.length === 1 && !this.isInteractiveElement(e.target)) {
           startY = e.touches[0].clientY;
           isTouch = true;
@@ -75,6 +76,8 @@ export class ScrollController {
 
   // Check if element is interactive and should not trigger navigation
   static isInteractiveElement(element) {
+    if (!element || !element.matches) return false;
+
     const interactiveSelectors = [
       'a[href]',
       'button',
@@ -85,11 +88,9 @@ export class ScrollController {
       '.pagination-dot',
     ];
 
+    // Check if the element itself or any parent matches interactive selectors
     return interactiveSelectors.some((selector) => {
-      return (
-        element.matches &&
-        (element.matches(selector) || element.closest(selector))
-      );
+      return element.matches(selector) || element.closest(selector);
     });
   }
 

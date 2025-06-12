@@ -55,7 +55,10 @@ export class AnimationController {
     // Initialize pagination using the dedicated controller
     PaginationController.initializePagination();
 
-    // Initialize panels, titles, and media (but skip sections which handle background)
+    // Initialize section classes (but skip background system which is handled separately)
+    SectionAnimationController.initializeSectionClasses();
+
+    // Initialize panels, titles, and media
     PanelAnimationController.initializePanels();
     TitleAnimationController.initializeTitles();
     MediaStackController.initializeMedia();

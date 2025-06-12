@@ -11,19 +11,27 @@ import { log, EVENTS } from '../utils/logger.js';
 export class SectionAnimationController {
   // Initialize all sections for first load
   static initializeSections() {
+    this.initializeSectionClasses();
+    // Initialize background image system
+    this.initializeBackgroundSystem();
+  }
+
+  // Initialize section CSS classes only (separate from background system)
+  static initializeSectionClasses() {
     const sections = appState.getSections();
 
     sections.forEach((section, sectionIndex) => {
-      // Set initial section visibility
+      // Set initial section visibility and add CSS classes for pointer-events
       if (sectionIndex === 0) {
         gsap.set(section, { zIndex: 10, opacity: 1 });
+        section.classList.add('active');
+        section.classList.remove('inactive');
       } else {
         gsap.set(section, { zIndex: 1, opacity: 0 });
+        section.classList.add('inactive');
+        section.classList.remove('active');
       }
     });
-
-    // Initialize background image system
-    this.initializeBackgroundSystem();
   }
 
   // Initialize background image system with stacked layers
@@ -449,6 +457,15 @@ export class SectionAnimationController {
 
     timeline
       .set(targetSection, { zIndex: 10 })
+      // Update CSS classes for pointer-events at the start
+      .add(() => {
+        // Set target section as active (enables pointer-events)
+        targetSection.classList.add('active');
+        targetSection.classList.remove('inactive');
+        // Set current section as inactive (disables pointer-events)
+        currentSection.classList.add('inactive');
+        currentSection.classList.remove('active');
+      })
       // Fade out current section
       .to(currentSection, {
         opacity: 0,
@@ -747,6 +764,8 @@ export class SectionAnimationController {
 
     if (section) {
       gsap.set(section, { zIndex: 10, opacity: 1 });
+      section.classList.add('active');
+      section.classList.remove('inactive');
       this.updateBackground();
     }
   }
@@ -758,6 +777,8 @@ export class SectionAnimationController {
 
     if (section) {
       gsap.set(section, { zIndex: 1, opacity: 0 });
+      section.classList.add('inactive');
+      section.classList.remove('active');
     }
   }
 

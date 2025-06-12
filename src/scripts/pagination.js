@@ -292,7 +292,16 @@ export class PaginationController {
 
             // Only hide if this section hasn't been visited before
             if (!this.animatedContainers.has(containerId)) {
-              PaginationAnimationController.animateContainerOut(container, 0);
+              // Check if this section has data-use-pagination="true" - if so, keep it visible initially
+              const sections = appState.getSections();
+              const sectionEl = sections[containerSectionIndex];
+              const hasUsePagination =
+                sectionEl?.dataset.usePagination === 'true';
+
+              // Don't hide if section has pagination enabled and hasn't been visited yet
+              if (!hasUsePagination) {
+                PaginationAnimationController.animateContainerOut(container, 0);
+              }
             }
           }
         }
