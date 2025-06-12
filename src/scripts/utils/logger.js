@@ -170,7 +170,14 @@ if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
     console.log(`Navigation dots found: ${navDots.length}`);
     console.log(`Panel dots found: ${panelDots.length}`);
 
-    if (sections.length !== navDots.length) {
+    // Check if pagination is disabled globally
+    const sectionsContainer = document.getElementById('sections-container');
+    const usePagination =
+      sectionsContainer?.getAttribute('data-use-pagination') !== 'false';
+
+    if (!usePagination) {
+      console.log('ℹ️  Section navigation disabled - skipping nav dots check');
+    } else if (sections.length !== navDots.length) {
       console.warn('❌ Mismatch between sections and nav dots!');
     } else {
       console.log('✅ Section and nav dot counts match');

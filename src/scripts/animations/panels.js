@@ -9,7 +9,6 @@ import { appState } from '../state.js';
 import { TitleAnimationController } from './titles.js';
 import { PanelStatsAnimationController } from './panel-stats.js';
 import { MediaStackController } from './media-stack.js';
-import { ScrollInstructions } from '../utils/scroll-instructions.js';
 
 export class PanelAnimationController {
   // Create panel border for containers with data-panel-border="true"
@@ -284,8 +283,9 @@ export class PanelAnimationController {
   }
 
   // Animate scroll instructions in using the utility
-  static animateScrollInstructionsIn(panel, timeline, delay = 0) {
-    ScrollInstructions.animateIn(panel, timeline, delay);
+  static animateScrollInstructionsIn(panel, timeline, _delay = 0) {
+    // Skip scroll instructions animation per user preference
+    // ScrollInstructions only has initialize() method, no animateIn()
   }
 
   // Handle content fade and slide transition between panels
