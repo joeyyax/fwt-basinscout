@@ -6,6 +6,7 @@
 import { CONFIG } from './constants.js';
 import { appState } from './state.js';
 import { PaginationAnimationController } from './animations/pagination.js';
+import { log, EVENTS } from './utils/logger.js';
 // AccessibilityController imported but not used yet - keeping for future features
 // eslint-disable-next-line no-unused-vars
 import { AccessibilityController } from './accessibility.js';
@@ -96,8 +97,8 @@ export class PaginationController {
         typeof window !== 'undefined' &&
         window.location.hostname === 'localhost'
       ) {
-        // eslint-disable-next-line no-console
-        console.warn(
+        log.warn(
+          EVENTS.DEBUG,
           `Section ${sectionIndex}: No .pagination-panel container found, but data-use-pagination="true"`
         );
       }
@@ -110,20 +111,20 @@ export class PaginationController {
       window.location.hostname === 'localhost'
     ) {
       const sectionId = section.id || `section-${sectionIndex}`;
-      // eslint-disable-next-line no-console
-      console.debug(
-        `🔧 Initializing panel pagination for ${sectionId} (index: ${sectionIndex}) with ${panelCount} panels`
+      log.debug(
+        EVENTS.DEBUG,
+        `Initializing panel pagination for ${sectionId} (index: ${sectionIndex}) with ${panelCount} panels`
       );
 
       if (sectionId === 'map') {
-        // eslint-disable-next-line no-console
-        console.debug(`📍 MAP SECTION DEBUG:`, {
+        const mapDebugData = {
           sectionIndex,
           panelCount,
           usePagination,
           paginationContainer: !!paginationContainer,
           containerHTML: `${paginationContainer.outerHTML.substring(0, 200)}...`,
-        });
+        };
+        log.debug(EVENTS.DEBUG, 'MAP SECTION DEBUG', mapDebugData);
       }
     }
 
@@ -240,14 +241,14 @@ export class PaginationController {
       const currentSectionId =
         currentSectionEl?.id || `section-${currentSection}`;
 
-      // eslint-disable-next-line no-console
-      console.debug(`🔄 Updating panel pagination:`, {
+      const updateData = {
         currentSection,
         currentPanel,
         currentSectionId,
         panelContainers: panelContainers.length,
         panelDots: panelDots.length,
-      });
+      };
+      log.debug(EVENTS.DEBUG, 'Updating panel pagination', updateData);
     }
 
     // Update panel pagination dots

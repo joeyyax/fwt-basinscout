@@ -9,6 +9,7 @@ import { appState } from '../state.js';
 import { TitleAnimationController } from './titles.js';
 import { PanelStatsAnimationController } from './panel-stats.js';
 import { MediaStackController } from './media-stack.js';
+import { log, EVENTS } from '../utils/logger.js';
 
 export class PanelAnimationController {
   // Create panel border for containers with data-panel-border="true"
@@ -231,10 +232,10 @@ export class PanelAnimationController {
                           typeof window !== 'undefined' &&
                           window.location.hostname === 'localhost'
                         ) {
-                          // eslint-disable-next-line no-console
-                          console.debug(
-                            `🎯 Initial panel - checking for donut containers in:`,
-                            element.className
+                          log.debug(
+                            EVENTS.ANIMATION,
+                            'Initial panel - checking for donut containers',
+                            { className: element.className }
                           );
                         }
 
@@ -254,10 +255,10 @@ export class PanelAnimationController {
                             typeof window !== 'undefined' &&
                             window.location.hostname === 'localhost'
                           ) {
-                            // eslint-disable-next-line no-console
-                            console.debug(
-                              `🎯 Found nested stats container:`,
-                              container.className
+                            log.debug(
+                              EVENTS.ANIMATION,
+                              'Found nested stats container',
+                              { className: container.className }
                             );
                           }
                           PanelStatsAnimationController.animateDonutCharts(
@@ -589,10 +590,10 @@ export class PanelAnimationController {
                   typeof window !== 'undefined' &&
                   window.location.hostname === 'localhost'
                 ) {
-                  // eslint-disable-next-line no-console
-                  console.debug(
-                    `🎯 Panel transition - checking for donut containers in:`,
-                    element.className
+                  log.debug(
+                    EVENTS.ANIMATION,
+                    'Panel transition - checking for donut containers',
+                    { className: element.className }
                   );
                 }
 
@@ -610,10 +611,10 @@ export class PanelAnimationController {
                     typeof window !== 'undefined' &&
                     window.location.hostname === 'localhost'
                   ) {
-                    // eslint-disable-next-line no-console
-                    console.debug(
-                      `🎯 Found nested stats container:`,
-                      container.className
+                    log.debug(
+                      EVENTS.ANIMATION,
+                      'Found nested stats container',
+                      { className: container.className }
                     );
                   }
                   PanelStatsAnimationController.animateDonutCharts(container);
