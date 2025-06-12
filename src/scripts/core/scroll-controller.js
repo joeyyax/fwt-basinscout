@@ -10,9 +10,9 @@
  * Coordinates with NavigationController to provide smooth navigation experience
  */
 import { Observer } from 'gsap/Observer';
-import { CONFIG } from './constants.js';
-import { appState } from './state.js';
-import { NavigationController } from './navigation.js';
+import { CONFIG } from '../constants.js';
+import { appState } from '../state.js';
+import { NavigationController } from '../navigation.js';
 
 export class ScrollController {
   // Initialize all scroll and input event listeners

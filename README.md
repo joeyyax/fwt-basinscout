@@ -132,12 +132,21 @@ The application will be available at `http://localhost:5173`
 ```
 src/
 ├── scripts/              # JavaScript modules
-│   ├── main.js          # Application entry point & initialization
+│   ├── main.js          # Application entry point (lightweight)
 │   ├── constants.js     # Configuration and constants
 │   ├── state.js         # Centralized state management
 │   ├── animations.js    # GSAP animations & title effects
 │   ├── navigation.js    # Navigation logic
-│   └── events.js        # Event handlers
+│   ├── pagination.js    # Pagination controls
+│   ├── accessibility.js # Accessibility features
+│   ├── core/            # Core application modules
+│   │   ├── app-initializer.js     # Application lifecycle management
+│   │   ├── content-manager.js     # Content & data attributes
+│   │   └── scroll-controller.js   # Scroll/touch/keyboard event handling
+│   └── utils/           # Reusable utility modules
+│       ├── structure-validator.js # CMS validation & debugging
+│       ├── error-handler.js       # Error handling system
+│       └── logger.js              # Logging and events
 └── styles/              # CSS architecture (Tailwind best practices)
     ├── style.css        # Main entry point
     ├── base.css         # Base styles and resets

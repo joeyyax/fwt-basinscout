@@ -1,8 +1,156 @@
 /**
  * Panel Stats Styles
- * Styling for panel-specific statistics and donut charts
- * Renamed from inline-stats for better semantic clarity
+ * Styling for panel-specific statistics and dynamically generated content
+ * Also includes main content statistics used in the intro section
  */
+
+/* ===== MAIN CONTENT STATISTICS ===== */
+/* Stats used in the introduction section */
+
+/* Stats grid container using Tailwind utilities */
+.stats {
+  /* Performance optimizations for grid animations */
+  will-change: transform, opacity;
+  transform: var(--gpu-acceleration, translateZ(0));
+  backface-visibility: hidden;
+
+  /* If this container has stagger-children, hide its children initially */
+  &[data-stagger-children='true'] > * {
+    @apply opacity-0;
+    transform: translateY(20px) var(--gpu-acceleration, translateZ(0));
+  }
+}
+
+/* Individual stat items using Tailwind utilities - no CSS transitions */
+.stat {
+  @apply flex flex-row items-start justify-start gap-4 p-0 text-left text-white no-underline relative;
+
+  /* Performance optimizations */
+  will-change: transform, opacity;
+  transform: var(--gpu-acceleration, translateZ(0));
+  backface-visibility: hidden;
+}
+
+/* Override prose link styles specifically for stats using Tailwind utilities */
+.prose .stat,
+.prose a.stat {
+  @apply no-underline;
+}
+
+.prose .stat:hover,
+.prose .stat:focus,
+.prose a.stat:hover,
+.prose a.stat:focus {
+  @apply no-underline;
+}
+
+/* GSAP will handle all hover and focus transforms */
+.stat:hover,
+.stat:focus {
+  @apply outline-none;
+  /* transform: scale(1.02) translateZ(0); - Removed, GSAP handles this */
+}
+
+.stat:focus-visible {
+  @apply outline-2 outline-white/50 outline-offset-2;
+}
+
+.stat:active {
+  /* transform: scale(0.98) translateZ(0); - Removed, GSAP handles this */
+}
+
+/* Donut chart container using Tailwind utilities */
+.stat-donut-chart {
+  @apply mb-0 w-24 h-24 flex-shrink-0;
+
+  /* Performance optimizations for SVG animations */
+  will-change: transform;
+  transform: var(--gpu-acceleration, translateZ(0));
+}
+
+.stat-donut-chart .circular-chart {
+  @apply w-full h-full;
+  transform: var(--gpu-acceleration, translateZ(0));
+
+  /* Smooth SVG rendering */
+  shape-rendering: geometricPrecision;
+}
+
+.stat-donut-chart .circular-chart .circle-bg {
+  /* Background circle using Tailwind utilities where possible */
+  stroke: rgba(255, 255, 255, 0.15);
+  stroke-width: 8;
+  fill: none;
+
+  /* Add backdrop blur effect */
+  filter: blur(0.5px);
+  backdrop-filter: blur(2px);
+}
+
+.stat-donut-chart .circular-chart .circle {
+  /* Foreground circle - remove CSS transition, GSAP handles animations */
+  stroke: var(--color-emphasis);
+  stroke-width: 8;
+  stroke-linecap: butt;
+  fill: none;
+
+  /* Performance optimization */
+  will-change: stroke-dasharray;
+}
+
+/* Stat content styling using Tailwind utilities */
+.stat-content {
+  @apply flex flex-col items-start justify-center gap-1 flex-1;
+
+  /* Performance optimizations */
+  will-change: transform, opacity;
+  transform: var(--gpu-acceleration, translateZ(0));
+}
+
+/* Stat value using Tailwind utilities */
+.stat-value {
+  @apply text-5xl font-bold text-emphasis tracking-tight;
+
+  /* Enhanced typography */
+  font-feature-settings:
+    'tnum' on,
+    'lnum' on; /* Tabular and lining numbers */
+
+  /* Performance optimizations for text scaling */
+  will-change: transform, font-size;
+  transform: var(--gpu-acceleration, translateZ(0));
+
+  /* Prevent font smoothing changes during animations */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Stat label using Tailwind utilities */
+.stat-label {
+  @apply text-sm text-white/90 leading-snug max-w-80;
+
+  /* Enhanced readability */
+  text-wrap: balance; /* Better text wrapping */
+}
+
+.stat-label .underline {
+  color: rgba(255, 255, 255, 0.7);
+  transition:
+    color 0.2s ease,
+    text-decoration-color 0.2s ease;
+  text-decoration: underline; /* Explicit underline for source links */
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  text-decoration-color: rgba(255, 255, 255, 0.5);
+}
+
+.stat-label .underline:hover {
+  color: rgba(255, 255, 255, 1);
+  text-decoration-color: rgba(255, 255, 255, 0.8);
+}
+
+/* ===== PANEL-SPECIFIC STATISTICS ===== */
+/* Stats used for dynamically generated panel content */
 
 /* Panel stats container */
 .panel-stats,
@@ -11,34 +159,6 @@
   @apply p-4 bg-white/90 backdrop-blur-sm;
   @apply rounded-lg shadow-lg;
   @apply border border-gray-200;
-}
-
-/* Individual stat items */
-.stat {
-  @apply flex items-center gap-3;
-  @apply p-2 rounded;
-  @apply transition-all duration-200;
-}
-
-.stat:hover {
-  @apply bg-gray-50;
-}
-
-/* Stat values and labels */
-.stat-value {
-  @apply text-3xl font-bold text-emphasis;
-  @apply tabular-nums;
-}
-
-.stat-label {
-  @apply text-sm text-gray-600;
-  @apply font-semibold;
-}
-
-/* Donut chart container */
-.stat-donut-chart {
-  @apply relative w-16 h-16;
-  @apply flex items-center justify-center;
 }
 
 .stat-donut-chart svg {
@@ -77,11 +197,11 @@
   }
 
   .stat-value {
-    @apply text-xl;
+    @apply text-3xl;
   }
 
   .stat-donut-chart {
-    @apply w-12 h-12;
+    @apply w-20 h-20;
   }
 
   .stat-donut-chart .circle {
