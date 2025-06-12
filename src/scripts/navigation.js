@@ -3,6 +3,7 @@ import { appState } from './state.js';
 import { AnimationController } from './animations.js';
 import { CONFIG } from './constants.js';
 import { ErrorHandler } from './utils/error-handler.js';
+import { log, EVENTS } from './utils/logger.js';
 
 export class NavigationController {
   // Navigate in a specific direction (wrapped for error handling)
@@ -14,12 +15,12 @@ export class NavigationController {
           typeof window !== 'undefined' &&
           window.location.hostname === 'localhost'
         ) {
-          // eslint-disable-next-line no-console
-          console.debug('Navigation blocked:', {
+          const blockData = {
             isAnimating: appState.isAnimating,
             timeSinceLastNav: Date.now() - appState.lastNavigationTime,
             cooldownRequired: CONFIG.NAVIGATION_COOLDOWN_MS,
-          });
+          };
+          log.debug(EVENTS.NAVIGATION, 'Navigation blocked', blockData);
         }
         return;
       }
@@ -46,13 +47,13 @@ export class NavigationController {
       typeof window !== 'undefined' &&
       window.location.hostname === 'localhost'
     ) {
-      // eslint-disable-next-line no-console
-      console.debug('Navigate Forward:', {
+      const forwardData = {
         currentSection,
         currentPanel,
         currentSectionPanels,
         totalSections: appState.getTotalSections(),
-      });
+      };
+      log.debug(EVENTS.NAVIGATION, 'Navigate Forward', forwardData);
     }
 
     if (currentPanel < currentSectionPanels - 1) {
@@ -74,12 +75,12 @@ export class NavigationController {
       typeof window !== 'undefined' &&
       window.location.hostname === 'localhost'
     ) {
-      // eslint-disable-next-line no-console
-      console.debug('Navigate Backward:', {
+      const backwardData = {
         currentSection,
         currentPanel,
         totalSections: appState.getTotalSections(),
-      });
+      };
+      log.debug(EVENTS.NAVIGATION, 'Navigate Backward', backwardData);
     }
 
     if (currentPanel > 0) {

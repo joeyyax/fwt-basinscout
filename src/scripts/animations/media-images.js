@@ -119,16 +119,15 @@ export class MediaImagesController {
         duration: CONFIG.ANIMATION.CONTENT_ENTER_DURATION * 0.8,
         ease: 'power2.out',
         onStart: () => {
-          console.log('🎬 Media fade animation started:', {
+          log.debug(EVENTS.MEDIA, 'Media fade animation started', {
             element: mediaItem,
             mediaIndex: mediaItem.dataset.mediaIndex,
           });
         },
         onComplete: () => {
-          console.log(
-            '✅ Media fade animation completed:',
-            mediaItem.dataset.mediaIndex
-          );
+          log.debug(EVENTS.MEDIA, 'Media fade animation completed', {
+            mediaIndex: mediaItem.dataset.mediaIndex,
+          });
         },
       },
       delay

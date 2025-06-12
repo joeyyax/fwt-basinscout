@@ -297,15 +297,10 @@ if (typeof window !== 'undefined') {
         });
       });
 
-      // eslint-disable-next-line no-console
-      console.log('Current validation issues:');
-      if (issues.length === 0) {
-        // eslint-disable-next-line no-console
-        console.log('✅ No issues found!');
-      } else {
-        // eslint-disable-next-line no-console
-        issues.forEach((issue) => console.log(issue));
-      }
+      log.info(EVENTS.DEBUG, 'Current validation issues', {
+        count: issues.length,
+        issues,
+      });
       return issues;
     },
   };

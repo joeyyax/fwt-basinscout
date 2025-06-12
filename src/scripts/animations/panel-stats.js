@@ -31,17 +31,18 @@ export class PanelStatsAnimationController {
             typeof window !== 'undefined' &&
             window.location.hostname === 'localhost'
           ) {
-            // eslint-disable-next-line no-console
-            console.debug(
-              `🎯 Panel donut chart initialized from data-target-value:`,
-              {
-                targetValue,
-                targetDashArray,
-                circleElement:
-                  circle.parentElement.parentElement
-                    .closest('.stat')
-                    ?.querySelector('.stat-value')?.textContent || 'unknown',
-              }
+            const debugData = {
+              targetValue,
+              targetDashArray,
+              circleElement:
+                circle.parentElement.parentElement
+                  .closest('.stat')
+                  ?.querySelector('.stat-value')?.textContent || 'unknown',
+            };
+            log.debug(
+              EVENTS.ANIMATION,
+              'Panel donut chart initialized from data-target-value',
+              debugData
             );
           }
         }
