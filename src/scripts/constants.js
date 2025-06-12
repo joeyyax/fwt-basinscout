@@ -95,11 +95,20 @@ export const CONFIG = {
     /** Duration for donut chart progress animations (0 to target percentage) - in seconds */
     STATS_DONUT_CHART_DURATION: 1.2, // Satisfying duration for circular progress animations
 
+    /** Duration for panel donut chart animations - alias for consistency */
+    DONUT_ANIMATION_DURATION: 1.2, // Matches STATS_DONUT_CHART_DURATION for consistent timing
+
     /** Duration for numeric value counting animations (0 to target number) - in seconds */
     STATS_NUMBER_COUNT_DURATION: 1.2, // Matches donut charts for consistent timing
 
     /** Stagger delay between multiple statistics in the same container - in seconds */
     STATS_ELEMENT_STAGGER_DELAY: 0.2, // Creates wave effect across multiple stats
+
+    /** Stagger delay between donut charts animating in the same container - in seconds */
+    DONUT_STAGGER_DELAY: 0.2, // Creates wave effect across multiple donut charts
+
+    /** Easing function for donut chart animations */
+    DONUT_EASE: 'power2.out', // Smooth deceleration for satisfying circular progress
 
     // ----- Media Item Animations -----
 
