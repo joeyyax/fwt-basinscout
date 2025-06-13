@@ -428,6 +428,32 @@ export class PanelAnimationController {
       direction,
       CONFIG.ANIMATION.PANEL_BORDER_CONTENT_DELAY
     );
+
+    // Mobile Safari fallback - ensure text is visible after all animations
+    if (typeof window !== 'undefined' && window.navigator) {
+      const isIOSSafari =
+        /iP(ad|od|hone)/.test(window.navigator.userAgent) &&
+        /WebKit/.test(window.navigator.userAgent) &&
+        !/CriOS|FxiOS|OPiOS|mercury/.test(window.navigator.userAgent);
+
+      if (isIOSSafari) {
+        timeline.call(
+          () => {
+            // Safety check after all animations should be complete
+            setTimeout(() => {
+              targetElements.forEach((el) => {
+                if (window.getComputedStyle(el).opacity === '0') {
+                  el.style.opacity = el.tagName === 'P' ? '0.9' : '1';
+                  el.style.transform = 'translateY(0)';
+                }
+              });
+            }, 100);
+          },
+          null,
+          `+=${CONFIG.ANIMATION.CONTENT_ENTER_DURATION + CONFIG.ANIMATION.PANEL_BORDER_CONTENT_DELAY + 0.5}`
+        );
+      }
+    }
   }
 
   // Prepare target panel for transition (make visible but behind current)
@@ -559,6 +585,24 @@ export class PanelAnimationController {
         duration: CONFIG.ANIMATION.CONTENT_ENTER_DURATION,
         stagger: CONFIG.ANIMATION.CONTENT_STAGGER_DELAY,
         ease: 'back.out(1.2)',
+        onComplete: () => {
+          // Mobile Safari fallback - ensure text is visible after animation
+          if (typeof window !== 'undefined' && window.navigator) {
+            const isIOSSafari =
+              /iP(ad|od|hone)/.test(window.navigator.userAgent) &&
+              /WebKit/.test(window.navigator.userAgent) &&
+              !/CriOS|FxiOS|OPiOS|mercury/.test(window.navigator.userAgent);
+
+            if (isIOSSafari) {
+              elements.forEach((el) => {
+                if (window.getComputedStyle(el).opacity === '0') {
+                  el.style.opacity = el.tagName === 'P' ? '0.9' : '1';
+                  el.style.transform = 'translateY(0)';
+                }
+              });
+            }
+          }
+        },
       },
       delay > 0 ? `+=${delay}` : '-=0.2' // Use custom delay or default overlap
     );
@@ -586,6 +630,25 @@ export class PanelAnimationController {
               delay:
                 parentDelay + CONFIG.ANIMATION.PANEL_CHILD_ANIMATION_OFFSET, // Start after parent begins animating
               onComplete: () => {
+                // Mobile Safari fallback for child elements
+                if (typeof window !== 'undefined' && window.navigator) {
+                  const isIOSSafari =
+                    /iP(ad|od|hone)/.test(window.navigator.userAgent) &&
+                    /WebKit/.test(window.navigator.userAgent) &&
+                    !/CriOS|FxiOS|OPiOS|mercury/.test(
+                      window.navigator.userAgent
+                    );
+
+                  if (isIOSSafari) {
+                    children.forEach((child) => {
+                      if (window.getComputedStyle(child).opacity === '0') {
+                        child.style.opacity = '1';
+                        child.style.transform = 'translateY(0)';
+                      }
+                    });
+                  }
+                }
+
                 // Animate donut charts after stats have animated in
                 if (
                   typeof window !== 'undefined' &&

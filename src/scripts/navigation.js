@@ -6,10 +6,37 @@ import { ErrorHandler } from './utils/error-handler.js';
 import { log, EVENTS } from './utils/logger.js';
 
 export class NavigationController {
+  // Check if device is mobile/touch enabled
+  static isMobileDevice() {
+    if (typeof window === 'undefined') return false;
+
+    return (
+      'ontouchstart' in window ||
+      (typeof window.navigator !== 'undefined' &&
+        window.navigator.maxTouchPoints > 0) ||
+      window.innerWidth <= 1024
+    );
+  }
+
+  // Get appropriate navigation cooldown for device type
+  static getNavigationCooldown() {
+    // Significantly reduce cooldown for mobile devices for better responsiveness
+    return this.isMobileDevice()
+      ? CONFIG.NAVIGATION_COOLDOWN_MS * 0.5 // 100ms for mobile (50% of 200ms)
+      : CONFIG.NAVIGATION_COOLDOWN_MS; // 200ms for desktop
+  }
+
   // Navigate in a specific direction (wrapped for error handling)
   static navigate(direction) {
     return ErrorHandler.wrap(() => {
-      if (!appState.canNavigate()) {
+      // Use mobile-responsive cooldown
+      const now = Date.now();
+      const requiredCooldown = this.getNavigationCooldown();
+
+      if (
+        appState.isAnimating ||
+        now - appState.lastNavigationTime < requiredCooldown
+      ) {
         // Debug navigation blocks in development only
         if (
           typeof window !== 'undefined' &&
@@ -17,15 +44,15 @@ export class NavigationController {
         ) {
           const blockData = {
             isAnimating: appState.isAnimating,
-            timeSinceLastNav: Date.now() - appState.lastNavigationTime,
-            cooldownRequired: CONFIG.NAVIGATION_COOLDOWN_MS,
+            timeSinceLastNav: now - appState.lastNavigationTime,
+            cooldownRequired: requiredCooldown,
+            isMobile: this.isMobileDevice(),
           };
           log.debug(EVENTS.NAVIGATION, 'Navigation blocked', blockData);
         }
         return;
       }
 
-      const now = Date.now();
       appState.setLastNavigationTime(now);
 
       if (direction > 0) {

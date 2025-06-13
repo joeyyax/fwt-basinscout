@@ -6,10 +6,9 @@
 /* App container structure with modern viewport units and Tailwind utilities */
 #app {
   @apply relative;
-  height: 100vh;
   height: 100dvh; /* Dynamic viewport height for mobile */
-  width: 100vw;
   width: 100dvw; /* Dynamic viewport width */
   container-type: size; /* Enable both inline and block container queries */
   background: transparent; /* Ensure app background doesn't block images */
+  overflow: hidden; /* Prevent scrolling on the app container */
 }

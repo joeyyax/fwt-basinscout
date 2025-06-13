@@ -33,34 +33,11 @@
   .panel-border {
     @apply absolute left-0 top-0 w-0.5 bg-white h-full opacity-0;
 
-    /* Minimal performance optimizations for GSAP */
-    will-change: transform, opacity;
-    transform: translateZ(0);
+    /* Let GSAP handle performance optimizations */
   }
 
-  /* Individual panels with enhanced performance and better alignment */
+  /* Individual panels with enhanced alignment */
   .panel {
-    @apply absolute top-0 left-0 w-full h-full flex flex-col gap-4 will-change-auto;
-
-    /* Hardware acceleration and containment - remove containment to prevent clipping */
-    transform: translateZ(0);
-    /* contain: layout style paint; */
-    backface-visibility: hidden;
-  }
-}
-
-/* Panel animation states for GSAP optimization */
-.panel.animating {
-  @apply will-change-transform;
-}
-
-/* Performance optimizations for reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .panel,
-  .panel-border {
-    @apply will-change-auto;
-    transform: none !important;
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
+    @apply absolute top-0 left-0 w-full h-full flex flex-col gap-4;
   }
 }

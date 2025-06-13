@@ -10,9 +10,7 @@
 /* Stats grid container using Tailwind utilities */
 .stats {
   /* Performance optimizations for grid animations */
-  will-change: transform, opacity;
   transform: var(--gpu-acceleration, translateZ(0));
-  backface-visibility: hidden;
 
   /* If this container has stagger-children, hide its children initially */
   &[data-stagger-children='true'] > * {
@@ -26,40 +24,12 @@
   @apply flex flex-row items-start justify-start gap-4 p-0 text-left text-white no-underline relative;
 
   /* Performance optimizations */
-  will-change: transform, opacity;
   transform: var(--gpu-acceleration, translateZ(0));
-  backface-visibility: hidden;
 }
 
-/* Override prose link styles specifically for stats using Tailwind utilities */
-.prose .stat,
-.prose a.stat {
-  @apply no-underline;
-}
-
-.prose .stat:hover,
-.prose .stat:focus,
-.prose a.stat:hover,
-.prose a.stat:focus {
-  @apply no-underline;
-}
-
-/* GSAP will handle all hover and focus transforms */
-.stat:hover,
-.stat:focus {
+/* Stats are no longer clickable - removed interactive styles */
+.stat {
   @apply outline-none;
-  /* transform: scale(1.02) translateZ(0); - Removed, GSAP handles this */
-}
-
-.stat:focus-visible {
-  @apply outline-2 outline-white/50 outline-offset-2;
-}
-
-.stat:active,
-.stat.click-feedback {
-  /* transform: scale(0.98) translateZ(0); - Removed, GSAP handles this */
-  filter: brightness(0.9);
-  transition: filter 0.2s ease;
 }
 
 /* Donut chart container using Tailwind utilities */
@@ -67,7 +37,6 @@
   @apply mb-0 w-24 h-24 flex-shrink-0;
 
   /* Performance optimizations for SVG animations */
-  will-change: transform;
   transform: var(--gpu-acceleration, translateZ(0));
 }
 
@@ -98,7 +67,6 @@
   fill: none;
 
   /* Performance optimization */
-  will-change: stroke-dasharray;
 }
 
 /* Stat content styling using Tailwind utilities */
@@ -106,7 +74,6 @@
   @apply flex flex-col items-start justify-center gap-1 flex-1;
 
   /* Performance optimizations */
-  will-change: transform, opacity;
   transform: var(--gpu-acceleration, translateZ(0));
 }
 
@@ -120,7 +87,6 @@
     'lnum' on; /* Tabular and lining numbers */
 
   /* Performance optimizations for text scaling */
-  will-change: transform, font-size;
   transform: var(--gpu-acceleration, translateZ(0));
 
   /* Prevent font smoothing changes during animations */
@@ -158,7 +124,7 @@
 /* Panel stats container */
 .panel-stats,
 .stats-container {
-  @apply flex flex-col gap-4;
+  @apply flex flex-col gap-2 lg:gap-4;
   @apply p-4 bg-white/90 backdrop-blur-sm;
   @apply rounded-lg shadow-lg;
   @apply border border-gray-200;

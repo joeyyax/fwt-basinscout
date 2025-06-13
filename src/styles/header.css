@@ -5,8 +5,6 @@
 
 /* Header with defined height to prevent section collision */
 header {
-  @apply h-20 px-8;
-
   /* Header content styling */
   .container {
     height: 100%;

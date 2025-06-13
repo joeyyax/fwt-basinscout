@@ -20,7 +20,7 @@ export const CONFIG = {
   // ===== CORE APPLICATION TIMING =====
 
   /** Minimum time between user navigation attempts (prevents rapid clicking spam) - in milliseconds */
-  NAVIGATION_COOLDOWN_MS: 300, // Reduced from 800ms - prevents section switching faster than animations can complete
+  NAVIGATION_COOLDOWN_MS: 200, // Reduced for better mobile responsiveness
 
   /** Delay before panel initialization begins (allows DOM to fully settle) - in milliseconds */
   PANEL_INITIALIZATION_DELAY_MS: 500, // Ensures DOM elements are ready for GSAP queries
@@ -29,7 +29,7 @@ export const CONFIG = {
   INITIAL_TITLE_ANIMATION_DELAY_MS: 200, // Small delay to let page render before animating
 
   /** Delay before initial content animation starts on page load - in milliseconds */
-  INITIAL_CONTENT_ANIMATION_DELAY_MS: 800, // Longer delay for content after titles start
+  INITIAL_CONTENT_ANIMATION_DELAY_MS: 200, // Longer delay for content after titles start
 
   /** Delay before background overlay appears on initial load (0 = immediate) - in milliseconds */
   INITIAL_BACKGROUND_OVERLAY_DELAY_MS: 0, // Controls when dark overlay fades in over background

@@ -16,9 +16,7 @@
          no-underline;
 
   /* Performance optimizations */
-  will-change: transform, opacity, background-color;
   transform: translateZ(0);
-  backface-visibility: hidden;
 }
 
 /* Ensure buttons override prose link styles globally using higher specificity */
