@@ -191,8 +191,8 @@ export class SectionAnimationController {
       inset: 0;
       background: radial-gradient(
         circle at center,
-        transparent 0%,
-        rgba(0, 0, 0, 0.3) 40%,
+        rgba(0, 0, 0, 0.2) 0%,
+        rgba(0, 0, 0, 0.5) 40%,
         rgba(0, 0, 0, 1) 100%
       );
       pointer-events: none;
