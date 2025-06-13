@@ -25,7 +25,6 @@
 
 /* Animated content optimization */
 .media-image.animated-content {
-  @apply will-change-auto;
 }
 
 /* Responsive image behavior */

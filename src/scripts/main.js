@@ -14,6 +14,15 @@ import { ContentManager } from './core/content-manager.js';
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger, Observer);
 
+// Immediately hide content with GSAP to prevent FOUC
+gsap.set('.prose > *, .title-wrapper h1', {
+  opacity: 0,
+});
+
+// Remove loading class once GSAP is ready
+gsap.set(document.body, { clearProps: 'all' });
+document.body.classList.remove('gsap-loading');
+
 // Initialize the application
 function init() {
   // Initialize error handling first

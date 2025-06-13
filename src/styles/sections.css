@@ -5,44 +5,36 @@
 
 /* Main content container with full viewport dimensions */
 main#sections-container {
-  height: calc(100vh - 80px); /* Account for header height */
-  height: calc(100dvh - 80px);
-  width: 100vw;
+  height: calc(100dvh - 80px); /* Use only dynamic viewport height */
   width: 100dvw;
   position: relative;
   z-index: 1;
   container-type: size;
-  overflow: visible; /* Ensure content can extend beyond boundaries */
+  overflow: hidden; /* Prevent content scrolling outside container */
 }
 
 /* Sections container */
 #sections-container {
-  height: calc(100vh - 80px); /* Account for header height */
-  height: calc(100dvh - 80px);
-  width: 100vw;
+  height: calc(100dvh - 80px); /* Use only dynamic viewport height */
   width: 100dvw;
-  overflow: visible; /* Allow content to extend beyond boundaries */
+  overflow: hidden; /* Prevent native scrolling */
   position: relative;
   container-type: size;
 }
 
 /* Section layout with balanced container queries */
 .section {
-  height: calc(100vh - 80px); /* Account for header height */
-  height: calc(100dvh - 80px);
-  width: 100vw;
+  height: calc(100dvh - 80px); /* Use only dynamic viewport height */
   width: 100dvw;
   position: absolute;
   top: 0;
   left: 0;
   padding: 2rem;
   container-type: size; /* Enable both dimensions for container queries */
+  overflow: hidden; /* Prevent content overflow that could cause viewport shifts */
 
-  /* Performance optimizations */
-  contain: layout style paint; /* Remove size containment to prevent clipping */
-  transform: var(--gpu-acceleration, translateZ(0));
-  backface-visibility: hidden;
-  will-change: transform, opacity;
+  /* Layout containment for performance */
+  contain: layout style paint;
 
   /* Section visibility states */
   &.active {
@@ -94,11 +86,8 @@ main#sections-container {
     min-height: fit-content;
   }
 
-  /* Title animation optimizations */
+  /* Title text rendering */
   h1 {
-    will-change: transform, opacity, font-size;
-    transform: var(--gpu-acceleration, translateZ(0));
-    backface-visibility: hidden;
     text-rendering: optimizeSpeed;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

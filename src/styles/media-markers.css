@@ -12,8 +12,6 @@
   transform: translate(-50%, -50%);
 
   /* Performance optimizations - no Tailwind equivalent */
-  will-change: transform, opacity;
-  backface-visibility: hidden;
 
   /* Setup for radar pulse effect - marker appears above pulse */
   z-index: 10;

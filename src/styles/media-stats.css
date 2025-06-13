@@ -9,9 +9,7 @@
   @apply absolute -right-4 top-0 bottom-0 flex-col justify-evenly items-end opacity-0 pointer-events-none m-0 p-0 w-[25%] z-10 hidden md:flex;
 
   /* Performance optimizations - no Tailwind equivalent */
-  will-change: transform, opacity;
   transform: var(--gpu-acceleration, translateZ(0));
-  backface-visibility: hidden;
 }
 
 .media-stats.active {
@@ -23,9 +21,7 @@
   @apply opacity-0 transition-all duration-300 ease-out max-h-[15%];
 
   /* Performance optimizations - no Tailwind equivalent */
-  will-change: transform, opacity;
   transform: var(--gpu-acceleration, translateZ(0));
-  backface-visibility: hidden;
 }
 
 .stat-item.active {
@@ -36,9 +32,7 @@
   @apply w-full h-auto object-contain drop-shadow-lg;
 
   /* Performance optimizations - no Tailwind equivalent */
-  will-change: transform, filter;
   transform: var(--gpu-acceleration, translateZ(0));
-  backface-visibility: hidden;
 }
 
 /* Stats entrance animations */
@@ -143,16 +137,12 @@
     transform 0.3s ease;
 
   /* Performance optimizations */
-  will-change: transform, opacity;
   transform: var(--gpu-acceleration, translateZ(0));
-  backface-visibility: hidden;
 }
 
 .mobile-stat-item img {
   @apply w-full h-auto object-contain;
 
   /* Performance optimizations */
-  will-change: transform;
   transform: var(--gpu-acceleration, translateZ(0));
-  backface-visibility: hidden;
 }

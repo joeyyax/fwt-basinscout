@@ -380,7 +380,7 @@ export class MediaStatsController {
     // Create mobile stats container
     const mobileStatsContainer = document.createElement('div');
     mobileStatsContainer.className =
-      'mobile-stats-container grid grid-cols-2 gap-2';
+      'mobile-stats-container grid grid-cols-3 gap-2';
     mobileStatsContainer.dataset.mobileStats = 'true';
 
     // Create stats items with different class to avoid CSS conflicts

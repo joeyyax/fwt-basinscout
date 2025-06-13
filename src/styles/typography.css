@@ -1,42 +1,16 @@
 /**
  * Typography components
- * Refactored to use Tailwind @apply directives with responsive cl  h3   h3 {
-    @apply text-lg sm:text-xl md:text-2xl lg:text-3xl
-           font-semibold text-emphasis mb-4 mt-0 leading-tight
-           drop-shadow-md;
-  } @apply text-lg sm:text-xl md:text-2xl lg:text-3xl
-           font-semibold mb-4 mt-0 leading-tight
-           drop-shadow-md;
-    color: var(--color-action);
-  }
+ * Refactored to use Tailwind @apply directives with responsive design
  */
 
 /* Section titles with Tailwind responsive classes */
 .title-wrapper {
   @apply relative;
-  container-type: inline-size;
-
-  /* Auto height on mobile and tablet for natural content flow */
-  min-height: auto;
-
-  /* Fixed height only on desktop to maintain consistent spacing */
-  @media (min-width: 1024px) {
-    min-height: calc(3.75rem * 1.2); /* lg:text-6xl */
-  }
-
-  @media (min-width: 1280px) {
-    min-height: calc(4.5rem * 1.2); /* xl:text-7xl */
-  }
+  /* container-type: inline-size; */
 
   h1 {
-    @apply text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl
-           font-bold text-white opacity-0 m-0 text-left leading-none
-           drop-shadow-lg;
-
-    /* Performance optimizations */
-    will-change: transform, opacity;
-    transform: translateZ(0);
-    backface-visibility: hidden;
+    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl
+           font-bold text-white m-0 text-left;
 
     sup {
       top: -0.55em;
@@ -57,11 +31,6 @@
            mt-0.5 sm:mt-1 md:mt-1.5 lg:mt-2
            drop-shadow-sm;
 
-    /* Performance optimizations */
-    will-change: transform, opacity;
-    transform: translateZ(0);
-    backface-visibility: hidden;
-
     /* Hide border when h1 is empty (fallback for different DOM structures) */
     .title-wrapper:has(h1:empty) & {
       display: none !important;
@@ -74,16 +43,9 @@
   @apply text-white text-left w-full max-w-3xl leading-normal font-semibold;
   container-type: inline-size;
 
-  /* Override defaults for FOUC prevention */
-  > * {
-    @apply opacity-0;
-    will-change: transform, opacity;
-    transform: translateZ(0);
-  }
-
   /* Enhanced typography with Tailwind responsive classes */
   h2 {
-    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl
+    @apply text-lg sm:text-2xl md:text-3xl lg:text-4xl
            font-bold text-white mb-4 mt-0 leading-tight
            drop-shadow-lg;
 
