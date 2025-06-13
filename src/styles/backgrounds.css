@@ -1,0 +1,56 @@
+/**
+ * Background system styles
+ * Fullscreen background container with image layers
+ */
+
+/* Background layer with enhanced performance using Tailwind utilities */
+#background-container {
+  @apply fixed inset-0 overflow-hidden;
+  height: 100vh;
+  height: 100dvh;
+  width: 100vw;
+  width: 100dvw;
+  z-index: -1; /* Ensure it stays behind all content */
+
+  /* Remove old transition - layers handle their own transitions */
+  will-change: auto;
+  transform: translateZ(0); /* Hardware acceleration */
+
+  /* Background image layers using Tailwind utilities */
+  .background-layer {
+    @apply absolute inset-0 w-full h-full overflow-hidden;
+    will-change: opacity;
+    transform: translateZ(0); /* Hardware acceleration */
+    backface-visibility: hidden;
+
+    /* Let GSAP handle transitions for better control */
+    transition: none;
+
+    /* Background image elements within layers */
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+
+      /* Optimize image rendering */
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+    }
+
+    /* Background overlay elements for text legibility */
+    .background-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Blur effect optimization */
+    &[data-blur]:not([data-blur='none']) {
+      will-change: opacity, filter;
+      /* Filter is applied via inline styles for precise control */
+    }
+  }
+}

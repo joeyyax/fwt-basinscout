@@ -8,6 +8,11 @@
 .media-stats {
   @apply absolute -right-4 top-0 bottom-0 flex flex-col justify-evenly items-end opacity-0 pointer-events-none m-0 p-0 w-[25%] z-10;
 
+  /* Hide media-stack stats on mobile since panel stats handle this */
+  @media (max-width: 1023px) {
+    @apply hidden;
+  }
+
   /* Performance optimizations - no Tailwind equivalent */
   will-change: transform, opacity;
   transform: var(--gpu-acceleration, translateZ(0));
@@ -117,4 +122,42 @@
 /* Focus states for accessibility */
 .stat-item.interactive:focus {
   @apply outline-none ring-2 ring-blue-500 ring-offset-2;
+}
+
+/* Mobile stats styling - displayed before prose content on mobile */
+.mobile-stats {
+  @apply grid grid-cols-2 gap-2;
+
+  /* Only show on mobile */
+  @media (min-width: 1024px) {
+    @apply hidden;
+  }
+}
+
+.mobile-stats-container {
+  /* Override any prose container styles that might affect visibility */
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.mobile-stat-item {
+  /* Start hidden for animations */
+  opacity: 0;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+
+  /* Performance optimizations */
+  will-change: transform, opacity;
+  transform: var(--gpu-acceleration, translateZ(0));
+  backface-visibility: hidden;
+}
+
+.mobile-stat-item img {
+  @apply w-full h-auto object-contain;
+
+  /* Performance optimizations */
+  will-change: transform;
+  transform: var(--gpu-acceleration, translateZ(0));
+  backface-visibility: hidden;
 }

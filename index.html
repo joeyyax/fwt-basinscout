@@ -20,7 +20,7 @@
       <!-- Sticky Header -->
       <header class="sticky top-0 w-full z-40 pointer-events-none">
         <div class="container">
-          <div class="pointer-events-auto py-4">
+          <div class="pointer-events-auto">
             <a
               href="https://thefreshwatertrust.org/"
               target="_blank"
@@ -196,19 +196,21 @@
               <h1>Understanding the Landscape</h1>
             </div>
             <div class="content-wrapper">
-              <div class="columns grid grid-cols-24 gap-8 w-full">
-                <div class="column col-span-1">
+              <div
+                class="columns grid grid-cols-1 lg:grid-cols-24 gap-4 lg:gap-8 w-full"
+              >
+                <div class="column hidden lg:block lg:col-span-1">
                   <div
                     class="pagination pagination-panel"
                     data-match-height=".media-stack .media-item:first-of-type"
                   ></div>
                 </div>
-                <div class="column col-span-15">
+                <div class="column col-span-1 lg:col-span-15">
                   <div class="media-stack">
                     <!-- Media items will be dynamically added here -->
                   </div>
                 </div>
-                <div class="column col-span-8">
+                <div class="column col-span-1 lg:col-span-8">
                   <div class="panels-container">
                     <div
                       class="panel"
@@ -428,7 +430,7 @@
         >
           <div class="container">
             <div class="title-wrapper">
-              <h1>Results</h1>
+              <h1>The Results</h1>
             </div>
             <div class="content-wrapper">
               <div class="panels-container" data-panel-border="true">

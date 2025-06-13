@@ -22,6 +22,7 @@ export class MediaStackController {
     // Initialize individual media systems
     this.initializeMediaStacks();
     BackgroundController.initializeBackgrounds();
+    MediaStatsController.initializeMobileStats();
   }
 
   // Initialize media stack components with panel-driven content
@@ -249,6 +250,9 @@ export class MediaStackController {
         }
       }
     });
+
+    // Update mobile stats column using MediaStatsController
+    MediaStatsController.updateMobileStatsForPanel(sectionIndex, panelIndex);
   }
 
   // Get media path for specific panel

@@ -1,17 +1,31 @@
 /**
- * Panel component styles
- * Enhanced for Tailwind CSS v4.1 with performance optimizations
- * Pure GSAP-driven animations - no conflicting CSS transitions
+ * Panel system styles
+ * Enhanced panels container and individual panel positioning
  */
 
-/* Panels container with optional border system */
+/* Enhanced panels structure with performance optimizations */
 .panels-container {
-  @apply relative;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  container-type: size;
+  overflow: visible;
 
   /* When border is enabled, add padding to accommodate border */
   &[data-panel-border='true'] {
     .panel {
       @apply pl-8;
+    }
+
+    /* Hide panel borders on mobile */
+    @media (max-width: 767px) {
+      .panel {
+        @apply pl-0;
+      }
+
+      .panel-border {
+        @apply hidden;
+      }
     }
   }
 
@@ -23,16 +37,16 @@
     will-change: transform, opacity;
     transform: translateZ(0);
   }
-}
 
-/* Enhanced panel structure - GSAP controlled */
-.panel {
-  @apply flex items-start justify-start relative w-full h-full opacity-100;
+  /* Individual panels with enhanced performance and better alignment */
+  .panel {
+    @apply absolute top-0 left-0 w-full h-full flex flex-col gap-4 will-change-auto;
 
-  /* GSAP performance optimizations only */
-  will-change: transform, opacity;
-  transform: translateZ(0);
-  backface-visibility: hidden;
+    /* Hardware acceleration and containment - remove containment to prevent clipping */
+    transform: translateZ(0);
+    /* contain: layout style paint; */
+    backface-visibility: hidden;
+  }
 }
 
 /* Panel animation states for GSAP optimization */

@@ -9,6 +9,11 @@ import { appState } from '../state.js';
 import { log, EVENTS } from '../utils/logger.js';
 
 export class TitleAnimationController {
+  // Utility method to check if current viewport is desktop (1024px+)
+  static isDesktop() {
+    return window.innerWidth >= 1024;
+  }
+
   // Initialize all titles for first load
   static initializeTitles() {
     const sections = appState.getSections();
@@ -124,11 +129,22 @@ export class TitleAnimationController {
     });
   }
 
-  // Get title animation type from section data attribute
+  // Get title animation type from section data attribute with responsive override
   static getTitleAnimationType(sectionIndex) {
     const sections = appState.getSections();
     const section = sections[sectionIndex];
-    return section ? section.dataset.titleAnimation : 'fade-up'; // Default to fade-up
+
+    if (!section) return 'fade-up';
+
+    // Get the configured animation type from data attribute
+    const configuredType = section.dataset.titleAnimation || 'fade-up';
+
+    // Only use slide-right on desktop (1024px+), fallback to fade-up on mobile/tablet
+    if (configuredType === 'slide-right' && !this.isDesktop()) {
+      return 'fade-up';
+    }
+
+    return configuredType;
   }
 
   // Animate title in based on animation type
