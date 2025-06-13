@@ -11,11 +11,11 @@ export class ContentOverflowDetector {
    * Initialize content overflow detection for all sections
    */
   static initializeOverflowDetection() {
-    const sections = document.querySelectorAll('.section');
+    const sections = document.querySelectorAll('.section[data-use-overflow-detector="true"]');
 
     log.info(
       EVENTS.CONTENT,
-      `Found ${sections.length} sections for overflow detection`
+      `Found ${sections.length} sections with overflow detection enabled`
     );
 
     sections.forEach((section, sectionIndex) => {
@@ -23,7 +23,7 @@ export class ContentOverflowDetector {
 
       log.debug(
         EVENTS.CONTENT,
-        `Section ${sectionIndex} has ${panels.length} panels`
+        `Section ${sectionIndex} (${section.id || 'unnamed'}) has ${panels.length} panels for overflow detection`
       );
 
       panels.forEach((panel, panelIndex) => {
