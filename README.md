@@ -1,6 +1,6 @@
 # BasinScout Interactive Experience
 
-A responsive web application for The Freshwater Trust's BasinScout analytics platform. Features smooth animations, cross-platform navigation, and interactive data visualization.
+A responsive web application for The Freshwater Trust's BasinScout. Features smooth animations, cross-platform navigation, and interactive data visualization.
 
 ## Features
 
