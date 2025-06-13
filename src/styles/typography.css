@@ -4,37 +4,38 @@
  */
 
 /* Section titles with Tailwind responsive classes */
+
 .title-wrapper {
   @apply relative;
   /* container-type: inline-size; */
+}
 
-  h1 {
-    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl
-           font-bold text-white m-0 text-left;
+h1 {
+  @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl
+         font-bold text-white m-0 text-left;
 
-    sup {
-      top: -0.55em;
-      font-size: 50%;
-    }
+  sup {
+    top: -0.55em;
+    font-size: 50%;
   }
+}
 
-  /* Hide border when h1 is empty */
-  h1:empty + .title-border,
-  h1:not(:has(*)):empty + .title-border {
+/* Hide border when h1 is empty */
+h1:empty + .title-border,
+h1:not(:has(*)):empty + .title-border {
+  display: none !important;
+}
+
+/* Title border animation styles - positioned outside h1 */
+.title-border {
+  @apply absolute -bottom-5 left-0 w-full bg-white
+         h-0.5 sm:h-0.5
+         mt-0.5 sm:mt-1 md:mt-1.5 lg:mt-2
+         drop-shadow-sm;
+
+  /* Hide border when h1 is empty (fallback for different DOM structures) */
+  .title-wrapper:has(h1:empty) & {
     display: none !important;
-  }
-
-  /* Title border animation styles - positioned outside h1 */
-  .title-border {
-    @apply absolute -bottom-5 left-0 w-full bg-white
-           h-0.5 sm:h-0.5
-           mt-0.5 sm:mt-1 md:mt-1.5 lg:mt-2
-           drop-shadow-sm;
-
-    /* Hide border when h1 is empty (fallback for different DOM structures) */
-    .title-wrapper:has(h1:empty) & {
-      display: none !important;
-    }
   }
 }
 
@@ -42,161 +43,161 @@
 .prose {
   @apply text-white text-left w-full max-w-3xl leading-normal font-semibold;
   container-type: inline-size;
+}
 
-  /* Enhanced typography with Tailwind responsive classes */
-  h2 {
-    @apply text-lg sm:text-2xl md:text-3xl lg:text-4xl
+/* Enhanced typography with Tailwind responsive classes */
+h2 {
+  @apply text-lg sm:text-2xl md:text-3xl lg:text-4xl
            font-bold text-white mb-4 mt-0 leading-tight
            drop-shadow-lg;
+}
 
-    /* Special styling for pretitle sections */
-    &.pretitle {
-      @apply text-xs sm:text-sm font-semibold uppercase tracking-wider
-             text-white/80 mb-2 mt-6 sm:mt-8;
+/* Special styling for pretitle sections */
+.pretitle {
+  @apply text-xs sm:text-sm font-semibold uppercase tracking-wider
+           text-white/80 mb-2 mt-6 sm:mt-8;
 
-      &:first-child {
-        @apply mt-0;
-      }
-    }
+  &:first-child {
+    @apply mt-0;
   }
+}
 
-  h3 {
-    @apply text-lg sm:text-xl md:text-2xl lg:text-3xl
+h3 {
+  @apply text-lg sm:text-xl md:text-2xl lg:text-3xl
            font-bold text-emphasis mb-4 mt-0 leading-tight
            drop-shadow-md;
-  }
+}
 
-  h4 {
-    @apply text-lg sm:text-xl md:text-2xl
+h4 {
+  @apply text-lg sm:text-xl md:text-2xl
            font-bold text-white mb-3 mt-0 leading-normal
            drop-shadow;
-  }
+}
 
-  p {
-    @apply text-sm sm:text-base md:text-lg lg:text-xl
+p {
+  @apply text-sm sm:text-base md:text-lg lg:text-xl
            text-white leading-relaxed mb-4
            drop-shadow-sm;
+
+  &:last-child {
+    @apply mb-0;
+  }
+}
+
+/* Enhanced prose elements */
+strong {
+  @apply font-extrabold text-white;
+}
+
+em {
+  @apply italic text-white/90;
+}
+
+/* Links within prose */
+a {
+  @apply text-white/90 underline underline-offset-2
+           transition-colors duration-200 hover:text-white;
+}
+
+/* Lists with Tailwind classes */
+ul,
+ol {
+  @apply my-4 md:my-6 pl-4 md:pl-6 text-white;
+
+  li {
+    @apply mb-2 md:mb-3 leading-relaxed;
+
+    &:last-child {
+      @apply mb-0;
+    }
+
+    /* Nested lists */
+    ul,
+    ol {
+      @apply my-1 pl-4;
+    }
+  }
+}
+
+/* Unordered list styling */
+ul {
+  @apply list-none;
+
+  li {
+    @apply relative pl-4;
+
+    &::before {
+      @apply absolute left-0 text-white/70 font-bold;
+      content: '•';
+    }
+  }
+}
+
+/* Ordered list styling */
+ol {
+  @apply list-none;
+  counter-reset: list-counter;
+
+  li {
+    @apply relative pl-6;
+    counter-increment: list-counter;
+
+    &::before {
+      @apply absolute left-0 text-white/70 font-semibold min-w-5;
+      content: counter(list-counter) '.';
+    }
+  }
+}
+
+/* Blockquotes with Tailwind */
+blockquote {
+  @apply border-l-4 border-white/30 pl-4 md:pl-6 pr-0 md:pr-6
+           py-4 md:py-6 my-6 md:my-8 italic text-white/90
+           bg-white/5 rounded-r-lg;
+
+  p {
+    @apply mb-3;
 
     &:last-child {
       @apply mb-0;
     }
   }
 
-  /* Enhanced prose elements */
-  strong {
-    @apply font-extrabold text-white;
-  }
+  /* Citation styling */
+  cite {
+    @apply block mt-3 text-sm text-white/70 not-italic;
 
-  em {
-    @apply italic text-white/90;
-  }
-
-  /* Links within prose */
-  a {
-    @apply text-white/90 underline underline-offset-2
-           transition-colors duration-200 hover:text-white;
-  }
-
-  /* Lists with Tailwind classes */
-  ul,
-  ol {
-    @apply my-4 md:my-6 pl-4 md:pl-6 text-white;
-
-    li {
-      @apply mb-2 md:mb-3 leading-relaxed;
-
-      &:last-child {
-        @apply mb-0;
-      }
-
-      /* Nested lists */
-      ul,
-      ol {
-        @apply my-1 pl-4;
-      }
+    &::before {
+      content: '— ';
     }
   }
+}
 
-  /* Unordered list styling */
-  ul {
-    @apply list-none;
+/* Code and preformatted text */
+code {
+  @apply font-mono text-sm bg-white/10 px-2 py-1 rounded text-white/95;
+}
 
-    li {
-      @apply relative pl-4;
-
-      &::before {
-        @apply absolute left-0 text-white/70 font-bold;
-        content: '•';
-      }
-    }
-  }
-
-  /* Ordered list styling */
-  ol {
-    @apply list-none;
-    counter-reset: list-counter;
-
-    li {
-      @apply relative pl-6;
-      counter-increment: list-counter;
-
-      &::before {
-        @apply absolute left-0 text-white/70 font-semibold min-w-5;
-        content: counter(list-counter) '.';
-      }
-    }
-  }
-
-  /* Blockquotes with Tailwind */
-  blockquote {
-    @apply border-l-4 border-white/30 pl-4 md:pl-6 pr-0 md:pr-6
-           py-4 md:py-6 my-6 md:my-8 italic text-white/90
-           bg-white/5 rounded-r-lg;
-
-    p {
-      @apply mb-3;
-
-      &:last-child {
-        @apply mb-0;
-      }
-    }
-
-    /* Citation styling */
-    cite {
-      @apply block mt-3 text-sm text-white/70 not-italic;
-
-      &::before {
-        content: '— ';
-      }
-    }
-  }
-
-  /* Code and preformatted text */
-  code {
-    @apply font-mono text-sm bg-white/10 px-2 py-1 rounded text-white/95;
-  }
-
-  pre {
-    @apply bg-white/5 border border-white/10 rounded-lg p-4 my-4 overflow-x-auto
+pre {
+  @apply bg-white/5 border border-white/10 rounded-lg p-4 my-4 overflow-x-auto
            font-mono text-sm leading-relaxed;
 
-    code {
-      @apply bg-transparent p-0 rounded-none text-inherit;
-    }
+  code {
+    @apply bg-transparent p-0 rounded-none text-inherit;
   }
+}
 
-  /* Horizontal rule */
-  hr {
-    @apply border-0 h-px my-8 md:my-12 bg-gradient-to-r
+/* Horizontal rule */
+hr {
+  @apply border-0 h-px my-8 md:my-12 bg-gradient-to-r
            from-transparent via-white/30 to-transparent;
-  }
+}
 
-  /* Small text and highlights */
-  small {
-    @apply text-sm text-white/80;
-  }
+/* Small text and highlights */
+small {
+  @apply text-sm text-white/80;
+}
 
-  mark {
-    @apply bg-white/20 text-white px-1 py-0.5 rounded;
-  }
+mark {
+  @apply bg-white/20 text-white px-1 py-0.5 rounded;
 }

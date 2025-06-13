@@ -7,15 +7,21 @@
 header {
   /* Header content styling */
   .container {
-    height: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    height: 100%; /* Fill header height */
   }
 
   .pointer-events-auto {
-    height: 100%;
     display: flex;
     align-items: center;
+    height: 100%; /* Fill container height */
+  }
+
+  .branding {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
