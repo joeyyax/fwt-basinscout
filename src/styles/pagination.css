@@ -37,7 +37,7 @@
 
 /* Section pagination container - fixed side navigation */
 .pagination-section {
-  @apply flex flex-col items-center justify-center gap-4;
+  @apply flex-col items-center justify-center gap-4 hidden xl:flex;
   position: fixed !important;
   left: 2rem !important;
   top: 50% !important;
@@ -175,12 +175,7 @@
 
 /* ===== ACCESSIBILITY & RESPONSIVE DESIGN ===== */
 
-/* Mobile responsive styles - hide section pagination on mobile */
-@media (max-width: 767px) {
-  .pagination-section {
-    @apply hidden;
-  }
-}
+/* Mobile and tablet responsive styles - hide section pagination on mobile and tablet, only show on desktop */
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
