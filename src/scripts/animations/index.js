@@ -13,6 +13,7 @@ import { MediaMarkersController as _MediaMarkersController } from './media-marke
 import { MediaStatsController as _MediaStatsController } from './media-stats.js';
 import { BackgroundController as _BackgroundController } from './backgrounds.js';
 import { PaginationAnimationController } from './pagination.js';
+import { ScrollInstruction } from '../utils/scroll-instruction.js';
 // PanelStatsAnimationController imported but not used yet - keeping for future features
 // eslint-disable-next-line no-unused-vars
 import { PanelStatsAnimationController } from './panel-stats.js';
@@ -103,6 +104,9 @@ export class AnimationController {
   // Animate transition between panels/sections (MAIN COORDINATION METHOD)
   static animateToPanel(targetSectionIndex, targetPanelIndex, direction = 1) {
     if (appState.isCurrentlyAnimating()) return;
+
+    // Dismiss scroll instruction if visible when panel changes
+    ScrollInstruction.dismissOnPanelChange();
 
     appState.setAnimating(true);
 
