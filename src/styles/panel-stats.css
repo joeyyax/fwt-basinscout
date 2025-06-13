@@ -210,6 +210,11 @@
   .stat-donut-chart .circle {
     stroke-width: 15;
   }
+
+  /* Align standard stats (like "#1") with donut chart values when stacking on mobile */
+  .stat-standard .stat-content {
+    @apply ml-24;
+  }
 }
 
 /* High contrast mode */
