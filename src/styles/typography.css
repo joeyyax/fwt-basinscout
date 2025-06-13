@@ -16,18 +16,10 @@
   @apply relative;
   container-type: inline-size;
 
-  /* Fixed height to maintain consistent spacing */
-  min-height: calc(3rem * 1.2); /* Base for text-3xl + line-height */
+  /* Auto height on mobile and tablet for natural content flow */
+  min-height: auto;
 
-  /* Responsive min-heights to match text sizes */
-  @media (min-width: 640px) {
-    min-height: calc(2.25rem * 1.2); /* sm:text-4xl */
-  }
-
-  @media (min-width: 768px) {
-    min-height: calc(3rem * 1.2); /* md:text-5xl */
-  }
-
+  /* Fixed height only on desktop to maintain consistent spacing */
   @media (min-width: 1024px) {
     min-height: calc(3.75rem * 1.2); /* lg:text-6xl */
   }
@@ -37,7 +29,7 @@
   }
 
   h1 {
-    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl
+    @apply text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl
            font-bold text-white opacity-0 m-0 text-left leading-none
            drop-shadow-lg;
 

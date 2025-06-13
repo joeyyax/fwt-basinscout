@@ -7,6 +7,7 @@
 import { gsap } from 'gsap';
 import { CONFIG } from '../constants.js';
 import { log, EVENTS } from '../utils/logger.js';
+import { appState } from '../state.js';
 
 export class MediaStatsController {
   /**
@@ -333,5 +334,185 @@ export class MediaStatsController {
     log.debug(EVENTS.MEDIA, 'Stats ensured visible', {
       statCount: statItems.length,
     });
+  }
+
+  /**
+   * Update mobile stats for current panel - prepends stats to panel content on mobile
+   * @param {number} sectionIndex - Current section index
+   * @param {number} panelIndex - Current panel index
+   */
+  static updateMobileStatsForPanel(sectionIndex, panelIndex) {
+    const sections = document.querySelectorAll('.section');
+    const section = sections[sectionIndex];
+    if (!section) return;
+
+    // Get the current panel
+    const panels = section.querySelectorAll('.panel');
+    const currentPanel = panels[panelIndex];
+    if (!currentPanel) return;
+
+    // Parse stats data from current panel
+    const statsData = currentPanel.dataset.stats;
+    const parsedStats = this.parseStatsData(statsData);
+
+    // Remove any existing mobile stats from this panel
+    this.clearPanelMobileStats(currentPanel);
+
+    // Only add stats on mobile screens and if stats exist
+    if (parsedStats.length > 0 && window.innerWidth < 768) {
+      this.prependStatsToPanelOnMobile(currentPanel, parsedStats);
+    }
+
+    log.debug(EVENTS.MEDIA, 'Mobile stats updated for panel', {
+      sectionIndex,
+      panelIndex,
+      statsCount: parsedStats.length,
+      isMobile: window.innerWidth < 768,
+    });
+  }
+
+  /**
+   * Prepend stats to panel content on mobile with stagger animation
+   * @param {HTMLElement} panel - Panel element to prepend stats to
+   * @param {Array} stats - Array of parsed stats data
+   */
+  static prependStatsToPanelOnMobile(panel, stats) {
+    // Create mobile stats container
+    const mobileStatsContainer = document.createElement('div');
+    mobileStatsContainer.className =
+      'mobile-stats-container grid grid-cols-2 gap-2';
+    mobileStatsContainer.dataset.mobileStats = 'true';
+
+    // Create stats items with different class to avoid CSS conflicts
+    const statsItems = stats.map((stat, index) => {
+      const statItem = document.createElement('div');
+      statItem.className = 'mobile-stat-item'; // Use different class to avoid opacity-0 CSS
+      statItem.dataset.statIndex = index;
+
+      const img = document.createElement('img');
+      img.src = stat.path;
+      img.alt = stat.alt || 'Statistic image';
+      img.loading = 'lazy';
+      img.className = 'w-full h-auto object-contain';
+
+      if (stat.title) {
+        img.title = stat.title;
+      }
+
+      statItem.appendChild(img);
+      mobileStatsContainer.appendChild(statItem);
+
+      return statItem;
+    });
+
+    // Find the prose container and insert stats before it in the panel
+    const proseContainer = panel.querySelector('.prose');
+    if (proseContainer) {
+      // Insert stats before the prose container, not inside it
+      panel.insertBefore(mobileStatsContainer, proseContainer);
+    } else {
+      // Fallback: prepend to panel directly
+      panel.insertBefore(mobileStatsContainer, panel.firstChild);
+    }
+
+    // Set initial state and animate stats in with stagger
+    gsap.set(statsItems, { opacity: 0, y: 20 });
+    this.animateMobileStatsIn(statsItems);
+
+    log.debug(EVENTS.MEDIA, 'Mobile stats prepended to panel', {
+      statsCount: stats.length,
+    });
+  }
+
+  /**
+   * Clear mobile stats from a specific panel
+   * @param {HTMLElement} panel - Panel to clear mobile stats from
+   */
+  static clearPanelMobileStats(panel) {
+    const existingMobileStats = panel.querySelectorAll(
+      '[data-mobile-stats="true"]'
+    );
+
+    if (existingMobileStats.length > 0) {
+      // Animate out existing stats
+      const timeline = gsap.timeline({
+        onComplete: () => {
+          existingMobileStats.forEach((statsContainer) => {
+            if (statsContainer.parentNode) {
+              statsContainer.parentNode.removeChild(statsContainer);
+            }
+          });
+        },
+      });
+
+      existingMobileStats.forEach((statsContainer) => {
+        const statItems = statsContainer.querySelectorAll('.mobile-stat-item');
+        statItems.forEach((item, index) => {
+          timeline.to(
+            item,
+            {
+              opacity: 0,
+              y: -20,
+              duration: 0.2,
+              ease: 'power2.in',
+            },
+            index * 0.05
+          );
+        });
+      });
+    }
+  }
+
+  /**
+   * Animate mobile stats in with stagger effect
+   * @param {Array} statsItems - Array of stat item elements
+   */
+  static animateMobileStatsIn(statsItems) {
+    const timeline = gsap.timeline();
+
+    statsItems.forEach((item, index) => {
+      timeline.to(
+        item,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.3,
+          ease: 'power2.out',
+        },
+        index * 0.1
+      );
+    });
+
+    return timeline;
+  }
+
+  /**
+   * Initialize mobile stats system with resize handling
+   */
+  static initializeMobileStats() {
+    // Handle window resize to update mobile stats visibility
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        // Get current active panel and update mobile stats
+        const currentSectionIndex = appState.getCurrentSection();
+        const currentPanelIndex = appState.getCurrentPanel();
+        if (
+          currentSectionIndex !== undefined &&
+          currentPanelIndex !== undefined
+        ) {
+          this.updateMobileStatsForPanel(
+            currentSectionIndex,
+            currentPanelIndex
+          );
+        }
+      }, 150); // Debounce resize events
+    });
+
+    log.debug(
+      EVENTS.MEDIA,
+      'Mobile stats system initialized with resize handling'
+    );
   }
 }

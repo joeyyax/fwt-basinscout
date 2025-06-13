@@ -1,0 +1,23 @@
+/**
+ * Header component styles
+ * Fixed header with logo and navigation
+ */
+
+/* Header with defined height to prevent section collision */
+header {
+  @apply h-20 px-8;
+
+  /* Header content styling */
+  .container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .pointer-events-auto {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+}

@@ -8,11 +8,15 @@
 
 /* Import organized stylesheets */
 @import './base.css'; /* Base styles and resets */
-@import './layout.css'; /* Layout components */
+@import './layout.css'; /* Core app layout container */
+@import './header.css'; /* Header component styles */
+@import './backgrounds.css'; /* Background system styles */
+@import './sections.css'; /* Section layout and structure */
+@import './content.css'; /* Content wrapper styles */
+@import './columns.css'; /* Columns layout for map section */
 @import './typography.css'; /* Typography and text styles */
 @import './buttons.css'; /* Button component styles */
-@import './sections.css'; /* Section component styles */
-@import './panels.css'; /* Panel component styles */
+@import './panels.css'; /* Panel system styles */
 @import './pagination.css'; /* Pagination component styles */
 @import './media-stack.css'; /* Media stack component styles */
 @import './panel-stats.css'; /* Panel-specific statistics */

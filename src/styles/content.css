@@ -1,0 +1,49 @@
+/**
+ * Content area styles
+ * Content wrapper with responsive behavior and container queries
+ */
+
+/* Content area with advanced container query responsiveness */
+.content-wrapper {
+  grid-area: content;
+  width: 100%;
+  height: 100%; /* Ensure full height for grid layouts */
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  container-type: size; /* Enable both width and height container queries */
+  min-height: 0; /* Allow flexbox to work properly */
+  overflow: visible; /* Allow content animations to extend beyond boundaries */
+
+  /* FOUC prevention - hide content until JavaScript initializes */
+  opacity: 0;
+  visibility: hidden;
+
+  /* Add minimum spacing to prevent cramped feeling */
+  margin-top: 0.5rem;
+
+  /* Multi-dimensional container queries */
+  @container (min-width: 600px) {
+    align-items: center;
+    justify-content: center;
+  }
+
+  @container (min-width: 1200px) {
+    justify-content: flex-start;
+  }
+
+  /* Height-based adjustments */
+  @container (min-height: 400px) {
+    align-items: center;
+  }
+
+  /* Content wrapper state when initialized */
+  &.initialized {
+    opacity: 1;
+    visibility: visible;
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s ease;
+  }
+}
