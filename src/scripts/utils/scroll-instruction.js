@@ -136,6 +136,20 @@ export class ScrollInstruction {
   }
 
   /**
+   * Dismiss the instruction when panel changes occur
+   * This provides a softer dismissal for panel changes vs user interactions
+   */
+  static dismissOnPanelChange() {
+    if (!this.instructionElement || !this.isVisible) return;
+
+    // For panel changes, we hide but don't permanently dismiss
+    // so it could potentially reappear later if needed
+    this.hideInstruction();
+
+    log.debug(EVENTS.UI, 'Scroll instruction dismissed due to panel change');
+  }
+
+  /**
    * Set up event listeners to hide instruction on user interaction
    */
   static setupHideOnInteraction() {
