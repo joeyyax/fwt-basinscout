@@ -10,6 +10,7 @@ import { ScrollController } from './core/scroll-controller.js';
 import { ErrorHandler } from './utils/error-handler.js';
 import { StructureValidator } from './utils/structure-validator.js';
 import { ContentManager } from './core/content-manager.js';
+import { OrientationOverlay } from './utils/orientation-overlay.js';
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger, Observer);
@@ -27,6 +28,9 @@ document.body.classList.remove('gsap-loading');
 function init() {
   // Initialize error handling first
   ErrorHandler.init();
+
+  // Initialize orientation overlay for mobile
+  OrientationOverlay.init();
 
   // Initialize app state and UI
   AppInitializer.init();

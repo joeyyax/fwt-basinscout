@@ -14,6 +14,7 @@
 @import './sections.css'; /* Section layout and structure */
 @import './content.css'; /* Content wrapper styles */
 @import './columns.css'; /* Columns layout for map section */
+@import './orientation.css'; /* Mobile orientation prompt */
 @import './typography.css'; /* Typography and text styles */
 @import './buttons.css'; /* Button component styles */
 @import './panels.css'; /* Panel system styles */
