@@ -1,10 +1,10 @@
 /**
- * Orientation Overlay Styles
- * Styles for the mobile portrait mode prompt
+ * Viewport Overlay Styles
+ * Styles for mobile orientation and browser height prompts
  */
 
-/* Orientation overlay */
-.orientation-overlay {
+/* Viewport overlays */
+.viewport-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -20,7 +20,7 @@
   touch-action: none;
 }
 
-.orientation-content {
+.overlay-content {
   text-align: center;
   color: white;
   padding: 2rem;
@@ -34,14 +34,20 @@
   animation: phoneRotate 2s ease-in-out infinite;
 }
 
-.orientation-content h2 {
+.browser-icon {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+.overlay-content h2 {
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
   color: white;
 }
 
-.orientation-content p {
+.overlay-content p {
   font-size: 1rem;
   opacity: 0.8;
   line-height: 1.5;
@@ -60,6 +66,6 @@
 }
 
 /* Ensure overlay appears above everything */
-.orientation-prompt-active {
+.viewport-prompt-active {
   overflow: hidden !important;
 }
