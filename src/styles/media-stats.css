@@ -6,12 +6,7 @@
 
 /* Stats container positioned on the right side of media items */
 .media-stats {
-  @apply absolute -right-4 top-0 bottom-0 flex flex-col justify-evenly items-end opacity-0 pointer-events-none m-0 p-0 w-[25%] z-10;
-
-  /* Hide media-stack stats on mobile since panel stats handle this */
-  @media (max-width: 1023px) {
-    @apply hidden;
-  }
+  @apply absolute -right-4 top-0 bottom-0 flex-col justify-evenly items-end opacity-0 pointer-events-none m-0 p-0 w-[25%] z-10 hidden md:flex;
 
   /* Performance optimizations - no Tailwind equivalent */
   will-change: transform, opacity;
