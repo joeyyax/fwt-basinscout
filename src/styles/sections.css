@@ -5,26 +5,36 @@
 
 /* Main content container with full viewport dimensions */
 main#sections-container {
-  height: calc(100dvh - 80px); /* Use only dynamic viewport height */
+  height: calc(100dvh - 48px); /* Mobile header height: 48px */
   width: 100dvw;
   position: relative;
   z-index: 1;
   container-type: size;
   overflow: hidden; /* Prevent content scrolling outside container */
+
+  /* Desktop header height: 80px */
+  @media (min-width: 1024px) {
+    height: calc(100dvh - 80px);
+  }
 }
 
 /* Sections container */
 #sections-container {
-  height: calc(100dvh - 80px); /* Use only dynamic viewport height */
+  height: calc(100dvh - 48px); /* Mobile header height: 48px */
   width: 100dvw;
   overflow: hidden; /* Prevent native scrolling */
   position: relative;
   container-type: size;
+
+  /* Desktop header height: 80px */
+  @media (min-width: 1024px) {
+    height: calc(100dvh - 80px);
+  }
 }
 
 /* Section layout with balanced container queries */
 .section {
-  height: calc(100dvh - 80px); /* Use only dynamic viewport height */
+  height: calc(100dvh - 48px); /* Mobile header height: 48px */
   width: 100dvw;
   position: absolute;
   top: 0;
@@ -32,6 +42,11 @@ main#sections-container {
   padding: 2rem;
   container-type: size; /* Enable both dimensions for container queries */
   overflow: hidden; /* Prevent content overflow that could cause viewport shifts */
+
+  /* Desktop header height: 80px */
+  @media (min-width: 1024px) {
+    height: calc(100dvh - 80px);
+  }
 
   /* Layout containment for performance */
   contain: layout style paint;
