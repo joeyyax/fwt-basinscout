@@ -102,10 +102,10 @@ export const CONFIG = {
     STATS_NUMBER_COUNT_DURATION: 1.2, // Matches donut charts for consistent timing
 
     /** Stagger delay between multiple statistics in the same container - in seconds */
-    STATS_ELEMENT_STAGGER_DELAY: 0.2, // Creates wave effect across multiple stats
+    STATS_ELEMENT_STAGGER_DELAY: 0.5, // Creates wave effect across multiple stats
 
     /** Stagger delay between donut charts animating in the same container - in seconds */
-    DONUT_STAGGER_DELAY: 0.2, // Creates wave effect across multiple donut charts
+    DONUT_STAGGER_DELAY: 0.3, // Creates wave effect across multiple donut charts
 
     /** Easing function for donut chart animations */
     DONUT_EASE: 'power0.inOut', // Linear easing for constant speed donut filling (power0 = linear)
@@ -198,7 +198,7 @@ export const CONFIG = {
     WHEEL_SPEED: -1, // Controls scroll sensitivity
 
     /** Tolerance threshold for detecting scroll direction changes (prevents jitter) */
-    TOLERANCE: 30, // Minimum scroll delta required to trigger navigation
+    TOLERANCE: 10, // Minimum scroll delta required to trigger navigation
 
     /** Whether to prevent default scroll behavior */
     PREVENT_DEFAULT_SCROLL: true, // Prevents default scroll to enable custom navigation
