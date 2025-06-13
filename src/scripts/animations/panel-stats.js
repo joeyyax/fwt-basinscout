@@ -191,6 +191,9 @@ export class PanelStatsAnimationController {
       // Create an object to animate for the counter
       const counter = { value: 0 };
 
+      // Ensure the display starts at 0
+      statValueElement.textContent = `${prefix}0${suffix}`;
+
       // Create independent animation with same timing as donut chart
       gsap.to(counter, {
         value: targetNumber,
@@ -341,9 +344,6 @@ export class PanelStatsAnimationController {
       const statItems = statsContainer.querySelectorAll('.stat');
 
       const timeline = gsap.timeline({ delay });
-
-      // Reset donut charts first
-      this.resetDonutCharts(statsContainer);
 
       // Animate individual stat items out
       if (statItems.length > 0) {

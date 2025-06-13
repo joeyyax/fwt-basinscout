@@ -367,7 +367,16 @@ export class PanelAnimationController {
 
     // Step 2: Only after content is fully out, handle panel switching
     if (switchingPanels) {
-      // Make target panel visible and bring to front
+      // Reset stats before making target panel visible
+      timeline.call(
+        () => {
+          PanelStatsAnimationController.resetDonutCharts(targetPanel);
+        },
+        null,
+        `+=${CONFIG.ANIMATION.CONTENT_EXIT_DURATION}` // After exit animation completes
+      );
+
+      // Make target panel visible and bring to front - AFTER reset
       timeline.set(
         targetPanel,
         {
@@ -375,7 +384,7 @@ export class PanelAnimationController {
           visibility: 'visible',
           zIndex: 10,
         },
-        `+=${CONFIG.ANIMATION.CONTENT_EXIT_DURATION}` // After exit animation completes
+        `+=0.01` // Small delay after reset to ensure it happens first
       );
 
       // Hide current panel
@@ -528,13 +537,6 @@ export class PanelAnimationController {
 
   // Helper method to animate elements out with optional child staggering
   static animateElementsOut(timeline, elements, direction) {
-    // Reset any donut charts to 0 before animating out
-    elements.forEach((element) => {
-      if (element.dataset.staggerChildren === 'true') {
-        PanelStatsAnimationController.resetDonutCharts(element);
-      }
-    });
-
     // Animate out the main elements first with stagger
     timeline.to(elements, {
       opacity: 0,
@@ -719,6 +721,9 @@ export class PanelAnimationController {
 
       const panel = panels[panelIndex];
       if (panel) {
+        // Reset stats before showing panel
+        PanelStatsAnimationController.resetDonutCharts(panel);
+
         // Update panel title for direct navigation (only for sections with dynamic titles)
         if (TitleAnimationController.sectionHasDynamicTitles(sectionIndex)) {
           TitleAnimationController.updateTitleForPanel(
