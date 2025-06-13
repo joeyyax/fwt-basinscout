@@ -14,6 +14,7 @@ import { AccessibilityController } from '../accessibility.js';
 import { HeightMatcher } from '../utils/height-matcher.js';
 import { ScrollInstructions } from '../utils/scroll-instructions.js';
 import { ContentManager } from './content-manager.js';
+import { ContentOverflowDetector } from '../utils/content-overflow-detector.js';
 import { gsap } from 'gsap';
 
 export class AppInitializer {
@@ -99,6 +100,13 @@ export class AppInitializer {
     setTimeout(() => {
       // Initialize all panel animations (but skip background system - already initialized)
       AnimationController.initializePanelsOnly();
+
+      // Check for content overflow and split panels if necessary
+      // Do this after panels are initialized but before animations start
+      ContentOverflowDetector.initializeWithProperTiming();
+
+      // Initialize pagination AFTER potential panel splitting
+      PaginationController.initializePagination();
 
       // Initialize scroll instructions after panels are set up
       ScrollInstructions.initialize();
