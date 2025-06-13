@@ -176,6 +176,23 @@ export const CONFIG = {
 
     /** Stagger delay between pagination dots when they appear - in seconds */
     PAGINATION_DOT_STAGGER_DELAY: 0.08, // Creates wave effect across dots
+
+    // ----- Scroll Instructions -----
+
+    /** Duration for scroll instruction fade-in animation - in seconds */
+    SCROLL_INSTRUCTION_FADE_DURATION: 0.4, // Gentle fade-in for scroll hints
+
+    /** Duration for scroll instruction fade-out animation - in seconds */
+    SCROLL_INSTRUCTION_FADE_OUT_DURATION: 0.3, // Faster fade-out when hiding
+
+    /** Base delay before scroll instructions appear after panel content animates in - in seconds */
+    SCROLL_INSTRUCTION_DELAY: 5.0, // 2 seconds after panel content finishes
+
+    /** Additional delay for first panel/section to let users read initial content - in seconds */
+    SCROLL_INSTRUCTION_FIRST_PANEL_DELAY: 3.0, // 3 seconds for first panel to let users read
+
+    /** Timeout for scroll instructions to disappear after being shown - in seconds (set to -1 to never auto-hide) */
+    SCROLL_INSTRUCTION_AUTO_HIDE_TIMEOUT: 8.0, // 8 seconds before auto-hiding scroll hints, or -1 to disable auto-hide
   },
 
   // ===== USER INTERFACE INTERACTIONS =====

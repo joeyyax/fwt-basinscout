@@ -1,0 +1,119 @@
+/**
+ * Scroll Instruction Bubble
+ * Floating scroll hint that appears at the bottom of the screen
+ */
+
+.scroll-instruction {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(40px);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-action);
+  padding: 0.75rem 1.5rem;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  user-select: none;
+}
+
+.scroll-instruction.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.scroll-instruction.hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(40px);
+  pointer-events: none;
+}
+
+/* Hover effect for non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+  .scroll-instruction.visible:hover {
+    transform: translateX(-50%) translateY(0) scale(1.05);
+  }
+}
+
+.scroll-instruction-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.scroll-instruction-arrow {
+  animation: scroll-bounce 2s infinite;
+}
+
+.scroll-instruction-arrow svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.scroll-instruction-text {
+  color: inherit;
+}
+
+/* Bounce animation for the arrow */
+@keyframes scroll-bounce {
+  0%,
+  20%,
+  53%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40%,
+  43% {
+    transform: translateY(-8px);
+  }
+  70% {
+    transform: translateY(-4px);
+  }
+  90% {
+    transform: translateY(-2px);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+  .scroll-instruction {
+    bottom: 1.5rem;
+    padding: 0.625rem 1.25rem;
+    font-size: 0.8125rem;
+  }
+
+  .scroll-instruction-arrow svg {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+/* Accessibility support */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-instruction {
+    transition: opacity 0.2s ease;
+  }
+
+  .scroll-instruction-arrow {
+    animation: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .scroll-instruction {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid var(--color-action);
+    backdrop-filter: none;
+  }
+}
