@@ -273,20 +273,14 @@ export class PanelAnimationController {
               }
             });
 
-            // Animate scroll instructions after main content
-            this.animateScrollInstructionsIn(firstPanel, timeline, 0.5);
+            // Scroll instructions are now handled independently by ScrollInstruction
+            // No need to tie them to panel animations
 
             return timeline;
           }
         }
       }
     }
-  }
-
-  // Animate scroll instructions in using the utility
-  static animateScrollInstructionsIn(panel, timeline, _delay = 0) {
-    // Skip scroll instructions animation per user preference
-    // ScrollInstructions only has initialize() method, no animateIn()
   }
 
   // Handle content fade and slide transition between panels

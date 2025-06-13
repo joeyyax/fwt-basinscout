@@ -19,6 +19,7 @@
 @import './buttons.css'; /* Button component styles */
 @import './panels.css'; /* Panel system styles */
 @import './pagination.css'; /* Pagination component styles */
+@import './scroll-instruction.css'; /* Scroll instruction bubble */
 @import './media-stack.css'; /* Media stack component styles */
 @import './panel-stats.css'; /* Panel-specific statistics */
 @import './animations.css'; /* Animation utilities */

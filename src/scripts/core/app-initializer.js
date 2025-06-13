@@ -12,7 +12,7 @@ import {
 import { PaginationController } from '../pagination.js';
 import { AccessibilityController } from '../accessibility.js';
 import { HeightMatcher } from '../utils/height-matcher.js';
-import { ScrollInstructions } from '../utils/scroll-instructions.js';
+import { ScrollInstruction } from '../utils/scroll-instruction.js';
 import { ContentManager } from './content-manager.js';
 import { ContentOverflowDetector } from '../utils/content-overflow-detector.js';
 import { gsap } from 'gsap';
@@ -108,8 +108,8 @@ export class AppInitializer {
       // Initialize pagination AFTER potential panel splitting
       PaginationController.initializePagination();
 
-      // Initialize scroll instructions after panels are set up
-      ScrollInstructions.initialize();
+      // Initialize scroll hint bubble after panels are set up
+      ScrollInstruction.initialize();
 
       // Now that pagination is initialized, validate the structure
       // Import and call StructureValidator dynamically to avoid circular dependencies
