@@ -7,6 +7,7 @@ class AppState {
     this.currentPanel = 0;
     this.isAnimating = false;
     this.lastNavigationTime = 0;
+    this.animationStartTime = 0;
 
     // Cached DOM elements
     this.sections = null;
@@ -82,6 +83,9 @@ class AppState {
 
   setAnimating(animating) {
     this.isAnimating = animating;
+    if (animating) {
+      this.animationStartTime = Date.now();
+    }
   }
 
   setLastNavigationTime(time) {
@@ -101,13 +105,23 @@ class AppState {
     return this.currentPanel > 0 || this.currentSection > 0;
   }
 
-  // Check if navigation is allowed (considering cooldown)
+  // Check if navigation is allowed (considering cooldown and animation block time)
   canNavigate() {
     const now = Date.now();
-    return (
-      !this.isAnimating &&
-      now - this.lastNavigationTime >= CONFIG.NAVIGATION_COOLDOWN_MS
-    );
+
+    // Check basic cooldown
+    if (now - this.lastNavigationTime < CONFIG.NAVIGATION_COOLDOWN_MS) {
+      return false;
+    }
+
+    // If not animating, allow navigation
+    if (!this.isAnimating) {
+      return true;
+    }
+
+    // If animating, allow navigation after the max block time has passed
+    const animationElapsed = now - this.animationStartTime;
+    return animationElapsed >= CONFIG.MAX_ANIMATION_BLOCK_TIME_MS;
   }
 
   // Get DOM elements

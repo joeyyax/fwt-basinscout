@@ -20,7 +20,10 @@ export const CONFIG = {
   // ===== CORE APPLICATION TIMING =====
 
   /** Minimum time between user navigation attempts (prevents rapid clicking spam) - in milliseconds */
-  NAVIGATION_COOLDOWN_MS: 200, // Reduced for better mobile responsiveness
+  NAVIGATION_COOLDOWN_MS: 0, // Reduced for better mobile responsiveness
+
+  /** Maximum time to block navigation during animations (allows early scroll interruption) - in milliseconds */
+  MAX_ANIMATION_BLOCK_TIME_MS: 2000,
 
   /** Delay before panel initialization begins (allows DOM to fully settle) - in milliseconds */
   PANEL_INITIALIZATION_DELAY_MS: 500, // Ensures DOM elements are ready for GSAP queries

@@ -11,7 +11,9 @@ export class ContentOverflowDetector {
    * Initialize content overflow detection for all sections
    */
   static initializeOverflowDetection() {
-    const sections = document.querySelectorAll('.section[data-use-overflow-detector="true"]');
+    const sections = document.querySelectorAll(
+      '.section[data-use-overflow-detector="true"]'
+    );
 
     log.info(
       EVENTS.CONTENT,
@@ -628,10 +630,8 @@ export class ContentOverflowDetector {
       return false;
     }
 
-    // Skip if viewport is too small (mobile)
-    if (window.innerWidth < 768) {
-      return false;
-    }
+    // Enable on mobile - removed the viewport width restriction
+    // The content should split on all devices when needed
 
     // Check if fonts and images are loaded
     if (document.readyState !== 'complete') {
@@ -659,10 +659,39 @@ export class ContentOverflowDetector {
       readyState: document.readyState,
     });
 
-    // Wait for fonts and layout to be stable
+    // On mobile, wait longer for address bar to potentially hide and viewport to stabilize
+    const isMobile = window.innerWidth < 768;
+    const delay = isMobile ? 500 : 100;
+
+    // Wait for fonts, layout, and mobile address bar to be stable
     setTimeout(() => {
       this.initializeOverflowDetection();
       this.updatePaginationAfterSplitting();
-    }, 100);
+    }, delay);
+
+    // On mobile, also listen for viewport changes (address bar show/hide)
+    if (isMobile) {
+      let resizeTimeout;
+      const handleResize = () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          log.debug(
+            EVENTS.CONTENT,
+            'Re-running overflow detection after viewport change',
+            {
+              viewport: `${window.innerWidth}x${window.innerHeight}`,
+            }
+          );
+          this.initializeOverflowDetection();
+          this.updatePaginationAfterSplitting();
+        }, 250);
+      };
+
+      window.addEventListener('resize', handleResize);
+      // Also listen for orientation changes
+      window.addEventListener('orientationchange', () => {
+        setTimeout(handleResize, 100);
+      });
+    }
   }
 }
