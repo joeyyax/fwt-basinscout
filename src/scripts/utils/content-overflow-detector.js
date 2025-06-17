@@ -89,7 +89,7 @@ export class ContentOverflowDetector {
     const marginBottom = parseFloat(panelStyles.marginBottom);
 
     // Reserve space for panel gaps and potential borders
-    const reservedSpace = 32; // 2rem gap as defined in panels.css
+    const reservedSpace = 16; // 2rem gap as defined in panels.css
 
     return (
       panelHeight -
