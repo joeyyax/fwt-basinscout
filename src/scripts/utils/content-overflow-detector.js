@@ -89,7 +89,7 @@ export class ContentOverflowDetector {
     const marginBottom = parseFloat(panelStyles.marginBottom);
 
     // Reserve space for panel gaps and potential borders
-    const reservedSpace = 16; // 2rem gap as defined in panels.css
+    const reservedSpace = 8; // 2rem gap as defined in panels.css
 
     return (
       panelHeight -
@@ -514,7 +514,8 @@ export class ContentOverflowDetector {
 
     // Create new panel element
     const newPanel = document.createElement('div');
-    newPanel.className = 'panel';
+    newPanel.className = 'panel panel-continuation';
+    newPanel.setAttribute('data-continuation-panel', 'true');
 
     // Copy relevant data attributes from original panel (except data-title which would be confusing)
     const attributesToCopy = ['data-media', 'data-marker', 'data-stats'];
@@ -566,6 +567,11 @@ export class ContentOverflowDetector {
       // Hide prose elements for initial animation
       const newProseElements = Array.from(prose.children);
       window.gsap.set(newProseElements, { opacity: 0, y: 50 });
+    } else {
+      // Fallback: ensure panel is hidden without GSAP
+      newPanel.style.opacity = '0';
+      newPanel.style.visibility = 'hidden';
+      newPanel.style.zIndex = '1';
     }
 
     log.info(

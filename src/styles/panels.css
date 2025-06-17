@@ -40,4 +40,16 @@
   .panel {
     @apply absolute top-0 left-0 w-full h-full flex flex-col gap-4;
   }
+
+  /* Continuation panels should be hidden by default until navigated to */
+  .panel-continuation {
+    @apply opacity-0 invisible;
+    z-index: 1;
+  }
+
+  /* Active panel should be visible */
+  .panel.active {
+    @apply opacity-100 visible;
+    z-index: 10;
+  }
 }
