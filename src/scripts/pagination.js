@@ -61,7 +61,7 @@ export class PaginationController {
       // Add click handler for section navigation
       indicator.addEventListener('click', () => {
         // Prevent double clicks during animations
-        if (appState.isCurrentlyAnimating()) return;
+        if (!appState.canNavigate()) return;
 
         // Show loading state immediately
         this.showLoadingState(i, 0, 'section');
@@ -73,7 +73,7 @@ export class PaginationController {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           // Prevent double clicks during animations
-          if (appState.isCurrentlyAnimating()) return;
+          if (!appState.canNavigate()) return;
 
           // Show loading state immediately
           this.showLoadingState(i, 0, 'section');
@@ -151,7 +151,7 @@ export class PaginationController {
       // Add click handler
       indicator.addEventListener('click', () => {
         // Prevent double clicks during animations
-        if (appState.isCurrentlyAnimating()) return;
+        if (!appState.canNavigate()) return;
 
         // Navigate directly without loading state for panels
         this.navigateToPanelDirect(sectionIndex, i);
@@ -162,7 +162,7 @@ export class PaginationController {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           // Prevent double clicks during animations
-          if (appState.isCurrentlyAnimating()) return;
+          if (!appState.canNavigate()) return;
 
           // Navigate directly without loading state for panels
           this.navigateToPanelDirect(sectionIndex, i);
@@ -310,7 +310,7 @@ export class PaginationController {
 
   // Navigate directly to a specific section (for section pagination clicks)
   static navigateToSectionDirect(targetSectionIndex) {
-    if (appState.isCurrentlyAnimating()) return;
+    if (!appState.canNavigate()) return;
 
     const currentSection = appState.getCurrentSection();
 
@@ -333,7 +333,7 @@ export class PaginationController {
 
   // Navigate directly to a specific panel (for panel pagination clicks)
   static navigateToPanelDirect(targetSectionIndex, targetPanelIndex) {
-    if (appState.isCurrentlyAnimating()) return;
+    if (!appState.canNavigate()) return;
 
     const currentSection = appState.getCurrentSection();
     const currentPanel = appState.getCurrentPanel();

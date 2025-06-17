@@ -29,14 +29,9 @@ export class NavigationController {
   // Navigate in a specific direction (wrapped for error handling)
   static navigate(direction) {
     return ErrorHandler.wrap(() => {
-      // Use mobile-responsive cooldown
       const now = Date.now();
-      const requiredCooldown = this.getNavigationCooldown();
 
-      if (
-        appState.isAnimating ||
-        now - appState.lastNavigationTime < requiredCooldown
-      ) {
+      if (!appState.canNavigate()) {
         // Debug navigation blocks in development only
         if (
           typeof window !== 'undefined' &&
@@ -45,7 +40,10 @@ export class NavigationController {
           const blockData = {
             isAnimating: appState.isAnimating,
             timeSinceLastNav: now - appState.lastNavigationTime,
-            cooldownRequired: requiredCooldown,
+            canNavigate: appState.canNavigate(),
+            animationElapsed: appState.isAnimating
+              ? now - appState.animationStartTime
+              : 'N/A',
             isMobile: this.isMobileDevice(),
           };
           log.debug(EVENTS.NAVIGATION, 'Navigation blocked', blockData);

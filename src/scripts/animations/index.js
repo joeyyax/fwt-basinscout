@@ -103,7 +103,7 @@ export class AnimationController {
 
   // Animate transition between panels/sections (MAIN COORDINATION METHOD)
   static animateToPanel(targetSectionIndex, targetPanelIndex, direction = 1) {
-    if (appState.isCurrentlyAnimating()) return;
+    if (!appState.canNavigate()) return;
 
     // Dismiss scroll instruction if visible when panel changes
     ScrollInstruction.dismissOnPanelChange();
