@@ -23,7 +23,7 @@ export const CONFIG = {
   NAVIGATION_COOLDOWN_MS: 0, // Reduced for better mobile responsiveness
 
   /** Maximum time to block navigation during animations (allows early scroll interruption) - in milliseconds */
-  MAX_ANIMATION_BLOCK_TIME_MS: 2000,
+  MAX_ANIMATION_BLOCK_TIME_MS: 1000,
 
   /** Delay before panel initialization begins (allows DOM to fully settle) - in milliseconds */
   PANEL_INITIALIZATION_DELAY_MS: 500, // Ensures DOM elements are ready for GSAP queries
