@@ -11,6 +11,7 @@ import { ErrorHandler } from './utils/error-handler.js';
 import { StructureValidator } from './utils/structure-validator.js';
 import { ContentManager } from './core/content-manager.js';
 import { OrientationOverlay } from './utils/orientation-overlay.js';
+import { CONFIG } from './constants.js';
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger, Observer);
@@ -29,14 +30,17 @@ function init() {
   // Initialize error handling first
   ErrorHandler.init();
 
-  // Initialize orientation overlay for mobile
-  OrientationOverlay.init();
-
   // Initialize app state and UI
   AppInitializer.init();
 
   // Setup scroll and input event listeners
   ScrollController.init();
+
+  // Initialize orientation overlay for mobile after everything else is loaded
+  // This ensures accurate window.innerHeight measurements
+  setTimeout(() => {
+    OrientationOverlay.init();
+  }, CONFIG.VIEWPORT_OVERLAY_INITIALIZATION_DELAY_MS);
 }
 
 // Start the application when DOM is ready

@@ -40,6 +40,9 @@ export const CONFIG = {
   /** Optional delay before showing main app content and starting animations (0 = disabled) - in milliseconds */
   APP_INITIALIZATION_DELAY_MS: 2000, // Global app delay for preloading/splash screens
 
+  /** Delay before initializing viewport overlay checks (prevents false positives from early DOM state) - in milliseconds */
+  VIEWPORT_OVERLAY_INITIALIZATION_DELAY_MS: 200, // Ensures accurate window.innerHeight measurements
+
   // ===== ANIMATION DURATIONS & TIMING =====
 
   ANIMATION: {
@@ -222,5 +225,24 @@ export const CONFIG = {
 
     /** Whether to prevent default scroll behavior */
     PREVENT_DEFAULT_SCROLL: true, // Prevents default scroll to enable custom navigation
+  },
+
+  // ===== VIEWPORT OVERLAY SYSTEM =====
+
+  VIEWPORT_OVERLAY: {
+    /** Minimum viewport height required for comfortable viewing - in pixels */
+    MIN_HEIGHT_THRESHOLD: 600, // Below this height, show "make window taller" message
+
+    /** Maximum screen width to consider a device as mobile - in pixels */
+    MOBILE_SCREEN_THRESHOLD: 768, // Devices with min(width, height) <= this are considered mobile
+
+    /** Delay for initial viewport check after layout stabilizes - in milliseconds */
+    LAYOUT_STABILITY_CHECK_INTERVAL: 50, // How often to check if layout has stabilized
+
+    /** Number of consecutive stable measurements required before trusting viewport - count */
+    REQUIRED_STABLE_MEASUREMENTS: 3, // Layout must be stable for this many checks
+
+    /** Initial delay before starting layout stability checks - in milliseconds */
+    LAYOUT_STABILITY_INITIAL_DELAY: 100, // Wait before starting stability checks
   },
 };

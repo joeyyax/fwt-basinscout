@@ -3,6 +3,8 @@
  * Shows prompts for mobile orientation and browser height issues
  */
 
+import { CONFIG } from '../constants.js';
+
 export class OrientationOverlay {
   static orientationOverlay = null;
   static heightOverlay = null;
@@ -14,7 +16,12 @@ export class OrientationOverlay {
     console.log('ViewportOverlay: Initializing...');
     this.createOrientationOverlay();
     this.createHeightOverlay();
-    this.checkViewport();
+
+    // Wait for layout to be complete before initial check
+    // This prevents false positives from inaccurate window.innerHeight
+    this.waitForStableLayout(() => {
+      this.checkViewport();
+    });
 
     // Listen for orientation changes
     window.addEventListener('orientationchange', () => {
@@ -33,6 +40,50 @@ export class OrientationOverlay {
     console.log('ViewportOverlay: Initialization complete');
   }
 
+  // Wait for layout to stabilize before checking viewport
+  static waitForStableLayout(callback) {
+    let lastHeight = 0;
+    let stableCount = 0;
+    const requiredStableChecks =
+      CONFIG.VIEWPORT_OVERLAY.REQUIRED_STABLE_MEASUREMENTS;
+
+    const checkStability = () => {
+      const currentHeight = Math.max(
+        window.innerHeight,
+        document.documentElement.clientHeight
+      );
+
+      if (currentHeight === lastHeight && currentHeight > 0) {
+        stableCount++;
+        if (stableCount >= requiredStableChecks) {
+          console.log(
+            'ViewportOverlay: Layout stable, height =',
+            currentHeight
+          );
+          callback();
+          return;
+        }
+      } else {
+        stableCount = 0;
+        lastHeight = currentHeight;
+      }
+
+      // Check again in a short interval, max 10 attempts
+      if (stableCount < requiredStableChecks) {
+        setTimeout(
+          checkStability,
+          CONFIG.VIEWPORT_OVERLAY.LAYOUT_STABILITY_CHECK_INTERVAL
+        );
+      }
+    };
+
+    // Start checking after initial delay
+    setTimeout(
+      checkStability,
+      CONFIG.VIEWPORT_OVERLAY.LAYOUT_STABILITY_INITIAL_DELAY
+    );
+  }
+
   // Check if device is mobile and in landscape mode
   static shouldShowOrientationOverlay() {
     // Check if device has touch capability (mobile indicator)
@@ -47,7 +98,9 @@ export class OrientationOverlay {
 
     // Mobile device detection - either small screen OR touch device
     const isMobileDevice =
-      hasTouchScreen && Math.min(screenWidth, screenHeight) <= 768;
+      hasTouchScreen &&
+      Math.min(screenWidth, screenHeight) <=
+        CONFIG.VIEWPORT_OVERLAY.MOBILE_SCREEN_THRESHOLD;
 
     // Landscape detection - viewport width is greater than height
     const isLandscape = viewportWidth > viewportHeight;
@@ -65,7 +118,13 @@ export class OrientationOverlay {
   // Check if browser window is too short
   static shouldShowHeightOverlay() {
     const viewportHeight = window.innerHeight;
-    const minHeight = 600; // Minimum height needed for comfortable viewing
+    const documentHeight = document.documentElement.clientHeight;
+    const bodyHeight = document.body.clientHeight;
+    const minHeight = CONFIG.VIEWPORT_OVERLAY.MIN_HEIGHT_THRESHOLD;
+
+    // Use the most reliable height measurement
+    // documentElement.clientHeight is usually most accurate for actual viewport
+    const reliableHeight = documentHeight || viewportHeight;
 
     // Don't show on mobile devices (they handle height differently)
     const hasTouchScreen =
@@ -73,10 +132,27 @@ export class OrientationOverlay {
     const screenWidth = window.screen.width;
     const screenHeight = window.screen.height;
     const isMobileDevice =
-      hasTouchScreen && Math.min(screenWidth, screenHeight) <= 768;
+      hasTouchScreen &&
+      Math.min(screenWidth, screenHeight) <=
+        CONFIG.VIEWPORT_OVERLAY.MOBILE_SCREEN_THRESHOLD;
 
     // Show if not mobile and viewport is too short
-    const shouldShow = !isMobileDevice && viewportHeight < minHeight;
+    const shouldShow = !isMobileDevice && reliableHeight < minHeight;
+
+    // Debug logging to help identify false positives
+    if (shouldShow) {
+      console.log('HeightOverlay Debug:', {
+        viewportHeight,
+        documentHeight,
+        bodyHeight,
+        reliableHeight,
+        minHeight,
+        isMobileDevice,
+        hasTouchScreen,
+        screenDimensions: `${screenWidth}x${screenHeight}`,
+        userAgent: window.navigator.userAgent.substring(0, 100),
+      });
+    }
 
     return shouldShow;
   }
