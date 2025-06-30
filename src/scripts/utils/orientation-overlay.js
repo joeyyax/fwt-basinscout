@@ -120,7 +120,7 @@ export class OrientationOverlay {
     const viewportHeight = window.innerHeight;
     const documentHeight = document.documentElement.clientHeight;
     const bodyHeight = document.body.clientHeight;
-    const minHeight = CONFIG.VIEWPORT_OVERLAY.MIN_HEIGHT_THRESHOLD;
+    const baseMinHeight = CONFIG.VIEWPORT_OVERLAY.MIN_HEIGHT_THRESHOLD;
 
     // Use the most reliable height measurement
     // documentElement.clientHeight is usually most accurate for actual viewport
@@ -136,8 +136,17 @@ export class OrientationOverlay {
       Math.min(screenWidth, screenHeight) <=
         CONFIG.VIEWPORT_OVERLAY.MOBILE_SCREEN_THRESHOLD;
 
-    // Show if not mobile and viewport is too short
-    const shouldShow = !isMobileDevice && reliableHeight < minHeight;
+    // Calculate the effective minimum height with appropriate buffer
+    // Mobile devices get a larger buffer for dynamic UI elements (address bars, nav bars)
+    // Desktop devices get a smaller buffer for browser chrome (bookmarks bar, etc.)
+    const uiBuffer = isMobileDevice
+      ? CONFIG.VIEWPORT_OVERLAY.MOBILE_UI_BUFFER
+      : CONFIG.VIEWPORT_OVERLAY.DESKTOP_UI_BUFFER;
+
+    const effectiveMinHeight = baseMinHeight + uiBuffer;
+
+    // Show if not mobile and viewport is too short (accounting for UI buffer)
+    const shouldShow = !isMobileDevice && reliableHeight < effectiveMinHeight;
 
     // Debug logging to help identify false positives
     if (shouldShow) {
@@ -146,7 +155,9 @@ export class OrientationOverlay {
         documentHeight,
         bodyHeight,
         reliableHeight,
-        minHeight,
+        baseMinHeight,
+        uiBuffer,
+        effectiveMinHeight,
         isMobileDevice,
         hasTouchScreen,
         screenDimensions: `${screenWidth}x${screenHeight}`,

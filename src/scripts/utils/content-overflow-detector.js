@@ -5,6 +5,7 @@
  */
 
 import { log, EVENTS } from './logger.js';
+import { CONFIG } from '../constants.js';
 
 export class ContentOverflowDetector {
   /**
@@ -91,14 +92,33 @@ export class ContentOverflowDetector {
     // Reserve space for panel gaps and potential borders
     const reservedSpace = 8; // 2rem gap as defined in panels.css
 
-    return (
+    // Detect mobile device to apply appropriate UI buffer
+    const hasTouchScreen =
+      'ontouchstart' in window || window.navigator.maxTouchPoints > 0;
+    const screenWidth = window.screen.width;
+    const screenHeight = window.screen.height;
+    const isMobileDevice =
+      hasTouchScreen &&
+      Math.min(screenWidth, screenHeight) <=
+        CONFIG.VIEWPORT_OVERLAY.MOBILE_SCREEN_THRESHOLD;
+
+    // Apply additional buffer for mobile browser UI elements that can't be accounted for by dvh
+    // This helps prevent content clipping when browser UI appears/disappears
+    const mobileUIBuffer = isMobileDevice
+      ? CONFIG.VIEWPORT_OVERLAY.MOBILE_UI_BUFFER
+      : 0;
+
+    const availableHeight =
       panelHeight -
       paddingTop -
       paddingBottom -
       marginTop -
       marginBottom -
-      reservedSpace
-    );
+      reservedSpace -
+      mobileUIBuffer;
+
+    // Ensure we don't return negative height
+    return Math.max(0, availableHeight);
   }
 
   /**
@@ -163,11 +183,7 @@ export class ContentOverflowDetector {
     prose.innerHTML = '';
 
     // Add first group to original panel
-    panelGroups[0].forEach((group) => {
-      group.elements.forEach((element) => {
-        prose.appendChild(element);
-      });
-    });
+    this.addGroupsToProse(prose, panelGroups[0]);
 
     // Create continuation panels
     for (let i = 1; i < panelGroups.length; i++) {
@@ -182,8 +198,62 @@ export class ContentOverflowDetector {
   }
 
   /**
+   * Add semantic groups to a prose container, handling stats wrapper reconstruction
+   * @param {HTMLElement} prose - The prose container to add content to
+   * @param {Array<Object>} groups - Array of semantic groups to add
+   */
+  static addGroupsToProse(prose, groups) {
+    let currentStatsWrapper = null;
+
+    groups.forEach((group) => {
+      if (group.type === 'individual-stat') {
+        // Individual stat needs to be wrapped in a stats container
+        if (!currentStatsWrapper) {
+          // Create new stats wrapper
+          currentStatsWrapper = document.createElement('div');
+          currentStatsWrapper.className = 'stats';
+
+          // Copy attributes from original stats container if available
+          if (group.originalStatsContainer) {
+            // Copy data attributes and other relevant attributes
+            Array.from(group.originalStatsContainer.attributes).forEach(
+              (attr) => {
+                if (
+                  attr.name.startsWith('data-') ||
+                  ['id', 'class'].includes(attr.name)
+                ) {
+                  if (attr.name === 'class') {
+                    currentStatsWrapper.className = attr.value; // Use original class
+                  } else if (attr.name !== 'id') {
+                    // Don't duplicate IDs
+                    currentStatsWrapper.setAttribute(attr.name, attr.value);
+                  }
+                }
+              }
+            );
+          }
+
+          prose.appendChild(currentStatsWrapper);
+        }
+
+        // Add individual stat to the current stats wrapper
+        group.elements.forEach((element) => {
+          currentStatsWrapper.appendChild(element);
+        });
+      } else {
+        // Non-stat group - finish any current stats wrapper and add normally
+        currentStatsWrapper = null;
+        group.elements.forEach((element) => {
+          prose.appendChild(element);
+        });
+      }
+    });
+  }
+
+  /**
    * Create semantic groups from prose elements
    * Groups related elements like pretitle + h3, or standalone elements
+   * Special handling for stats containers to allow individual stat splitting
    * @param {Array<HTMLElement>} elements - Array of prose elements
    * @returns {Array<Object>} Array of semantic groups
    */
@@ -195,12 +265,49 @@ export class ContentOverflowDetector {
       const tagName = element.tagName.toLowerCase();
       const isPretitle = element.classList.contains('pretitle');
       const isHeading = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tagName);
+      const isStatsContainer = element.classList.contains('stats');
       const nextElement = elements[elementIndex + 1];
       const nextIsHeading =
         nextElement &&
         ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(
           nextElement.tagName.toLowerCase()
         );
+
+      // Special handling for stats containers - break them into individual stats
+      if (isStatsContainer) {
+        // Finish current group if it exists
+        if (currentGroup) {
+          groups.push(currentGroup);
+          currentGroup = null;
+        }
+
+        // Get individual stats from the container
+        const individualStats = Array.from(element.querySelectorAll('.stat'));
+
+        if (individualStats.length > 0) {
+          // Create individual groups for each stat
+          individualStats.forEach((stat, statIndex) => {
+            groups.push({
+              type: 'individual-stat',
+              elements: [stat],
+              startsWith: 'stat',
+              endsAt: elementIndex,
+              statIndex,
+              originalStatsContainer: element,
+              needsStatsWrapper: true,
+            });
+          });
+        } else {
+          // Fallback: treat entire stats container as one group if no individual stats found
+          groups.push({
+            type: 'stats-container',
+            elements: [element],
+            startsWith: tagName,
+            endsAt: elementIndex,
+          });
+        }
+        return; // Continue to next element
+      }
 
       // Start new group if:
       // 1. This is a pretitle
@@ -266,9 +373,12 @@ export class ContentOverflowDetector {
         elementCount: g.elements.length,
         startsWith: g.startsWith,
         isPretitleHeadingGroup: g.type === 'pretitle-heading-group',
+        isIndividualStat: g.type === 'individual-stat',
+        needsStatsWrapper: g.needsStatsWrapper,
         elements: g.elements.map((el) => ({
           tag: el.tagName.toLowerCase(),
           isPretitle: el.classList.contains('pretitle'),
+          isStat: el.classList.contains('stat'),
           text: `${el.textContent.substring(0, 50)}...`,
         })),
       })),
@@ -531,12 +641,8 @@ export class ContentOverflowDetector {
 
     // No continuation indicator needed - content should flow naturally
 
-    // Add content groups to prose container
-    panelGroups.forEach((group) => {
-      group.elements.forEach((element) => {
-        prose.appendChild(element);
-      });
-    });
+    // Add content groups to prose container using stats-aware helper
+    this.addGroupsToProse(prose, panelGroups);
 
     newPanel.appendChild(prose);
 

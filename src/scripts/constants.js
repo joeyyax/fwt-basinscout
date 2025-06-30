@@ -233,6 +233,12 @@ export const CONFIG = {
     /** Minimum viewport height required for comfortable viewing - in pixels */
     MIN_HEIGHT_THRESHOLD: 600, // Below this height, show "make window taller" message
 
+    /** Buffer space to account for mobile browser UI elements (address bar, navigation, etc.) - in pixels */
+    MOBILE_UI_BUFFER: 40, // Additional space reserved for dynamic mobile browser UI elements
+
+    /** Buffer space to account for desktop browser UI elements (bookmarks bar, etc.) - in pixels */
+    DESKTOP_UI_BUFFER: 20, // Additional space reserved for desktop browser chrome
+
     /** Maximum screen width to consider a device as mobile - in pixels */
     MOBILE_SCREEN_THRESHOLD: 768, // Devices with min(width, height) <= this are considered mobile
 
