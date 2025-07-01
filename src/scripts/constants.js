@@ -234,7 +234,7 @@ export const CONFIG = {
     MIN_HEIGHT_THRESHOLD: 600, // Below this height, show "make window taller" message
 
     /** Buffer space to account for mobile browser UI elements (address bar, navigation, etc.) - in pixels */
-    MOBILE_UI_BUFFER: 40, // Additional space reserved for dynamic mobile browser UI elements
+    MOBILE_UI_BUFFER: 60, // Additional space reserved for dynamic mobile browser UI elements
 
     /** Buffer space to account for desktop browser UI elements (bookmarks bar, etc.) - in pixels */
     DESKTOP_UI_BUFFER: 20, // Additional space reserved for desktop browser chrome
