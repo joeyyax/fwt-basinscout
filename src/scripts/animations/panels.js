@@ -273,6 +273,30 @@ export class PanelAnimationController {
               }
             });
 
+            // Ensure donut charts animate even if stats don't get split
+            // This handles the case where stats fit in one panel and don't trigger the onComplete callback above
+            timeline.call(() => {
+              // Find all stats containers with donut charts in the initial panel
+              const statsContainers = firstPanel.querySelectorAll('[data-stagger-children="true"]');
+              statsContainers.forEach((container) => {
+                // Check if this container has donut charts
+                const donutCharts = container.querySelectorAll('.stat-donut-chart .circle');
+                if (donutCharts.length > 0) {
+                  if (
+                    typeof window !== 'undefined' &&
+                    window.location.hostname === 'localhost'
+                  ) {
+                    log.debug(
+                      EVENTS.ANIMATION,
+                      'Ensuring donut charts animate in initial panel',
+                      { className: container.className, donutCount: donutCharts.length }
+                    );
+                  }
+                  PanelStatsAnimationController.animateDonutCharts(container);
+                }
+              });
+            }, null, CONFIG.ANIMATION.INITIAL_PANEL_CONTENT_DELAY + CONFIG.ANIMATION.CONTENT_STAGGER_DELAY + 0.2);
+
             // Scroll instructions are now handled independently by ScrollInstruction
             // No need to tie them to panel animations
 
