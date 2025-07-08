@@ -1,6 +1,7 @@
 /**
  * Viewport Overlay System
- * Shows prompts for mobile orientation and browser height issues
+ * Shows prompts for mobile orientation and screen height based on config toggles
+ * Control via CONFIG.VIEWPORT_OVERLAY.ENABLE_ORIENTATION_CHECK and ENABLE_HEIGHT_CHECK
  */
 
 import { CONFIG } from '../constants.js';
@@ -14,8 +15,25 @@ export class OrientationOverlay {
   // Initialize viewport detection
   static init() {
     console.log('ViewportOverlay: Initializing...');
-    this.createOrientationOverlay();
-    this.createHeightOverlay();
+
+    // Check if any overlays are enabled
+    if (
+      !CONFIG.VIEWPORT_OVERLAY.ENABLE_ORIENTATION_CHECK &&
+      !CONFIG.VIEWPORT_OVERLAY.ENABLE_HEIGHT_CHECK
+    ) {
+      console.log(
+        'ViewportOverlay: Both orientation and height checks disabled, skipping initialization'
+      );
+      return;
+    }
+
+    // Create overlays based on enabled features
+    if (CONFIG.VIEWPORT_OVERLAY.ENABLE_ORIENTATION_CHECK) {
+      this.createOrientationOverlay();
+    }
+    if (CONFIG.VIEWPORT_OVERLAY.ENABLE_HEIGHT_CHECK) {
+      this.createHeightOverlay();
+    }
 
     // Wait for layout to be complete before initial check
     // This prevents false positives from inaccurate window.innerHeight
@@ -86,6 +104,11 @@ export class OrientationOverlay {
 
   // Check if device is mobile and in landscape mode
   static shouldShowOrientationOverlay() {
+    // Check if orientation overlay is enabled in config
+    if (!CONFIG.VIEWPORT_OVERLAY.ENABLE_ORIENTATION_CHECK) {
+      return false;
+    }
+
     // Check if device has touch capability (mobile indicator)
     const hasTouchScreen =
       'ontouchstart' in window || window.navigator.maxTouchPoints > 0;
@@ -117,16 +140,17 @@ export class OrientationOverlay {
 
   // Check if browser window is too short
   static shouldShowHeightOverlay() {
-    const viewportHeight = window.innerHeight;
-    const documentHeight = document.documentElement.clientHeight;
-    const bodyHeight = document.body.clientHeight;
-    const baseMinHeight = CONFIG.VIEWPORT_OVERLAY.MIN_HEIGHT_THRESHOLD;
+    // Check if height overlay is enabled in config
+    if (!CONFIG.VIEWPORT_OVERLAY.ENABLE_HEIGHT_CHECK) {
+      return false;
+    }
 
-    // Use the most reliable height measurement
-    // documentElement.clientHeight is usually most accurate for actual viewport
-    const reliableHeight = documentHeight || viewportHeight;
+    const viewportHeight = Math.max(
+      window.innerHeight,
+      document.documentElement.clientHeight
+    );
 
-    // Don't show on mobile devices (they handle height differently)
+    // Detect mobile device to apply appropriate UI buffer
     const hasTouchScreen =
       'ontouchstart' in window || window.navigator.maxTouchPoints > 0;
     const screenWidth = window.screen.width;
@@ -136,65 +160,49 @@ export class OrientationOverlay {
       Math.min(screenWidth, screenHeight) <=
         CONFIG.VIEWPORT_OVERLAY.MOBILE_SCREEN_THRESHOLD;
 
-    // Calculate the effective minimum height with appropriate buffer
-    // Mobile devices get a larger buffer for dynamic UI elements (address bars, nav bars)
-    // Desktop devices get a smaller buffer for browser chrome (bookmarks bar, etc.)
     const uiBuffer = isMobileDevice
       ? CONFIG.VIEWPORT_OVERLAY.MOBILE_UI_BUFFER
       : CONFIG.VIEWPORT_OVERLAY.DESKTOP_UI_BUFFER;
 
-    const effectiveMinHeight = baseMinHeight + uiBuffer;
+    const effectiveMinHeight =
+      CONFIG.VIEWPORT_OVERLAY.MIN_HEIGHT_THRESHOLD + uiBuffer;
 
-    // Show if not mobile and viewport is too short (accounting for UI buffer)
-    const shouldShow = !isMobileDevice && reliableHeight < effectiveMinHeight;
-
-    // Debug logging to help identify false positives
-    if (shouldShow) {
-      console.log('HeightOverlay Debug:', {
-        viewportHeight,
-        documentHeight,
-        bodyHeight,
-        reliableHeight,
-        baseMinHeight,
-        uiBuffer,
-        effectiveMinHeight,
-        isMobileDevice,
-        hasTouchScreen,
-        screenDimensions: `${screenWidth}x${screenHeight}`,
-        userAgent: window.navigator.userAgent.substring(0, 100),
-      });
-    }
-
-    return shouldShow;
+    return viewportHeight < effectiveMinHeight;
   }
 
-  // Check both orientation and height and show appropriate overlay
+  // Check orientation and height, show appropriate overlays based on config
   static checkViewport() {
     const shouldShowOrientation = this.shouldShowOrientationOverlay();
     const shouldShowHeight = this.shouldShowHeightOverlay();
 
-    // Update orientation overlay
-    const phoneIcon = this.orientationOverlay?.querySelector('.phone-icon');
-    if (phoneIcon) {
+    // Update orientation overlay if enabled
+    if (CONFIG.VIEWPORT_OVERLAY.ENABLE_ORIENTATION_CHECK) {
+      const phoneIcon = this.orientationOverlay?.querySelector('.phone-icon');
+      if (phoneIcon) {
+        if (shouldShowOrientation) {
+          phoneIcon.classList.remove('correct-orientation');
+          phoneIcon.classList.add('wrong-orientation');
+        } else {
+          phoneIcon.classList.remove('wrong-orientation');
+          phoneIcon.classList.add('correct-orientation');
+        }
+      }
+
+      // Show/hide orientation overlay
       if (shouldShowOrientation) {
-        phoneIcon.classList.remove('correct-orientation');
-        phoneIcon.classList.add('wrong-orientation');
+        this.showOrientationOverlay();
       } else {
-        phoneIcon.classList.remove('wrong-orientation');
-        phoneIcon.classList.add('correct-orientation');
+        this.hideOrientationOverlay();
       }
     }
 
-    // Orientation overlay takes priority over height overlay
-    if (shouldShowOrientation) {
-      this.showOrientationOverlay();
-      this.hideHeightOverlay();
-    } else if (shouldShowHeight) {
-      this.hideOrientationOverlay();
-      this.showHeightOverlay();
-    } else {
-      this.hideOrientationOverlay();
-      this.hideHeightOverlay();
+    // Handle height overlay if enabled
+    if (CONFIG.VIEWPORT_OVERLAY.ENABLE_HEIGHT_CHECK) {
+      if (shouldShowHeight) {
+        this.showHeightOverlay();
+      } else {
+        this.hideHeightOverlay();
+      }
     }
   }
 
@@ -231,24 +239,17 @@ export class OrientationOverlay {
     this.heightOverlay.className = 'viewport-overlay';
     this.heightOverlay.innerHTML = `
       <div class="overlay-content">
-        <div class="browser-icon">
-          <svg width="60" height="50" viewBox="0 0 60 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Browser window frame - will animate height -->
-            <rect x="4" y="6" width="52" rx="4" stroke="white" stroke-width="2" fill="none" class="browser-window">
-              <animate attributeName="height" values="28;38;28" dur="3s" repeatCount="indefinite"/>
-            </rect>
-            <!-- Browser content area - will animate height -->
-            <rect x="8" y="12" width="44" rx="1" fill="white" opacity="0.3" class="browser-content">
-              <animate attributeName="height" values="16;26;16" dur="3s" repeatCount="indefinite"/>
-            </rect>
-            <!-- Browser buttons - stay fixed size and position -->
-            <circle cx="12" cy="10" r="1.5" fill="white"/>
-            <circle cx="16" cy="10" r="1.5" fill="white"/>
-            <circle cx="20" cy="10" r="1.5" fill="white"/>
+        <div class="expand-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="15" width="24" height="10" rx="2" stroke="white" stroke-width="2" fill="none"/>
+            <path d="M15 9 L20 4 L25 9" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15 31 L20 36 L25 31" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="20" y1="4" x2="20" y2="15" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <line x1="20" y1="25" x2="20" y2="36" stroke="white" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </div>
         <h2>Please Make Your Window Taller</h2>
-        <p>This website needs more vertical space to display properly. Please resize your browser window.</p>
+        <p>This website needs more vertical space to display properly. Please expand your browser window or use a device with a taller screen.</p>
       </div>
     `;
 
@@ -281,7 +282,7 @@ export class OrientationOverlay {
     this.isShowingOrientation = false;
     this.orientationOverlay.style.display = 'none';
 
-    // Only restore normal interaction if no overlay is showing
+    // Only restore normal interaction if height overlay is also hidden
     if (!this.isShowingHeight) {
       document.body.classList.remove('viewport-prompt-active');
       document.body.style.overflow = '';
@@ -317,7 +318,7 @@ export class OrientationOverlay {
     this.isShowingHeight = false;
     this.heightOverlay.style.display = 'none';
 
-    // Only restore normal interaction if no overlay is showing
+    // Only restore normal interaction if orientation overlay is also hidden
     if (!this.isShowingOrientation) {
       document.body.classList.remove('viewport-prompt-active');
       document.body.style.overflow = '';
