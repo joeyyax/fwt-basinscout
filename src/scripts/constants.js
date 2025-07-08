@@ -230,6 +230,12 @@ export const CONFIG = {
   // ===== VIEWPORT OVERLAY SYSTEM =====
 
   VIEWPORT_OVERLAY: {
+    /** Enable/disable the mobile orientation overlay prompt (landscape -> portrait) */
+    ENABLE_ORIENTATION_CHECK: true, // Set to false to disable orientation prompts entirely
+
+    /** Enable/disable the screen height overlay prompt (too short window) */
+    ENABLE_HEIGHT_CHECK: false, // Set to false to disable height prompts entirely
+
     /** Minimum viewport height required for comfortable viewing - in pixels */
     MIN_HEIGHT_THRESHOLD: 600, // Below this height, show "make window taller" message
 
