@@ -183,7 +183,7 @@ export class PanelAnimationController {
                 y: 50,
               },
               {
-                opacity: (i, el) => (el.tagName === 'P' ? 0.9 : 1), // Paragraphs get 0.9, headings get 1
+                opacity: 1,
                 y: 0,
                 duration: CONFIG.ANIMATION.CONTENT_ENTER_DURATION,
                 stagger: CONFIG.ANIMATION.CONTENT_STAGGER_DELAY,
@@ -483,7 +483,7 @@ export class PanelAnimationController {
             setTimeout(() => {
               targetElements.forEach((el) => {
                 if (window.getComputedStyle(el).opacity === '0') {
-                  el.style.opacity = el.tagName === 'P' ? '0.9' : '1';
+                  el.style.opacity = '1';
                   el.style.transform = 'translateY(0)';
                 }
               });
@@ -613,7 +613,7 @@ export class PanelAnimationController {
         y: direction > 0 ? 50 : -50,
       },
       {
-        opacity: (i, el) => (el.tagName === 'P' ? 0.9 : 1), // Paragraphs get 0.9, headings get 1
+        opacity: 1,
         y: 0,
         duration: CONFIG.ANIMATION.CONTENT_ENTER_DURATION,
         stagger: CONFIG.ANIMATION.CONTENT_STAGGER_DELAY,
@@ -629,7 +629,7 @@ export class PanelAnimationController {
             if (isIOSSafari) {
               elements.forEach((el) => {
                 if (window.getComputedStyle(el).opacity === '0') {
-                  el.style.opacity = el.tagName === 'P' ? '0.9' : '1';
+                  el.style.opacity = '1';
                   el.style.transform = 'translateY(0)';
                 }
               });
@@ -795,7 +795,7 @@ export class PanelAnimationController {
           y: 50,
         },
         {
-          opacity: (i, el) => (el.tagName === 'P' ? 0.9 : 1),
+          opacity: 1,
           y: 0,
           duration: CONFIG.ANIMATION.CONTENT_ENTER_DURATION,
           stagger: CONFIG.ANIMATION.CONTENT_STAGGER_DELAY,
