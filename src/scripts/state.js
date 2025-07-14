@@ -7,6 +7,7 @@ class AppState {
     this.currentPanel = 0;
     this.isAnimating = false;
     this.lastNavigationTime = 0;
+    this.lastNavigationDirection = 0; // Track last navigation direction for smarter cooldown
     this.animationStartTime = 0;
 
     // Cached DOM elements
@@ -92,6 +93,10 @@ class AppState {
     this.lastNavigationTime = time;
   }
 
+  setLastNavigationDirection(direction) {
+    this.lastNavigationDirection = direction;
+  }
+
   // Navigation state checks
   canNavigateForward() {
     const currentSectionPanels = this.getPanelsInSection(this.currentSection);
@@ -106,11 +111,11 @@ class AppState {
   }
 
   // Check if navigation is allowed (considering cooldown and animation block time)
-  canNavigate() {
+  canNavigate(cooldownMs = CONFIG.NAVIGATION_COOLDOWN_MS) {
     const now = Date.now();
 
     // Check basic cooldown
-    if (now - this.lastNavigationTime < CONFIG.NAVIGATION_COOLDOWN_MS) {
+    if (now - this.lastNavigationTime < cooldownMs) {
       return false;
     }
 

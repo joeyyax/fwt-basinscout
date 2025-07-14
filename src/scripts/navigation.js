@@ -22,36 +22,16 @@ export class NavigationController {
   static getNavigationCooldown() {
     // Significantly reduce cooldown for mobile devices for better responsiveness
     return this.isMobileDevice()
-      ? CONFIG.NAVIGATION_COOLDOWN_MS * 0.5 // 100ms for mobile (50% of 200ms)
-      : CONFIG.NAVIGATION_COOLDOWN_MS; // 200ms for desktop
-  }
-
-  // Navigate in a specific direction (wrapped for error handling)
+      ? CONFIG.NAVIGATION_COOLDOWN_MS * 0.5 // 50ms for mobile (50% of 100ms)
+      : CONFIG.NAVIGATION_COOLDOWN_MS; // 100ms for desktop
+  } // Navigate in a specific direction (wrapped for error handling)
   static navigate(direction) {
     return ErrorHandler.wrap(() => {
       const now = Date.now();
 
-      if (!appState.canNavigate()) {
-        // Debug navigation blocks in development only
-        if (
-          typeof window !== 'undefined' &&
-          window.location.hostname === 'localhost'
-        ) {
-          const blockData = {
-            isAnimating: appState.isAnimating,
-            timeSinceLastNav: now - appState.lastNavigationTime,
-            canNavigate: appState.canNavigate(),
-            animationElapsed: appState.isAnimating
-              ? now - appState.animationStartTime
-              : 'N/A',
-            isMobile: this.isMobileDevice(),
-          };
-          log.debug(EVENTS.NAVIGATION, 'Navigation blocked', blockData);
-        }
-        return;
-      }
-
+      // Update last navigation time and direction - cooldown check handled by throttledNavigate()
       appState.setLastNavigationTime(now);
+      appState.setLastNavigationDirection(direction);
 
       if (direction > 0) {
         this.navigateForward();
@@ -127,8 +107,9 @@ export class NavigationController {
 
   // Navigate to a specific section (used by nav dots)
   static goToSection(sectionIndex) {
+    const cooldown = this.getNavigationCooldown();
     if (
-      !appState.canNavigate() ||
+      !appState.canNavigate(cooldown) ||
       sectionIndex === appState.getCurrentSection()
     ) {
       return;
@@ -141,7 +122,8 @@ export class NavigationController {
 
   // Throttled navigation wrapper
   static throttledNavigate(direction) {
-    if (appState.canNavigate()) {
+    const cooldown = this.getNavigationCooldown();
+    if (appState.canNavigate(cooldown)) {
       this.navigate(direction);
     }
   }
