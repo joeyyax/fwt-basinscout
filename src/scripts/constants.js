@@ -20,7 +20,7 @@ export const CONFIG = {
   // ===== CORE APPLICATION TIMING =====
 
   /** Minimum time between user navigation attempts (prevents rapid clicking spam) - in milliseconds */
-  NAVIGATION_COOLDOWN_MS: 0, // Reduced for better mobile responsiveness
+  NAVIGATION_COOLDOWN_MS: 100, // Balanced cooldown for responsive scrolling
 
   /** Maximum time to block navigation during animations (allows early scroll interruption) - in milliseconds */
   MAX_ANIMATION_BLOCK_TIME_MS: 1000,

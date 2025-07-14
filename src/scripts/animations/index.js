@@ -99,11 +99,10 @@ export class AnimationController {
   // Animate initial title
   static animateInitialTitle() {
     return TitleAnimationController.animateInitialTitle();
-  }
-
-  // Animate transition between panels/sections (MAIN COORDINATION METHOD)
+  } // Animate transition between panels/sections (MAIN COORDINATION METHOD)
   static animateToPanel(targetSectionIndex, targetPanelIndex, direction = 1) {
-    if (!appState.canNavigate()) return;
+    // Prevent multiple simultaneous animations
+    if (appState.isAnimating) return;
 
     // Dismiss scroll instruction if visible when panel changes
     ScrollInstruction.dismissOnPanelChange();
