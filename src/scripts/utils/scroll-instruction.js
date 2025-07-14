@@ -5,14 +5,17 @@
  */
 
 import { CONFIG } from '../constants.js';
+import { NavigationController } from '../navigation.js';
 import { log, EVENTS } from './logger.js';
 
 export class ScrollInstruction {
   static instructionElement = null;
   static showTimeout = null;
   static hideTimeout = null;
+  static inactivityTimeout = null;
   static isVisible = false;
   static isPermanentlyDismissed = false;
+  static lastActivityTime = 0;
 
   /**
    * Initialize the scroll instruction system
@@ -80,7 +83,54 @@ export class ScrollInstruction {
   }
 
   /**
-   * Show the scroll instruction with slide-up animation
+   * Schedule the instruction to reappear after panel transition
+   * This is called when a new panel becomes active to restart the inactivity timer
+   */
+  static scheduleInactivityDisplay() {
+    // Don't schedule if permanently dismissed or inactivity timeout is disabled
+    if (
+      this.isPermanentlyDismissed ||
+      CONFIG.ANIMATION.SCROLL_INSTRUCTION_INACTIVITY_TIMEOUT <= 0
+    ) {
+      return;
+    }
+
+    // Clear any existing inactivity timeout
+    if (this.inactivityTimeout) {
+      clearTimeout(this.inactivityTimeout);
+      this.inactivityTimeout = null;
+    }
+
+    // Update last activity time
+    this.lastActivityTime = Date.now();
+
+    // Schedule reappearance after inactivity timeout
+    this.inactivityTimeout = setTimeout(() => {
+      // Only show if still inactive and not permanently dismissed
+      if (!this.isPermanentlyDismissed && !this.isVisible) {
+        this.showInstruction();
+      }
+    }, CONFIG.ANIMATION.SCROLL_INSTRUCTION_INACTIVITY_TIMEOUT * 1000);
+
+    log.debug(EVENTS.UI, 'Scroll instruction inactivity timer started', {
+      timeout: CONFIG.ANIMATION.SCROLL_INSTRUCTION_INACTIVITY_TIMEOUT,
+    });
+  }
+
+  /**
+   * Reset the inactivity timer when user interacts
+   */
+  static resetInactivityTimer() {
+    this.lastActivityTime = Date.now();
+
+    // Restart the inactivity timer if not permanently dismissed
+    if (!this.isPermanentlyDismissed) {
+      this.scheduleInactivityDisplay();
+    }
+  }
+
+  /**
+   * Show the scroll instruction with CSS transition
    */
   static showInstruction() {
     if (
@@ -92,26 +142,29 @@ export class ScrollInstruction {
 
     this.isVisible = true;
     this.instructionElement.classList.add('visible');
-    this.instructionElement.classList.remove('hidden');
 
-    // Schedule auto-hide if configured (but not if set to -1)
+    this.scheduleAutoHide();
+    log.debug(EVENTS.UI, 'Scroll instruction shown');
+  }
+
+  /**
+   * Schedule auto-hide timeout if configured
+   */
+  static scheduleAutoHide() {
     if (CONFIG.ANIMATION.SCROLL_INSTRUCTION_AUTO_HIDE_TIMEOUT > 0) {
       this.hideTimeout = setTimeout(() => {
         this.hideInstruction();
       }, CONFIG.ANIMATION.SCROLL_INSTRUCTION_AUTO_HIDE_TIMEOUT * 1000);
     }
-
-    log.debug(EVENTS.UI, 'Scroll instruction shown');
   }
 
   /**
-   * Hide the scroll instruction with slide-down animation
+   * Hide the scroll instruction with CSS transition
    */
   static hideInstruction() {
     if (!this.instructionElement || !this.isVisible) return;
 
     this.isVisible = false;
-    this.instructionElement.classList.add('hidden');
     this.instructionElement.classList.remove('visible');
 
     this.clearTimeouts();
@@ -120,14 +173,13 @@ export class ScrollInstruction {
   }
 
   /**
-   * Permanently dismiss the instruction (for click/touch interactions)
+   * Permanently dismiss the instruction (for general interactions)
    */
   static dismissInstruction() {
     if (!this.instructionElement) return;
 
     this.isPermanentlyDismissed = true;
     this.isVisible = false;
-    this.instructionElement.classList.add('hidden');
     this.instructionElement.classList.remove('visible');
 
     this.clearTimeouts();
@@ -138,15 +190,23 @@ export class ScrollInstruction {
   /**
    * Dismiss the instruction when panel changes occur
    * This provides a softer dismissal for panel changes vs user interactions
+   * Also starts the inactivity timer for potential reappearance
    */
   static dismissOnPanelChange() {
-    if (!this.instructionElement || !this.isVisible) return;
+    if (!this.instructionElement) return;
 
-    // For panel changes, we hide but don't permanently dismiss
-    // so it could potentially reappear later if needed
-    this.hideInstruction();
+    // Hide if currently visible
+    if (this.isVisible) {
+      this.hideInstruction();
+    }
 
-    log.debug(EVENTS.UI, 'Scroll instruction dismissed due to panel change');
+    // Start inactivity timer for potential reappearance
+    this.scheduleInactivityDisplay();
+
+    log.debug(
+      EVENTS.UI,
+      'Scroll instruction dismissed due to panel change, inactivity timer started'
+    );
   }
 
   /**
@@ -155,6 +215,8 @@ export class ScrollInstruction {
   static setupHideOnInteraction() {
     const hideOnInteraction = () => {
       this.hideInstruction();
+      this.resetInactivityTimer(); // Restart inactivity timer after user interaction
+
       // Remove listeners after first interaction
       document.removeEventListener('wheel', hideOnInteraction);
       document.removeEventListener('touchstart', hideOnInteraction);
@@ -168,16 +230,23 @@ export class ScrollInstruction {
     });
     document.addEventListener('keydown', hideOnInteraction);
 
-    // Permanently dismiss on click/touch of the instruction itself
+    // Make the instruction clickable - always navigate to next panel/section
     this.instructionElement.addEventListener('click', () => {
-      this.dismissInstruction();
+      log.debug(EVENTS.UI, 'Scroll instruction clicked - navigating forward');
+      NavigationController.navigateForward();
+      this.hideInstruction();
+      this.resetInactivityTimer();
     });
 
+    // Handle touch events on the instruction
     this.instructionElement.addEventListener(
       'touchstart',
       (e) => {
         e.preventDefault(); // Prevent scroll on touch
-        this.dismissInstruction();
+        log.debug(EVENTS.UI, 'Scroll instruction touched - navigating forward');
+        NavigationController.navigateForward();
+        this.hideInstruction();
+        this.resetInactivityTimer();
       },
       { passive: false }
     );
@@ -195,6 +264,10 @@ export class ScrollInstruction {
       clearTimeout(this.hideTimeout);
       this.hideTimeout = null;
     }
+    if (this.inactivityTimeout) {
+      clearTimeout(this.inactivityTimeout);
+      this.inactivityTimeout = null;
+    }
   }
 
   /**
@@ -208,6 +281,7 @@ export class ScrollInstruction {
     }
     this.isVisible = false;
     this.isPermanentlyDismissed = false;
+    this.lastActivityTime = 0;
 
     log.debug(EVENTS.UI, 'Scroll instruction cleaned up');
   }
