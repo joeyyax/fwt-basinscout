@@ -199,6 +199,9 @@ export const CONFIG = {
 
     /** Timeout for scroll instructions to disappear after being shown - in seconds (set to -1 to never auto-hide) */
     SCROLL_INSTRUCTION_AUTO_HIDE_TIMEOUT: 8.0, // 8 seconds before auto-hiding scroll hints, or -1 to disable auto-hide
+
+    /** Timeout for scroll instructions to reappear after inactivity - in seconds (set to -1 to disable) */
+    SCROLL_INSTRUCTION_INACTIVITY_TIMEOUT: 10.0, // 15 seconds of inactivity before scroll hint reappears
   },
 
   // ===== USER INTERFACE INTERACTIONS =====
@@ -240,7 +243,7 @@ export const CONFIG = {
     MIN_HEIGHT_THRESHOLD: 600, // Below this height, show "make window taller" message
 
     /** Buffer space to account for mobile browser UI elements (address bar, navigation, etc.) - in pixels */
-    MOBILE_UI_BUFFER: 60, // Additional space reserved for dynamic mobile browser UI elements
+    MOBILE_UI_BUFFER: 80, // Additional space reserved for dynamic mobile browser UI elements
 
     /** Buffer space to account for desktop browser UI elements (bookmarks bar, etc.) - in pixels */
     DESKTOP_UI_BUFFER: 20, // Additional space reserved for desktop browser chrome

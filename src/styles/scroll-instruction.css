@@ -7,7 +7,11 @@
   position: fixed;
   bottom: 2rem;
   left: 50%;
+  /* Default state: hidden */
   transform: translateX(-50%) translateY(40px);
+  opacity: 0;
+  pointer-events: none;
+  /* Styling */
   background: rgba(255, 255, 255, 0.1);
   color: var(--color-action);
   padding: 0.75rem 1.5rem;
@@ -18,23 +22,16 @@
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   z-index: 1000;
-  opacity: 0;
-  pointer-events: none;
   transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
   user-select: none;
 }
 
+/* Only visible class is used for showing */
 .scroll-instruction.visible {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
   pointer-events: auto;
   cursor: pointer;
-}
-
-.scroll-instruction.hidden {
-  opacity: 0;
-  transform: translateX(-50%) translateY(40px);
-  pointer-events: none;
 }
 
 /* Hover effect for non-touch devices */
