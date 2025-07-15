@@ -89,10 +89,9 @@ a.btn:focus {
 
 /* Ghost button - minimal styling */
 .btn-ghost {
-  @apply bg-transparent text-white border-transparent
-         hover:bg-white/10 hover:drop-shadow-sm
-         focus:ring-white/20
-         active:bg-white/20;
+  @apply bg-white/10 text-white border-transparent backdrop-blur-md
+         hover:bg-action hover:text-white hover:drop-shadow-sm
+         active:bg-action active:text-white;
 
   /* Higher specificity to override prose link colors */
   .prose &,
