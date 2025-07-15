@@ -96,7 +96,8 @@
 
 /* Stat label using Tailwind utilities */
 .stat-label {
-  @apply text-sm text-white/90 leading-snug max-w-80;
+  @apply text-white/90 leading-snug max-w-80;
+  font-size: clamp(0.75rem, 0.6rem + 1vw, 1rem);
 
   /* Enhanced readability */
   text-wrap: balance; /* Better text wrapping */

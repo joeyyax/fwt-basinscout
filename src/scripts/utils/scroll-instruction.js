@@ -6,6 +6,7 @@
 
 import { CONFIG } from '../constants.js';
 import { NavigationController } from '../navigation.js';
+import { appState } from '../state.js';
 import { log, EVENTS } from './logger.js';
 
 export class ScrollInstruction {
@@ -106,8 +107,12 @@ export class ScrollInstruction {
 
     // Schedule reappearance after inactivity timeout
     this.inactivityTimeout = setTimeout(() => {
-      // Only show if still inactive and not permanently dismissed
-      if (!this.isPermanentlyDismissed && !this.isVisible) {
+      // Only show if still inactive, not permanently dismissed, and not on last panel
+      if (
+        !this.isPermanentlyDismissed &&
+        !this.isVisible &&
+        !this.isOnLastPanel()
+      ) {
         this.showInstruction();
       }
     }, CONFIG.ANIMATION.SCROLL_INSTRUCTION_INACTIVITY_TIMEOUT * 1000);
@@ -130,13 +135,30 @@ export class ScrollInstruction {
   }
 
   /**
+   * Check if we're currently on the last panel of the last section
+   */
+  static isOnLastPanel() {
+    const currentSection = appState.getCurrentSection();
+    const currentPanel = appState.getCurrentPanel();
+    const totalSections = appState.getTotalSections();
+    const currentSectionPanels = appState.getPanelsInSection(currentSection);
+
+    // Check if we're on the last section and the last panel of that section
+    return (
+      currentSection === totalSections - 1 &&
+      currentPanel === currentSectionPanels - 1
+    );
+  }
+
+  /**
    * Show the scroll instruction with CSS transition
    */
   static showInstruction() {
     if (
       !this.instructionElement ||
       this.isVisible ||
-      this.isPermanentlyDismissed
+      this.isPermanentlyDismissed ||
+      this.isOnLastPanel() // Don't show if we're on the last panel
     )
       return;
 

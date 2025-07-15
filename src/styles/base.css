@@ -63,3 +63,34 @@ textarea,
 select {
   font-size: 16px !important;
 }
+
+/* Safari text rendering optimizations */
+@supports (-webkit-backdrop-filter: blur(1px)) {
+  /* Safari-specific styles */
+  .prose *,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  div {
+    /* Force hardware acceleration for smoother text rendering */
+    transform: translateZ(0);
+    /* Improve text rendering quality */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Ensure proper text rendering during animations */
+    backface-visibility: hidden;
+    /* Prevent text flickering in Safari */
+    will-change: transform;
+  }
+
+  /* Additional Safari stability for animated text - only after animations complete */
+  .prose p.animation-complete {
+    /* Ensure text maintains proper opacity after animations finish */
+    opacity: 1 !important;
+  }
+}
