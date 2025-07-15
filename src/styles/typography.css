@@ -54,8 +54,10 @@ h2 {
 
 /* Special styling for pretitle sections */
 .pretitle {
-  @apply text-xs sm:text-sm font-semibold uppercase tracking-wider
+  @apply font-semibold uppercase tracking-wider
            text-white/80 mb-2 mt-6 sm:mt-8;
+
+  font-size: clamp(1rem, 0.6rem + 1vw, 1rem);
 
   &:first-child {
     @apply mt-0;
