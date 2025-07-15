@@ -197,7 +197,7 @@ export class TitleAnimationController {
           y: 0,
         },
         {
-          opacity: 0.9,
+          opacity: 1,
           x: 0,
           y: 0,
           duration: CONFIG.ANIMATION.TITLE_ENTER_DURATION,
@@ -217,7 +217,7 @@ export class TitleAnimationController {
           y: 30, // Start 30px down
         },
         {
-          opacity: 0.9,
+          opacity: 1,
           x: 0,
           y: 0,
           duration: CONFIG.ANIMATION.TITLE_ENTER_DURATION,
@@ -301,7 +301,7 @@ export class TitleAnimationController {
           }
         }
 
-        gsap.set(titleElement, { opacity: 0.9, x: 0, y: 0 });
+        gsap.set(titleElement, { opacity: 1, x: 0, y: 0 });
       }
     }
   }
@@ -531,7 +531,7 @@ export class TitleAnimationController {
 
         // Reset original title to final position
         gsap.set(titleElement, {
-          opacity: 0.9,
+          opacity: 1,
           x: 0,
           y: 0,
         });
@@ -622,7 +622,7 @@ export class TitleAnimationController {
           y: 0,
         },
         {
-          opacity: 0.9,
+          opacity: 1,
           x: 0,
           y: 0,
           duration: CONFIG.ANIMATION.TITLE_ENTER_DURATION,
@@ -640,7 +640,7 @@ export class TitleAnimationController {
           y: 30,
         },
         {
-          opacity: 0.9,
+          opacity: 1,
           x: 0,
           y: 0,
           duration: CONFIG.ANIMATION.TITLE_ENTER_DURATION,
