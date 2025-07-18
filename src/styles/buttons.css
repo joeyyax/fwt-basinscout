@@ -3,20 +3,41 @@
  * Tailwind utility-first button styles for consistent UI
  */
 
-/* Base button class with common properties */
+/* Base button class with glass morphism foundation */
 .btn {
   @apply inline-flex items-center justify-center
-         px-4 py-2 text-sm font-semibold
-         border border-transparent rounded-md
-         transition-all duration-200 ease-in-out
-         focus:outline-none focus:ring-2 focus:ring-offset-2
-         cursor-pointer select-none
+         bg-white/10 border border-white/20 backdrop-blur-xl
+         rounded-full px-6 py-3 text-sm font-semibold
+         select-none no-underline cursor-pointer
          disabled:opacity-50 disabled:cursor-not-allowed
-         active:scale-95
-         no-underline;
+         transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.1,0.25,1)];
+
+  /* Custom shadow that Tailwind can't express */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 
   /* Performance optimizations */
   transform: translateZ(0);
+
+  /* Hover effects for non-touch devices */
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @apply bg-white/15 border-white/30 scale-105;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  /* Touch device feedback */
+  &:active {
+    @apply bg-white/20 scale-[0.98];
+  }
+
+  /* Focus state for accessibility */
+  &:focus {
+    @apply outline-none;
+    box-shadow: 
+      0 10px 25px rgba(0, 0, 0, 0.1),
+      0 0 0 3px rgba(255, 255, 255, 0.3);
+  }
 }
 
 /* Ensure buttons override prose link styles globally using higher specificity */
@@ -35,111 +56,168 @@ a.btn:focus {
   @apply no-underline;
 }
 
-/* Primary button - main call-to-action */
+/* Primary button - main call-to-action with action color */
 .btn-primary {
-  background-color: var(--color-action);
-  color: black;
-  @apply hover:drop-shadow-lg
-         focus:ring-4 focus:outline-none
-         active:scale-95 transition-all duration-200;
+  @apply text-action border-action/30;
+  
+  /* Enhanced action color background */
+  background: linear-gradient(135deg, rgba(255, 162, 12, 0.2), rgba(255, 162, 12, 0.1));
 
-  /* Use CSS custom properties for hover and focus states */
-  &:hover {
-    background-color: var(--color-action-light);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @apply border-action/50;
+      background: linear-gradient(135deg, rgba(255, 162, 12, 0.3), rgba(255, 162, 12, 0.15));
+    }
   }
 
   &:active {
-    background-color: var(--color-action-dark);
+    @apply border-action/60;
+    background: linear-gradient(135deg, rgba(255, 162, 12, 0.4), rgba(255, 162, 12, 0.2));
   }
 
   &:focus {
-    box-shadow: 0 0 0 3px rgb(250 196 0 / 0.5);
+    box-shadow: 
+      0 10px 25px rgba(0, 0, 0, 0.1),
+      0 0 0 3px rgba(255, 162, 12, 0.4);
   }
 
   /* Higher specificity to override prose link colors */
   .prose &,
   .prose a&,
   a& {
-    @apply text-black;
+    @apply text-action no-underline;
 
     &:hover {
-      @apply text-black;
+      @apply text-action no-underline;
     }
   }
 }
 
-/* Secondary button - secondary actions */
+/* Secondary button - secondary actions with subtle emphasis */
 .btn-secondary {
-  @apply bg-transparent text-white border-white/30
-         hover:bg-white/10 hover:border-white/50 hover:drop-shadow-md
-         focus:ring-white/30
-         active:bg-white/20;
+  @apply text-emphasis border-emphasis/30;
+  
+  /* Enhanced emphasis color background */
+  background: linear-gradient(135deg, rgba(113, 201, 191, 0.15), rgba(113, 201, 191, 0.05));
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @apply border-emphasis/50;
+      background: linear-gradient(135deg, rgba(113, 201, 191, 0.25), rgba(113, 201, 191, 0.1));
+    }
+  }
+
+  &:active {
+    @apply border-emphasis/60;
+    background: linear-gradient(135deg, rgba(113, 201, 191, 0.35), rgba(113, 201, 191, 0.15));
+  }
+
+  &:focus {
+    box-shadow: 
+      0 10px 25px rgba(0, 0, 0, 0.1),
+      0 0 0 3px rgba(113, 201, 191, 0.4);
+  }
 
   /* Higher specificity to override prose link colors */
   .prose &,
   .prose a&,
   a& {
-    @apply text-white;
+    @apply text-emphasis no-underline;
 
     &:hover {
-      @apply text-white;
+      @apply text-emphasis no-underline;
     }
   }
 }
 
-/* Ghost button - minimal styling */
+/* Ghost button - pure glass with neutral styling */
 .btn-ghost {
-  @apply bg-transparent text-white border-transparent
-         hover:bg-white/10 hover:drop-shadow-sm
-         focus:ring-white/20
-         active:bg-white/20;
+  @apply text-white;
+
+  /* Pure glass morphism - inherits base .btn styling */
 
   /* Higher specificity to override prose link colors */
   .prose &,
   .prose a&,
   a& {
-    @apply text-white;
+    @apply text-white no-underline;
 
     &:hover {
-      @apply text-white;
+      @apply text-white no-underline;
     }
   }
 }
 
-/* Danger button - destructive actions */
+/* Danger button - destructive actions with red accent */
 .btn-danger {
-  @apply bg-red-600 text-white
-         hover:bg-red-700 hover:drop-shadow-lg
-         focus:ring-red-500/50
-         active:bg-red-800;
+  @apply text-red-400 border-red-400/30;
+  
+  /* Enhanced red background */
+  background: linear-gradient(135deg, rgba(248, 113, 113, 0.2), rgba(248, 113, 113, 0.1));
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @apply border-red-400/50;
+      background: linear-gradient(135deg, rgba(248, 113, 113, 0.3), rgba(248, 113, 113, 0.15));
+    }
+  }
+
+  &:active {
+    @apply border-red-400/60;
+    background: linear-gradient(135deg, rgba(248, 113, 113, 0.4), rgba(248, 113, 113, 0.2));
+  }
+
+  &:focus {
+    box-shadow: 
+      0 10px 25px rgba(0, 0, 0, 0.1),
+      0 0 0 3px rgba(248, 113, 113, 0.4);
+  }
 
   /* Higher specificity to override prose link colors */
   .prose &,
   .prose a&,
   a& {
-    @apply text-white;
+    @apply text-red-400 no-underline;
 
     &:hover {
-      @apply text-white;
+      @apply text-red-400 no-underline;
     }
   }
 }
 
-/* Success button - positive actions */
+/* Success button - positive actions with green accent */
 .btn-success {
-  @apply bg-green-600 text-white
-         hover:bg-green-700 hover:drop-shadow-lg
-         focus:ring-green-500/50
-         active:bg-green-800;
+  @apply text-green-400 border-green-400/30;
+  
+  /* Enhanced green background */
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.2), rgba(74, 222, 128, 0.1));
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @apply border-green-400/50;
+      background: linear-gradient(135deg, rgba(74, 222, 128, 0.3), rgba(74, 222, 128, 0.15));
+    }
+  }
+
+  &:active {
+    @apply border-green-400/60;
+    background: linear-gradient(135deg, rgba(74, 222, 128, 0.4), rgba(74, 222, 128, 0.2));
+  }
+
+  &:focus {
+    box-shadow: 
+      0 10px 25px rgba(0, 0, 0, 0.1),
+      0 0 0 3px rgba(74, 222, 128, 0.4);
+  }
 
   /* Higher specificity to override prose link colors */
   .prose &,
   .prose a&,
   a& {
-    @apply text-white;
+    @apply text-green-400 no-underline;
 
     &:hover {
-      @apply text-white;
+      @apply text-green-400 no-underline;
     }
   }
 }
@@ -353,3 +431,6 @@ a.btn:focus {
     @apply translate-x-full;
   }
 }
+
+/* Glass morphism is now the default button style - use .btn for glass effect */
+/* For the original scroll instruction matching style, use .btn.btn-primary */
