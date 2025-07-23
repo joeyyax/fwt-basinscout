@@ -34,7 +34,7 @@
   /* Focus state for accessibility */
   &:focus {
     @apply outline-none;
-    box-shadow: 
+    box-shadow:
       0 10px 25px rgba(0, 0, 0, 0.1),
       0 0 0 3px rgba(255, 255, 255, 0.3);
   }
@@ -59,24 +59,36 @@ a.btn:focus {
 /* Primary button - main call-to-action with action color */
 .btn-primary {
   @apply text-action border-action/30;
-  
+
   /* Enhanced action color background */
-  background: linear-gradient(135deg, rgba(255, 162, 12, 0.2), rgba(255, 162, 12, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 162, 12, 0.2),
+    rgba(255, 162, 12, 0.1)
+  );
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
       @apply border-action/50;
-      background: linear-gradient(135deg, rgba(255, 162, 12, 0.3), rgba(255, 162, 12, 0.15));
+      background: linear-gradient(
+        135deg,
+        rgba(255, 162, 12, 0.3),
+        rgba(255, 162, 12, 0.15)
+      );
     }
   }
 
   &:active {
     @apply border-action/60;
-    background: linear-gradient(135deg, rgba(255, 162, 12, 0.4), rgba(255, 162, 12, 0.2));
+    background: linear-gradient(
+      135deg,
+      rgba(255, 162, 12, 0.4),
+      rgba(255, 162, 12, 0.2)
+    );
   }
 
   &:focus {
-    box-shadow: 
+    box-shadow:
       0 10px 25px rgba(0, 0, 0, 0.1),
       0 0 0 3px rgba(255, 162, 12, 0.4);
   }
@@ -96,24 +108,36 @@ a.btn:focus {
 /* Secondary button - secondary actions with subtle emphasis */
 .btn-secondary {
   @apply text-emphasis border-emphasis/30;
-  
+
   /* Enhanced emphasis color background */
-  background: linear-gradient(135deg, rgba(113, 201, 191, 0.15), rgba(113, 201, 191, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(113, 201, 191, 0.15),
+    rgba(113, 201, 191, 0.05)
+  );
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
       @apply border-emphasis/50;
-      background: linear-gradient(135deg, rgba(113, 201, 191, 0.25), rgba(113, 201, 191, 0.1));
+      background: linear-gradient(
+        135deg,
+        rgba(113, 201, 191, 0.25),
+        rgba(113, 201, 191, 0.1)
+      );
     }
   }
 
   &:active {
     @apply border-emphasis/60;
-    background: linear-gradient(135deg, rgba(113, 201, 191, 0.35), rgba(113, 201, 191, 0.15));
+    background: linear-gradient(
+      135deg,
+      rgba(113, 201, 191, 0.35),
+      rgba(113, 201, 191, 0.15)
+    );
   }
 
   &:focus {
-    box-shadow: 
+    box-shadow:
       0 10px 25px rgba(0, 0, 0, 0.1),
       0 0 0 3px rgba(113, 201, 191, 0.4);
   }
@@ -151,24 +175,36 @@ a.btn:focus {
 /* Danger button - destructive actions with red accent */
 .btn-danger {
   @apply text-red-400 border-red-400/30;
-  
+
   /* Enhanced red background */
-  background: linear-gradient(135deg, rgba(248, 113, 113, 0.2), rgba(248, 113, 113, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(248, 113, 113, 0.2),
+    rgba(248, 113, 113, 0.1)
+  );
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
       @apply border-red-400/50;
-      background: linear-gradient(135deg, rgba(248, 113, 113, 0.3), rgba(248, 113, 113, 0.15));
+      background: linear-gradient(
+        135deg,
+        rgba(248, 113, 113, 0.3),
+        rgba(248, 113, 113, 0.15)
+      );
     }
   }
 
   &:active {
     @apply border-red-400/60;
-    background: linear-gradient(135deg, rgba(248, 113, 113, 0.4), rgba(248, 113, 113, 0.2));
+    background: linear-gradient(
+      135deg,
+      rgba(248, 113, 113, 0.4),
+      rgba(248, 113, 113, 0.2)
+    );
   }
 
   &:focus {
-    box-shadow: 
+    box-shadow:
       0 10px 25px rgba(0, 0, 0, 0.1),
       0 0 0 3px rgba(248, 113, 113, 0.4);
   }
@@ -188,24 +224,36 @@ a.btn:focus {
 /* Success button - positive actions with green accent */
 .btn-success {
   @apply text-green-400 border-green-400/30;
-  
+
   /* Enhanced green background */
-  background: linear-gradient(135deg, rgba(74, 222, 128, 0.2), rgba(74, 222, 128, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(74, 222, 128, 0.2),
+    rgba(74, 222, 128, 0.1)
+  );
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
       @apply border-green-400/50;
-      background: linear-gradient(135deg, rgba(74, 222, 128, 0.3), rgba(74, 222, 128, 0.15));
+      background: linear-gradient(
+        135deg,
+        rgba(74, 222, 128, 0.3),
+        rgba(74, 222, 128, 0.15)
+      );
     }
   }
 
   &:active {
     @apply border-green-400/60;
-    background: linear-gradient(135deg, rgba(74, 222, 128, 0.4), rgba(74, 222, 128, 0.2));
+    background: linear-gradient(
+      135deg,
+      rgba(74, 222, 128, 0.4),
+      rgba(74, 222, 128, 0.2)
+    );
   }
 
   &:focus {
-    box-shadow: 
+    box-shadow:
       0 10px 25px rgba(0, 0, 0, 0.1),
       0 0 0 3px rgba(74, 222, 128, 0.4);
   }
