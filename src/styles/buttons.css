@@ -58,98 +58,104 @@ a.btn:focus {
 
 /* Primary button - main call-to-action with action color */
 .btn-primary {
-  @apply text-action border-action/30;
+  color: var(--color-action);
+  border-color: rgb(from var(--color-action) r g b / 0.3);
 
   /* Enhanced action color background */
   background: linear-gradient(
     135deg,
-    rgba(255, 162, 12, 0.2),
-    rgba(255, 162, 12, 0.1)
+    rgb(from var(--color-action) r g b / 0.2),
+    rgb(from var(--color-action) r g b / 0.1)
   );
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
-      @apply border-action/50;
+      border-color: rgb(from var(--color-action) r g b / 0.5);
       background: linear-gradient(
         135deg,
-        rgba(255, 162, 12, 0.3),
-        rgba(255, 162, 12, 0.15)
+        rgb(from var(--color-action) r g b / 0.3),
+        rgb(from var(--color-action) r g b / 0.15)
       );
     }
   }
 
   &:active {
-    @apply border-action/60;
+    border-color: rgb(from var(--color-action) r g b / 0.6);
     background: linear-gradient(
       135deg,
-      rgba(255, 162, 12, 0.4),
-      rgba(255, 162, 12, 0.2)
+      rgb(from var(--color-action) r g b / 0.4),
+      rgb(from var(--color-action) r g b / 0.2)
     );
   }
 
   &:focus {
     box-shadow:
       0 10px 25px rgba(0, 0, 0, 0.1),
-      0 0 0 3px rgba(255, 162, 12, 0.4);
+      0 0 0 3px rgb(from var(--color-action) r g b / 0.4);
   }
 
   /* Higher specificity to override prose link colors */
   .prose &,
   .prose a&,
   a& {
-    @apply text-action no-underline;
+    color: var(--color-action);
+    @apply no-underline;
 
     &:hover {
-      @apply text-action no-underline;
+      color: var(--color-action);
+      @apply no-underline;
     }
   }
 }
 
 /* Secondary button - secondary actions with subtle emphasis */
 .btn-secondary {
-  @apply text-emphasis border-emphasis/30;
+  color: var(--color-emphasis);
+  border-color: rgb(from var(--color-emphasis) r g b / 0.3);
 
   /* Enhanced emphasis color background */
   background: linear-gradient(
     135deg,
-    rgba(113, 201, 191, 0.15),
-    rgba(113, 201, 191, 0.05)
+    rgb(from var(--color-emphasis) r g b / 0.15),
+    rgb(from var(--color-emphasis) r g b / 0.05)
   );
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
-      @apply border-emphasis/50;
+      border-color: rgb(from var(--color-emphasis) r g b / 0.5);
       background: linear-gradient(
         135deg,
-        rgba(113, 201, 191, 0.25),
-        rgba(113, 201, 191, 0.1)
+        rgb(from var(--color-emphasis) r g b / 0.25),
+        rgb(from var(--color-emphasis) r g b / 0.1)
       );
     }
   }
 
   &:active {
-    @apply border-emphasis/60;
+    border-color: rgb(from var(--color-emphasis) r g b / 0.6);
     background: linear-gradient(
       135deg,
-      rgba(113, 201, 191, 0.35),
-      rgba(113, 201, 191, 0.15)
+      rgb(from var(--color-emphasis) r g b / 0.35),
+      rgb(from var(--color-emphasis) r g b / 0.15)
     );
   }
 
   &:focus {
     box-shadow:
       0 10px 25px rgba(0, 0, 0, 0.1),
-      0 0 0 3px rgba(113, 201, 191, 0.4);
+      0 0 0 3px rgb(from var(--color-emphasis) r g b / 0.4);
   }
 
   /* Higher specificity to override prose link colors */
   .prose &,
   .prose a&,
   a& {
-    @apply text-emphasis no-underline;
+    color: var(--color-emphasis);
+    @apply no-underline;
 
     &:hover {
-      @apply text-emphasis no-underline;
+      color: var(--color-emphasis);
+      @apply no-underline;
     }
   }
 }
@@ -174,98 +180,106 @@ a.btn:focus {
 
 /* Danger button - destructive actions with red accent */
 .btn-danger {
-  @apply text-red-400 border-red-400/30;
+  --btn-danger-color: #f87171; /* red-400 equivalent */
+  color: var(--btn-danger-color);
+  border-color: rgb(from var(--btn-danger-color) r g b / 0.3);
 
   /* Enhanced red background */
   background: linear-gradient(
     135deg,
-    rgba(248, 113, 113, 0.2),
-    rgba(248, 113, 113, 0.1)
+    rgb(from var(--btn-danger-color) r g b / 0.2),
+    rgb(from var(--btn-danger-color) r g b / 0.1)
   );
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
-      @apply border-red-400/50;
+      border-color: rgb(from var(--btn-danger-color) r g b / 0.5);
       background: linear-gradient(
         135deg,
-        rgba(248, 113, 113, 0.3),
-        rgba(248, 113, 113, 0.15)
+        rgb(from var(--btn-danger-color) r g b / 0.3),
+        rgb(from var(--btn-danger-color) r g b / 0.15)
       );
     }
   }
 
   &:active {
-    @apply border-red-400/60;
+    border-color: rgb(from var(--btn-danger-color) r g b / 0.6);
     background: linear-gradient(
       135deg,
-      rgba(248, 113, 113, 0.4),
-      rgba(248, 113, 113, 0.2)
+      rgb(from var(--btn-danger-color) r g b / 0.4),
+      rgb(from var(--btn-danger-color) r g b / 0.2)
     );
   }
 
   &:focus {
     box-shadow:
       0 10px 25px rgba(0, 0, 0, 0.1),
-      0 0 0 3px rgba(248, 113, 113, 0.4);
+      0 0 0 3px rgb(from var(--btn-danger-color) r g b / 0.4);
   }
 
   /* Higher specificity to override prose link colors */
   .prose &,
   .prose a&,
   a& {
-    @apply text-red-400 no-underline;
+    color: var(--btn-danger-color);
+    @apply no-underline;
 
     &:hover {
-      @apply text-red-400 no-underline;
+      color: var(--btn-danger-color);
+      @apply no-underline;
     }
   }
 }
 
 /* Success button - positive actions with green accent */
 .btn-success {
-  @apply text-green-400 border-green-400/30;
+  --btn-success-color: #4ade80; /* green-400 equivalent */
+  color: var(--btn-success-color);
+  border-color: rgb(from var(--btn-success-color) r g b / 0.3);
 
   /* Enhanced green background */
   background: linear-gradient(
     135deg,
-    rgba(74, 222, 128, 0.2),
-    rgba(74, 222, 128, 0.1)
+    rgb(from var(--btn-success-color) r g b / 0.2),
+    rgb(from var(--btn-success-color) r g b / 0.1)
   );
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
-      @apply border-green-400/50;
+      border-color: rgb(from var(--btn-success-color) r g b / 0.5);
       background: linear-gradient(
         135deg,
-        rgba(74, 222, 128, 0.3),
-        rgba(74, 222, 128, 0.15)
+        rgb(from var(--btn-success-color) r g b / 0.3),
+        rgb(from var(--btn-success-color) r g b / 0.15)
       );
     }
   }
 
   &:active {
-    @apply border-green-400/60;
+    border-color: rgb(from var(--btn-success-color) r g b / 0.6);
     background: linear-gradient(
       135deg,
-      rgba(74, 222, 128, 0.4),
-      rgba(74, 222, 128, 0.2)
+      rgb(from var(--btn-success-color) r g b / 0.4),
+      rgb(from var(--btn-success-color) r g b / 0.2)
     );
   }
 
   &:focus {
     box-shadow:
       0 10px 25px rgba(0, 0, 0, 0.1),
-      0 0 0 3px rgba(74, 222, 128, 0.4);
+      0 0 0 3px rgb(from var(--btn-success-color) r g b / 0.4);
   }
 
   /* Higher specificity to override prose link colors */
   .prose &,
   .prose a&,
   a& {
-    @apply text-green-400 no-underline;
+    color: var(--btn-success-color);
+    @apply no-underline;
 
     &:hover {
-      @apply text-green-400 no-underline;
+      color: var(--btn-success-color);
+      @apply no-underline;
     }
   }
 }
