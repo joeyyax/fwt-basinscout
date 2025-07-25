@@ -2,18 +2,22 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+  build: {
+    outDir: 'dist/html',
+    emptyOutDir: true,
+  },
   test: {
     environment: 'jsdom',
     globals: true,
-    setupFiles: ['./src/test/setup.js'],
-    include: ['src/**/*.{test,spec}.{js,ts}'],
-    exclude: ['node_modules', 'dist', 'e2e'],
+    setupFiles: ['./test/unit/setup.js'],
+    include: ['test/unit/**/*.{test,spec}.{js,ts}'],
+    exclude: ['node_modules', 'dist', 'test/e2e'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
       exclude: [
         'node_modules/',
-        'src/test/',
+        'test/',
         '**/*.{test,spec}.{js,ts}',
         '**/test-*.js',
       ],

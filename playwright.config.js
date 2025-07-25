@@ -5,7 +5,7 @@ import { defineConfig, devices } from '@playwright/test';
  * Tests user workflows and prevents UI regressions
  */
 export default defineConfig({
-  testDir: './e2e',
+  testDir: './test/e2e',
   // Run tests in files in parallel
   fullyParallel: true,
   // Fail the build on CI if you accidentally left test.only in the source code
@@ -15,7 +15,9 @@ export default defineConfig({
   // Opt out of parallel tests on CI
   workers: process.env.CI ? 1 : undefined,
   // Reporter to use
-  reporter: 'html',
+  reporter: [['html', { outputFolder: 'test/results/playwright-report' }]],
+  // Output directory for test results
+  outputDir: 'test/results/test-artifacts',
 
   use: {
     // Base URL to use in actions like `await page.goto('/')`

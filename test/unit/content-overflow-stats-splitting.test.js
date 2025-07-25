@@ -3,10 +3,10 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { ContentOverflowDetector } from '../scripts/utils/content-overflow-detector.js';
+import { ContentOverflowDetector } from '../../src/scripts/utils/content-overflow-detector.js';
 
 // Mock the logger
-vi.mock('../scripts/utils/logger.js', () => ({
+vi.mock('../../src/scripts/utils/logger.js', () => ({
   log: {
     info: vi.fn(),
     debug: vi.fn(),

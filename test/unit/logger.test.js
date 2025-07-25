@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { log, EVENTS } from '../scripts/utils/logger.js';
+import { log, EVENTS } from '../../src/scripts/utils/logger.js';
 
 describe('Logger System', () => {
   beforeEach(() => {
