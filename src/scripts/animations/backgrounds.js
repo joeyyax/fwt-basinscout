@@ -76,7 +76,7 @@ export class BackgroundController {
   static createBackgroundElement(
     backgroundPath,
     backgroundIndex,
-    totalBackgrounds
+    _totalBackgrounds
   ) {
     const container = document.createElement('div');
     container.className = 'background-item';

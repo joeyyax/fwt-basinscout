@@ -3,6 +3,9 @@ node_modules
 *.pnp
 .pnp.js
 
+# Development files (local only)
+.github/copilot-instructions.md
+
 # Production builds
 dist
 dist-ssr
@@ -31,10 +34,7 @@ lerna-debug.log*
 # Testing
 coverage
 *.lcov
-test-results
-playwright-report
-test-report.json
-.nyc_output
+test/results/
 vitest-cache
 
 # Environment files

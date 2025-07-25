@@ -1,15 +1,15 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 // Mock the AnimationController before importing anything else
-vi.mock('../scripts/animations.js', () => ({
+vi.mock('../../src/scripts/animations.js', () => ({
   AnimationController: {
     animateToPanel: vi.fn().mockResolvedValue(),
   },
 }));
 
 // Import the modules after mocking
-import { NavigationController } from '../scripts/navigation.js';
-import { appState } from '../scripts/state.js';
+import { NavigationController } from '../../src/scripts/navigation.js';
+import { appState } from '../../src/scripts/state.js';
 
 describe('NavigationController', () => {
   beforeEach(() => {
@@ -47,8 +47,9 @@ describe('NavigationController', () => {
       expect(appState.canNavigate()).toBe(true);
     });
 
-    it('should prevent navigation when animating', () => {
+    it('should prevent navigation when animating and within block time', () => {
       appState.isAnimating = true;
+      appState.animationStartTime = Date.now(); // Set recent animation start
 
       expect(appState.canNavigate()).toBe(false);
     });
@@ -56,7 +57,7 @@ describe('NavigationController', () => {
 
   describe('navigate', () => {
     it('should navigate forward by one step', async () => {
-      const { AnimationController } = await import('../scripts/animations.js');
+      const { AnimationController } = await import('../../src/scripts/animations.js');
 
       appState.currentSection = 0;
       appState.currentPanel = 1;
@@ -66,14 +67,16 @@ describe('NavigationController', () => {
       expect(AnimationController.animateToPanel).toHaveBeenCalledWith(0, 2, 1);
     });
 
-    it('should not navigate when canNavigate returns false', async () => {
-      const { AnimationController } = await import('../scripts/animations.js');
+    it('should navigate even when animating (navigate bypasses canNavigate check)', async () => {
+      const { AnimationController } = await import('../../src/scripts/animations.js');
 
-      appState.isAnimating = true; // This will make canNavigate return false
+      appState.isAnimating = true; // navigate() bypasses this check
+      appState.animationStartTime = Date.now();
 
       NavigationController.navigate(1);
 
-      expect(AnimationController.animateToPanel).not.toHaveBeenCalled();
+      // navigate() does not check canNavigate, only throttledNavigate does
+      expect(AnimationController.animateToPanel).toHaveBeenCalled();
     });
   });
 
@@ -85,11 +88,22 @@ describe('NavigationController', () => {
 
       expect(navigateSpy).toHaveBeenCalledWith(1);
     });
+
+    it('should not call navigate when throttled (animating)', () => {
+      const navigateSpy = vi.spyOn(NavigationController, 'navigate');
+
+      appState.isAnimating = true;
+      appState.animationStartTime = Date.now();
+
+      NavigationController.throttledNavigate(1);
+
+      expect(navigateSpy).not.toHaveBeenCalled();
+    });
   });
 
   describe('goToSection', () => {
     it('should navigate to specific section', async () => {
-      const { AnimationController } = await import('../scripts/animations.js');
+      const { AnimationController } = await import('../../src/scripts/animations.js');
 
       appState.currentSection = 0;
 
@@ -99,7 +113,7 @@ describe('NavigationController', () => {
     });
 
     it('should not navigate to same section', async () => {
-      const { AnimationController } = await import('../scripts/animations.js');
+      const { AnimationController } = await import('../../src/scripts/animations.js');
 
       appState.currentSection = 0;
 

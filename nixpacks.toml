@@ -1,0 +1,8 @@
+[variables]
+NODE_VERSION = "20"
+
+[build]
+cmd = "pnpm install && pnpm run build"
+
+[start]
+cmd = "pnpm run preview"

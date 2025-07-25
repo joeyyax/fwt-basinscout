@@ -5,7 +5,7 @@ vi.mock('gsap', () => ({
   gsap: globalThis.gsap,
 }));
 
-import { PanelStatsAnimationController } from '../scripts/animations/panel-stats.js';
+import { PanelStatsAnimationController } from '../../src/scripts/animations/panel-stats.js';
 
 describe('PanelStatsAnimationController', () => {
   beforeEach(() => {

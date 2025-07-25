@@ -8,7 +8,7 @@ vi.mock('gsap/Observer', () => ({
 }));
 
 // Mock NavigationController
-vi.mock('../scripts/navigation.js', () => ({
+vi.mock('../../src/scripts/navigation.js', () => ({
   NavigationController: {
     navigate: vi.fn(),
     throttledNavigate: vi.fn(),
@@ -16,8 +16,8 @@ vi.mock('../scripts/navigation.js', () => ({
   },
 }));
 
-import { ScrollController } from '../scripts/core/scroll-controller.js';
-import { appState } from '../scripts/state.js';
+import { ScrollController } from '../../src/scripts/core/scroll-controller.js';
+import { appState } from '../../src/scripts/state.js';
 
 describe('ScrollController', () => {
   beforeEach(() => {
@@ -79,7 +79,7 @@ describe('ScrollController', () => {
 
     it('should call NavigationController on wheel events', async () => {
       const { Observer } = await import('gsap/Observer');
-      const { NavigationController } = await import('../scripts/navigation.js');
+      const { NavigationController } = await import('../../src/scripts/navigation.js');
 
       ScrollController.setupScrollObserver();
 
@@ -101,7 +101,7 @@ describe('ScrollController', () => {
 
   describe('setupKeyboardNavigation', () => {
     it('should navigate on arrow key presses', async () => {
-      const { NavigationController } = await import('../scripts/navigation.js');
+      const { NavigationController } = await import('../../src/scripts/navigation.js');
 
       ScrollController.setupKeyboardNavigation();
 
@@ -119,7 +119,7 @@ describe('ScrollController', () => {
     });
 
     it('should not navigate on other key presses', async () => {
-      const { NavigationController } = await import('../scripts/navigation.js');
+      const { NavigationController } = await import('../../src/scripts/navigation.js');
 
       ScrollController.setupKeyboardNavigation();
 
@@ -132,7 +132,7 @@ describe('ScrollController', () => {
 
   describe('setupNavigationDots', () => {
     it('should handle navigation dot clicks', async () => {
-      const { NavigationController } = await import('../scripts/navigation.js');
+      const { NavigationController } = await import('../../src/scripts/navigation.js');
 
       ScrollController.setupNavigationDots();
 

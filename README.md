@@ -1,97 +1,145 @@
-# BasinScout Interactive Experience
+# The Freshwater Trust BasinScout
 
-A responsive web application for The Freshwater Trust's BasinScout. Features smooth animations, cross-platform navigation, and interactive data visualization.
+A responsive web application for The Freshwater Trust's BasinScout featuring smooth scroll-driven navigation, animated statistics, and comprehensive Craft CMS integration.
 
 ## Features
 
-- **Modern Stack** - Built with Vite, GSAP, and Tailwind CSS
+- **Modern Stack** - Preact, Vite, GSAP, and Tailwind CSS
 - **Cross-Platform Navigation** - Touch, mouse wheel, and keyboard support
-- **Animated Statistics** - Interactive donut charts and data visualization
-- **Dynamic Media** - Responsive image loading with overlays
+- **Animated Statistics** - Interactive counting animations with donut charts
+- **Dynamic Content** - Responsive panel system with background images
 - **Accessibility** - ARIA labels, keyboard navigation, and reduced motion support
-- **CMS Integration** - Data-driven content structure
+- **Craft CMS Integration** - Complete field structure and template system with GraphQL API
+- **Performance Optimized** - Throttled events and efficient DOM queries
+- **Comprehensive Testing** - Unit tests and cross-browser E2E testing
 
-## Development
+## Quick Start
 
-### Setup
+### Development Setup
+
+**1. Install dependencies**
 
 ```bash
 pnpm install
+```
+
+**2. Environment Configuration**
+
+Create a `.env` file in the project root for local development. Use `.env.example` as a template.
+
+**3. Start development server**
+
+```bash
+# Basic development
 pnpm run dev
+
+# Development with debugging
+DEBUG=true pnpm run dev
+```
+
+### Building & Production
+
+```bash
+# Build for production
+pnpm run build
+
+# Preview production build locally
+pnpm run preview
 ```
 
 ### Testing
 
 ```bash
-pnpm test              # Unit tests
-pnpm run test:e2e      # End-to-end tests
+# Unit tests
+pnpm test
+
+# End-to-end tests
+pnpm run test:e2e
+
+# All tests
+pnpm run test:all
 ```
 
-### Build
+### Code Quality
 
 ```bash
-pnpm run build
+# Linting and formatting
+pnpm run lint:fix
+pnpm run format
 ```
-
-## Architecture
-
-### Structure
-
-```
-src/
-├── scripts/
-│   ├── main.js              # Application entry
-│   ├── constants.js         # Configuration
-│   ├── state.js             # State management
-│   ├── navigation.js        # Navigation logic
-│   ├── animations/          # Animation controllers
-│   ├── core/                # Core functionality
-│   └── utils/               # Utilities
-└── styles/                  # CSS modules
-```
-
-### Technologies
-
-- **Vite** - Build tool and development server
-- **GSAP** - Animation library
-- **Tailwind CSS** - Utility-first CSS framework
-- **Vitest** - Unit testing
-- **Playwright** - End-to-end testing
 
 ## Configuration
 
-### Animation Settings
+Customize animation timing and navigation behavior in `src/scripts/constants.js`.
 
-Customize timing in `src/scripts/constants.js`:
+## Deployment Options
+
+This application can be deployed in two ways:
+
+**Standalone Deployment**
+
+- Self-contained web application
+- **Content Options**:
+  - Uses static content from `src/data/content.js` (default)
+  - Can consume content from any GraphQL API endpoint
+- Deploy directly to any web hosting platform (Railway, Netlify, Vercel, etc.)
+- No CMS dependencies - runs fully headless
+
+**Craft CMS Integration**
+
+- Full CMS integration with dynamic content management
+- Uses GraphQL API for content delivery
+- Requires Craft CMS backend with field structure and migrations
+- See [craft-cms/README.md](./craft-cms/README.md) for complete setup
+
+> ⚠️ **IMPORTANT**: This project exports to CraftCMS. Do not edit files directly in the `dist/craft-cms/` directory as they will be overwritten. See `./craft-cms/README.md` for complete integration documentation.
+
+## Troubleshooting
+
+### Common Issues
+
+**Scroll Navigation Not Working**
+
+- Check cooldown period in `ANIMATION.SCROLL_COOLDOWN`
+- Verify DOM structure matches expected selectors
+- Check browser console for JavaScript errors
+
+**Animations Not Playing**
+
+- Confirm GSAP timeline setup in animation controllers
+- Check for JavaScript errors in browser console
+- Test with reduced motion preference
+
+**Build Errors**
+
+- Run `pnpm run lint:fix` to resolve code quality issues
+- Clear and reinstall dependencies: `rm -rf node_modules && pnpm install`
+
+### Debug Mode
+
+Enable debug logging:
 
 ```javascript
-ANIMATION: {
-  CONTENT_ENTER_DURATION: 0.6,
-  CONTENT_EXIT_DURATION: 0.4,
-  DONUT_ANIMATION_DURATION: 1.2
-}
+// In browser console
+window.DEBUG = true;
+
+// Or during development
+DEBUG=true pnpm run dev
 ```
 
-### Content Structure
+**Debug Features:**
 
-Define sections using HTML data attributes:
+- Navigation event logging
+- Animation timeline tracking
+- Scroll event monitoring
+- State change visualization
+- Performance metrics
 
-```html
-<section class="section" data-background="image.jpg">
-  <div class="panels-container">
-    <div class="panel">
-      <!-- Content -->
-    </div>
-  </div>
-</section>
-```
+### Performance Profiling
 
-## Testing
+Use browser dev tools:
 
-- **Unit Tests** - Core functionality and animation controllers
-- **E2E Tests** - Cross-browser testing with accessibility validation
-- **Performance Testing** - Touch interactions and responsive behavior
-
-## License
-
-Proprietary software developed for The Freshwater Trust.
+1. **Performance Tab** - Analyze runtime performance
+2. **Network Tab** - Monitor asset loading
+3. **Lighthouse** - Comprehensive auditing
+4. **Console** - Check for JavaScript errors

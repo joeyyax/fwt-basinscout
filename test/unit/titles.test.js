@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { TitleAnimationController } from '../scripts/animations/titles.js';
-import { CONFIG } from '../scripts/constants.js';
+import { TitleAnimationController } from '../../src/scripts/animations/titles.js';
+import { CONFIG } from '../../src/scripts/constants.js';
 
 // Mock GSAP before importing
 vi.mock('gsap', () => ({

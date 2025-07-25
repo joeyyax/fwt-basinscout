@@ -1,13 +1,19 @@
 {
-  "name": "b2",
+  "name": "fwt-basinscout",
   "private": true,
   "packageManager": "pnpm@10.12.1",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host",
+    "dev:with-cms": "echo '📋 Make sure CraftCMS is running: cd ../craftcms && ddev start' && vite --host",
     "build": "vite build",
+    "build:clean": "find . -name '.DS_Store' -delete && pnpm run build",
     "preview": "vite preview",
+    "craft-export": "npm run build && node craft-cms/scripts/export.js",
+    "craft-migrate": "node craft-cms/scripts/migrate.js",
+    "craft-setup": "echo '🚀 Setting up full development environment...' && cd ../craftcms && ddev start && echo '✅ CraftCMS started at https://craftcms.ddev.site' && cd ../basinscout && pnpm run dev:with-cms",
+    "check-env": "node craft-cms/scripts/check-env.js",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint src/",
@@ -21,11 +27,11 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:all": "npm run test:run && npm run test:e2e",
-    "test:ci": "node test-runner.js",
     "test:watch": "vitest --watch"
   },
   "devDependencies": {
     "@eslint/js": "^9.28.0",
+    "@preact/preset-vite": "^2.10.2",
     "@tailwindcss/postcss": "^4.1.10",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.28.0",
@@ -34,6 +40,7 @@
     "jsdom": "^26.1.0",
     "playwright": "^1.53.0",
     "postcss": "^8.5.5",
+    "preact-render-to-string": "^6.5.13",
     "prettier": "^3.5.3",
     "tailwindcss": "^4.1.10",
     "vite": "^6.3.5",
@@ -41,6 +48,8 @@
   },
   "dependencies": {
     "@playwright/test": "^1.53.0",
-    "gsap": "^3.13.0"
+    "graphql-request": "^7.2.0",
+    "gsap": "^3.13.0",
+    "preact": "^10.27.0"
   }
 }

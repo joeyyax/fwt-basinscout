@@ -4,11 +4,11 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { ErrorHandler } from '../scripts/utils/error-handler.js';
-import { log, EVENTS } from '../scripts/utils/logger.js';
+import { ErrorHandler } from '../../src/scripts/utils/error-handler.js';
+import { log, EVENTS } from '../../src/scripts/utils/logger.js';
 
 // Mock the logger
-vi.mock('../scripts/utils/logger.js', () => ({
+vi.mock('../../src/scripts/utils/logger.js', () => ({
   log: {
     error: vi.fn(),
     info: vi.fn(),

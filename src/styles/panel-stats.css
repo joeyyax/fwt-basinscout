@@ -12,10 +12,10 @@
   /* Performance optimizations for grid animations */
   transform: var(--gpu-acceleration, translateZ(0));
 
-  /* If this container has stagger-children, hide its children initially */
+  /* If this container has stagger-children, prepare for animation but don't hide initially */
   &[data-stagger-children='true'] > * {
-    @apply opacity-0;
-    transform: translateY(20px) var(--gpu-acceleration, translateZ(0));
+    /* Let animation system handle initial state */
+    transform: var(--gpu-acceleration, translateZ(0));
   }
 }
 
