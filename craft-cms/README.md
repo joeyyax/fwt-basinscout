@@ -18,76 +18,31 @@ dist/craft-cms/
 ├── web/
 │   ├── basinscout-assets/           # CSS and JS files
 │   └── basinscout-img/              # Image assets
-└── migrations/                      # Future CMS integration
-    └── m{YYMMDD}_{HHMMSS}_create_basinscout_fields.php
+└── migrations/                      # Migration files
 ```
 
-## Installation
+## Test Installation
 
-### 1. Run Migrations
+This is mostly for testing the export functionality. It will create a new Craft CMS install using ddev, run the export and deploy the export.
 
 ```bash
-php craft migrate/up
+pnpm craft-create
+pnpm craft-deploy
 ```
 
-### 2. Manual Section Setup
+If any changes were made to the source, you can re-run `pnpm craft-deploy` to update the craft install autoimatically.
 
-After running the migrations, you need to manually create a Single section in Craft CMS:
-
-1. Go to **Settings > Sections** in the Craft CMS admin
-2. Click **+ New section**
-3. Choose **Single** as the section type
-4. Configure the section:
-   - **Name**: BasinScout
-   - **Handle**: basinscout
-   - **Entry Type**: BasinScout
-   - **URI Format**: basinscout
-   - **Template**: basinscout
-5. Save the section
-
-### 3. Install Dependencies
-
-From the BasinScout project directory:
+Once testing is complete, you can destroy the test installation:
 
 ```bash
-# Install dependencies
-pnpm install
-# or
-npm install
+pnpm craft-destroy
 ```
 
-### 2. Generate Export
+## Production Installation
 
-From the BasinScout project directory:
+To integrate with an existing Craft CMS installation:
 
-```bash
-# Build and export for Craft CMS
-pnpm run craft-export
-# or
-npm run craft-export
-```
-
-This creates the `dist/craft-cms/` directory with the proper Craft structure.
-
-### 3. Copy Files to Craft CMS
-
-Copy the exported files to your Craft CMS installation:
-
-```bash
-# Copy template
-cp dist/craft-cms/templates/basinscout.twig /path/to/craft/templates/
-
-# Copy assets
-cp -r dist/craft-cms/web/basinscout-assets /path/to/craft/web/
-cp -r dist/craft-cms/web/basinscout-img /path/to/craft/web/
-
-# Copy migrations (optional - for future CMS integration)
-cp dist/craft-cms/migrations/* /path/to/craft/migrations/
-```
-
-### 4. Install CKEditor Plugin (Required)
-
-Install the CKEditor plugin for content management:
+### 1. Install CKEditor Plugin if it doesn't already exist (Required)
 
 ```bash
 # Navigate to your Craft CMS directory
@@ -105,26 +60,54 @@ Then enable the CKEditor plugin:
 1. Go to **Settings → Plugins** in your Craft control panel
 2. Find "CKEditor" and click **Install**
 
-### 5. Run Migration (Required)
+### 2. Generate & Move Files
 
-Run the migration to create the BasinScout field structure:
+Note: This assumes you have a Craft CMS installation ready and the BasinScout Preact app is built and ready to export.
+
+First, generate the export files:
 
 ```bash
-# Navigate to your Craft CMS directory
-cd /path/to/craft
+# Build and export for Craft CMS
+pnpm craft-export
+```
 
-# Run the migration
-./craft migrate/up
+Copy the exported files from `dist/craft-cms/` into your Craft CMS installation:
 
+```bash
+# Copy template
+cp dist/craft-cms/templates/basinscout* /path/to/craft/templates/
+# Copy assets
+cp -r dist/craft-cms/web/basinscout-* /path/to/craft/web/
+# Copy migrations (optional - for future CMS integration)
+cp dist/craft-cms/migrations/*basinscout* /path/to/craft/migrations/
+```
+
+### 3. Run Migrations
+
+```bash
+php craft migrate/up
 # Or if using DDEV
 ddev exec php craft migrate/up
-
-**Note**: If you encounter issues with Matrix field creation during migration, ensure you're using the latest consolidated migration files. The consolidated migrations properly handle Matrix field creation with entry types.
 ```
+
+### 4. Setup the BasinScout Section
+
+After running the migrations, you need to manually create a Single section in Craft CMS (I tried automating this but it was problematic. Fortunately it's a quick and simple process):
+
+1. Go to **Settings > Sections** in the Craft CMS admin
+2. Click **+ New section**
+3. Choose **Single** as the section type
+4. Configure the section:
+   - **Name**: BasinScout
+   - **Handle**: basinscout
+   - **Entry Type**: BasinScout
+   - **URI Format**: basinscout
+   - **Template**: basinscout
+5. Save the section
 
 This will create all the BasinScout fields and sections in Craft CMS.
 
-### 6. Configure GraphQL
+### 5. Configure GraphQL
 
 Enable GraphQL in your Craft CMS installation and configure the route:
 
@@ -145,16 +128,18 @@ Enable GraphQL in your Craft CMS installation and configure the route:
 
 ```php
 <?php
-/**
- * Site URL Rules
- */
-
+// config/routes.php
 return [
+    // ... other routes
     'graphql' => 'graphql/api',
 ];
 ```
 
 **Note**: If you're using a different GraphQL route, the production app will automatically use your CraftCMS base URL with whatever route you configure.
+
+### 6. Ensure uploads are configured
+
+There are file fields contained in the migration. It's likely these will need to be configured to match your craft install. These will mean touching each of those fields and ensuring they are set to the correct upload directory. You'll know it works if the upload fields appear as fields instead of errors.
 
 ### 7. Create BasinScout Entry
 
@@ -166,13 +151,11 @@ return [
 
 ## Troubleshooting
 
-### Common Issues
-
 **GraphQL connection issues**
 
 - Verify the route configuration in `config/routes.php` includes `'graphql' => 'graphql/api'`
 - Check that GraphQL is enabled in Craft CMS Settings → GraphQL
-- Ensure the public GraphQL schema includes BasinScout section permissions
+- Ensure the public GraphQL schema includes BasinScout and assets permissions
 - Test GraphQL endpoint directly: `https://yoursite.com/graphql`
 
 **Assets not loading**
@@ -185,4 +168,4 @@ return [
 
 - Ensure `basinscout.twig` is in your templates directory
 - Check template permissions
-- Verify Craft template caching is cleared
+- Verify Craft template caching is cleared `php craft clear-caches/all` or `ddev exec php craft clear-caches/all`

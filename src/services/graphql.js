@@ -13,7 +13,9 @@ const getGraphQLEndpoint = () => {
     typeof window !== 'undefined' &&
     window.BASINSCOUT_CONFIG?.graphqlEndpoint
   ) {
-    return window.BASINSCOUT_CONFIG.graphqlEndpoint;
+    const endpoint = window.BASINSCOUT_CONFIG.graphqlEndpoint;
+    console.log('Using GraphQL endpoint from Craft config:', endpoint);
+    return endpoint;
   }
 
   // Fallback to environment variable or default
@@ -21,9 +23,12 @@ const getGraphQLEndpoint = () => {
 
   // Ensure we have a valid URL for development
   if (endpoint.startsWith('/') && typeof window !== 'undefined') {
-    return `${window.location.origin}${endpoint}`;
+    const fullEndpoint = `${window.location.origin}${endpoint}`;
+    console.log('Using constructed GraphQL endpoint:', fullEndpoint);
+    return fullEndpoint;
   }
 
+  console.log('Using GraphQL endpoint:', endpoint);
   return endpoint;
 };
 

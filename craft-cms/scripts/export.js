@@ -85,8 +85,8 @@ function generateTwigTemplate() {
   const graphqlConfig = `    <script>
       // BasinScout GraphQL Configuration
       window.BASINSCOUT_CONFIG = {
-        graphqlEndpoint: '{{ craft.app.request.baseUrl }}/api/graphql',
-        siteUrl: '{{ craft.app.request.baseUrl }}',
+        graphqlEndpoint: '{{ craft.app.request.hostInfo }}/graphql',
+        siteUrl: '{{ craft.app.request.hostInfo }}',
         isDev: {{ craft.app.env == 'dev' ? 'true' : 'false' }}
       };
     </script>`;
@@ -218,19 +218,6 @@ try {
 
   console.log('\n✅ Export completed!');
   console.log(`📂 Output: ${outputDir}`);
-  console.log('\nCraft CMS Structure:');
-  console.log('  templates/basinscout.twig    - Your Craft template');
-  console.log('  web/basinscout-assets/       - CSS and JS files');
-  console.log('  web/basinscout-img/          - Image assets');
-  console.log('  migrations/                  - Craft CMS field definitions');
-  console.log('  BASINSCOUT_README.md         - Installation and usage guide');
-  console.log('\nUsage:');
-  console.log('  1. Copy templates/ to your Craft CMS templates directory');
-  console.log('  2. Copy web/ contents to your Craft CMS web directory');
-  console.log('  3. Copy migrations/ to your Craft CMS migrations directory');
-  console.log('  4. Run migrations in Craft CMS to create fields');
-  console.log('  5. Create a section/entry that uses the basinscout template');
-  console.log('  6. See BASINSCOUT_README.md for detailed instructions');
 } catch (error) {
   console.error('❌ Export failed:', error.message);
 }
