@@ -24,7 +24,28 @@ dist/craft-cms/
 
 ## Installation
 
-### 1. Install Dependencies
+### 1. Run Migrations
+
+```bash
+php craft migrate/up
+```
+
+### 2. Manual Section Setup
+
+After running the migrations, you need to manually create a Single section in Craft CMS:
+
+1. Go to **Settings > Sections** in the Craft CMS admin
+2. Click **+ New section**
+3. Choose **Single** as the section type
+4. Configure the section:
+   - **Name**: BasinScout
+   - **Handle**: basinscout
+   - **Entry Type**: BasinScout
+   - **URI Format**: basinscout
+   - **Template**: basinscout
+5. Save the section
+
+### 3. Install Dependencies
 
 From the BasinScout project directory:
 
@@ -97,6 +118,8 @@ cd /path/to/craft
 
 # Or if using DDEV
 ddev exec php craft migrate/up
+
+**Note**: If you encounter issues with Matrix field creation during migration, ensure you're using the latest consolidated migration files. The consolidated migrations properly handle Matrix field creation with entry types.
 ```
 
 This will create all the BasinScout fields and sections in Craft CMS.
@@ -136,9 +159,9 @@ return [
 ### 7. Create BasinScout Entry
 
 1. Go to **Entries** in your Craft control panel
-2. The migration will have created a "BasinScout" section
-3. Create a new entry in the BasinScout section
-4. Fill in the content fields as needed
+2. The migration will have created a "BasinScout" section (Single type)
+3. Edit the BasinScout entry - it will have tabs for Header, Intro, Map, and Results
+4. Fill in the content fields in each tab as needed
 5. Publish the entry
 
 ## Troubleshooting

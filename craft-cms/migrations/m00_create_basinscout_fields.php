@@ -98,15 +98,11 @@ class m00_create_basinscout_fields extends Migration
         ]);
 
         // Map panel specific fields
-        $this->createOrUpdateField($fieldsService, 'mapImage', [
+        $this->createOrUpdateField($fieldsService, 'mapMedia', [
             'type' => Assets::class,
-            'name' => 'Map Image',
-            'handle' => 'mapImage',
-            'instructions' => 'Interactive map image for this stage',
-            'settings' => [
-                'allowedKinds' => ['image'],
-                'limit' => 1,
-            ],
+            'name' => 'Map Media',
+            'handle' => 'mapMedia',
+            'instructions' => 'Media files for map display (images, videos, etc.)',
         ]);
 
         $this->createOrUpdateField($fieldsService, 'mapMarkers', [
@@ -139,27 +135,7 @@ class m00_create_basinscout_fields extends Migration
             ],
         ]);
 
-        // Map Stats fields (for Matrix field)
-        $this->createOrUpdateField($fieldsService, 'statImage', [
-            'type' => Assets::class,
-            'name' => 'Stat Image',
-            'handle' => 'statImage',
-            'instructions' => 'Statistical image',
-            'settings' => [
-                'allowedKinds' => ['image'],
-                'limit' => 1,
-            ],
-        ]);
-
-        $this->createOrUpdateField($fieldsService, 'statAlt', [
-            'type' => PlainText::class,
-            'name' => 'Stat Alt Text',
-            'handle' => 'statAlt',
-            'instructions' => 'Alternative text for the statistical image',
-        ]);
-
         // Note: mapStats Matrix field will be created in the entry types migration
-        // since it depends on the mapStat entry type
 
         $this->createOrUpdateField($fieldsService, 'statsData', [
             'type' => Table::class,
@@ -232,6 +208,101 @@ class m00_create_basinscout_fields extends Migration
                         'type' => 'singleline',
                     ],
                 ],
+            ],
+        ]);
+
+        // Header fields
+        $this->createOrUpdateField($fieldsService, 'headerLogo', [
+            'type' => Assets::class,
+            'name' => 'Header Logo',
+            'handle' => 'headerLogo',
+            'instructions' => 'Logo image for the header',
+            'settings' => [
+                'allowedKinds' => ['image'],
+                'limit' => 1,
+            ],
+        ]);
+
+        $this->createOrUpdateField($fieldsService, 'headerLogoAlt', [
+            'type' => PlainText::class,
+            'name' => 'Header Logo Alt Text',
+            'handle' => 'headerLogoAlt',
+            'instructions' => 'Alternative text for the header logo',
+        ]);
+
+        $this->createOrUpdateField($fieldsService, 'headerHomeUrl', [
+            'type' => PlainText::class,
+            'name' => 'Header Home URL',
+            'handle' => 'headerHomeUrl',
+            'instructions' => 'URL for the home link in the header',
+        ]);
+
+        $this->createOrUpdateField($fieldsService, 'headerCtaText', [
+            'type' => PlainText::class,
+            'name' => 'Header CTA Text',
+            'handle' => 'headerCtaText',
+            'instructions' => 'Call-to-action text in the header',
+        ]);
+
+        $this->createOrUpdateField($fieldsService, 'headerCtaUrl', [
+            'type' => PlainText::class,
+            'name' => 'Header CTA URL',
+            'handle' => 'headerCtaUrl',
+            'instructions' => 'Call-to-action URL in the header',
+        ]);
+
+        // Section-specific fields
+        $this->createOrUpdateField($fieldsService, 'introTitle', [
+            'type' => PlainText::class,
+            'name' => 'Intro Title',
+            'handle' => 'introTitle',
+            'instructions' => 'Title for the intro section',
+        ]);
+
+        $this->createOrUpdateField($fieldsService, 'introBackgroundImage', [
+            'type' => Assets::class,
+            'name' => 'Intro Background Image',
+            'handle' => 'introBackgroundImage',
+            'instructions' => 'Background image for the intro section',
+            'settings' => [
+                'allowedKinds' => ['image'],
+                'limit' => 1,
+            ],
+        ]);
+
+        $this->createOrUpdateField($fieldsService, 'mapTitle', [
+            'type' => PlainText::class,
+            'name' => 'Map Title',
+            'handle' => 'mapTitle',
+            'instructions' => 'Title for the map section',
+        ]);
+
+        $this->createOrUpdateField($fieldsService, 'mapBackgroundImage', [
+            'type' => Assets::class,
+            'name' => 'Map Background Image',
+            'handle' => 'mapBackgroundImage',
+            'instructions' => 'Background image for the map section',
+            'settings' => [
+                'allowedKinds' => ['image'],
+                'limit' => 1,
+            ],
+        ]);
+
+        $this->createOrUpdateField($fieldsService, 'resultsTitle', [
+            'type' => PlainText::class,
+            'name' => 'Results Title',
+            'handle' => 'resultsTitle',
+            'instructions' => 'Title for the results section',
+        ]);
+
+        $this->createOrUpdateField($fieldsService, 'resultsBackgroundImage', [
+            'type' => Assets::class,
+            'name' => 'Results Background Image',
+            'handle' => 'resultsBackgroundImage',
+            'instructions' => 'Background image for the results section',
+            'settings' => [
+                'allowedKinds' => ['image'],
+                'limit' => 1,
             ],
         ]);
 

@@ -9,42 +9,11 @@ use craft\models\FieldLayout;
 use craft\models\FieldLayoutTab;
 use craft\fieldlayoutelements\CustomField;
 use craft\elements\Entry;
+use craft\helpers\StringHelper;
 use Craft;
 
 class m02_create_basinscout_sections extends Migration
 {
-    /**
-     * Helper function to create or update a matrix field
-     */
-    private function createOrUpdateMatrixField($fieldsService, $config)
-    {
-        $field = $fieldsService->getFieldByHandle($config['handle']);
-        if (!$field) {
-            // Create the field without settings first
-            $fieldConfig = $config;
-            unset($fieldConfig['settings']); // Remove settings for initial creation
-
-            $field = $fieldsService->createField($fieldConfig);
-            if (!$fieldsService->saveField($field)) {
-                throw new \Exception("Failed to save matrix field '{$config['handle']}'");
-            }
-
-            // Now update the field with settings if provided
-            if (isset($config['settings'])) {
-                foreach ($config['settings'] as $key => $value) {
-                    if ($key !== 'entryTypes') { // Skip entryTypes as it needs special handling
-                        $field->$key = $value;
-                    }
-                }
-                $fieldsService->saveField($field);
-            }
-        } else {
-            echo "Matrix field '{$config['handle']}' already exists, skipping\n";
-        }
-
-        return $field;
-    }
-
     /**
      * @inheritdoc
      */
@@ -52,6 +21,7 @@ class m02_create_basinscout_sections extends Migration
     {
         $fieldsService = Craft::$app->getFields();
         $entriesService = Craft::$app->getEntries();
+        $projectConfig = Craft::$app->getProjectConfig();
 
         // Get required entry types (created in previous migration)
         $introPanelEntryType = $entriesService->getEntryTypeByHandle('introPanel');
@@ -59,50 +29,83 @@ class m02_create_basinscout_sections extends Migration
         $resultsPanelEntryType = $entriesService->getEntryTypeByHandle('resultsPanel');
 
         // Create Matrix field for intro panels
-        $introPanelsField = $this->createOrUpdateMatrixField($fieldsService, [
-            'type' => Matrix::class,
-            'name' => 'Panels',
-            'handle' => 'introPanels',
-            'instructions' => 'Repeatable panels for the introduction section',
-            'settings' => [
-                'minEntries' => 1,
-                'maxEntries' => null,
-                'entryTypes' => [$introPanelEntryType->uid],
-            ],
-        ]);
+        echo "Creating introPanels Matrix field...\n";
+        $introPanelsField = $fieldsService->getFieldByHandle('introPanels');
+        if (!$introPanelsField) {
+            $introPanelsField = $fieldsService->createField([
+                'type' => Matrix::class,
+                'name' => 'Intro Panels',
+                'handle' => 'introPanels',
+                'instructions' => 'Content panels for the introduction section',
+            ]);
+
+            // Set the matrix field settings
+            $introPanelsField->minEntries = 1;
+            $introPanelsField->maxEntries = null;
+            $introPanelsField->setEntryTypes([$introPanelEntryType]);
+
+            if (!$fieldsService->saveField($introPanelsField)) {
+                echo "Failed to create introPanels Matrix field\n";
+                return false;
+            }
+        }
 
         // Create Matrix field for map panels
-        $mapPanelsField = $this->createOrUpdateMatrixField($fieldsService, [
-            'type' => Matrix::class,
-            'name' => 'Panels',
-            'handle' => 'mapPanels',
-            'instructions' => 'Repeatable panels for the map section',
-            'settings' => [
-                'minEntries' => 1,
-                'maxEntries' => null,
-                'entryTypes' => [$mapPanelEntryType->uid],
-            ],
-        ]);
+        echo "Creating mapPanels Matrix field...\n";
+        $mapPanelsField = $fieldsService->getFieldByHandle('mapPanels');
+        if (!$mapPanelsField) {
+            $mapPanelsField = $fieldsService->createField([
+                'type' => Matrix::class,
+                'name' => 'Map Panels',
+                'handle' => 'mapPanels',
+                'instructions' => 'Interactive map panels for the map section',
+            ]);
+
+            // Set the matrix field settings
+            $mapPanelsField->minEntries = 1;
+            $mapPanelsField->maxEntries = null;
+            $mapPanelsField->setEntryTypes([$mapPanelEntryType]);
+
+            if (!$fieldsService->saveField($mapPanelsField)) {
+                echo "Failed to create mapPanels Matrix field\n";
+                return false;
+            }
+        }
 
         // Create Matrix field for results panels
-        $resultsPanelsField = $this->createOrUpdateMatrixField($fieldsService, [
-            'type' => Matrix::class,
-            'name' => 'Panels',
-            'handle' => 'resultsPanels',
-            'instructions' => 'Repeatable panels for the results section',
-            'settings' => [
-                'minEntries' => 1,
-                'maxEntries' => null,
-                'entryTypes' => [$resultsPanelEntryType->uid],
-            ],
-        ]);
+        echo "Creating resultsPanels Matrix field...\n";
+        $resultsPanelsField = $fieldsService->getFieldByHandle('resultsPanels');
+        if (!$resultsPanelsField) {
+            $resultsPanelsField = $fieldsService->createField([
+                'type' => Matrix::class,
+                'name' => 'Results Panels',
+                'handle' => 'resultsPanels',
+                'instructions' => 'Content panels for the results section',
+            ]);
 
-        // Main BasinScout Entry Type
-        $basinScoutEntryType = new EntryType([
-            'name' => 'BasinScout',
-            'handle' => 'basinScout',
-            'hasTitleField' => true,
-        ]);
+            // Set the matrix field settings
+            $resultsPanelsField->minEntries = 1;
+            $resultsPanelsField->maxEntries = null;
+            $resultsPanelsField->setEntryTypes([$resultsPanelEntryType]);
+
+            if (!$fieldsService->saveField($resultsPanelsField)) {
+                echo "Failed to create resultsPanels Matrix field\n";
+                return false;
+            }
+        }
+
+        // Create the main BasinScout entry type with organized tabs
+        echo "Creating BasinScout entry type...\n";
+        $basinScoutEntryType = $entriesService->getEntryTypeByHandle('basinScout');
+        if (!$basinScoutEntryType) {
+            $basinScoutEntryType = new EntryType([
+                'name' => 'BasinScout',
+                'handle' => 'basinScout',
+                'hasTitleField' => true,
+            ]);
+        } else {
+            echo "BasinScout entry type already exists, updating...\n";
+        }
 
         $basinScoutFieldLayout = new FieldLayout();
         $basinScoutFieldLayout->type = Entry::class;
@@ -137,7 +140,7 @@ class m02_create_basinscout_sections extends Migration
         ]);
 
         // Intro Tab
-        $introSectionTab = new FieldLayoutTab([
+        $introTab = new FieldLayoutTab([
             'name' => 'Intro',
             'layout' => $basinScoutFieldLayout,
         ]);
@@ -151,14 +154,14 @@ class m02_create_basinscout_sections extends Migration
         $introPanelsCustomField = new CustomField();
         $introPanelsCustomField->setFieldUid($introPanelsField->uid);
 
-        $introSectionTab->setElements([
+        $introTab->setElements([
             $introTitleCustomField,
             $introBackgroundImageCustomField,
             $introPanelsCustomField,
         ]);
 
         // Map Tab
-        $mapSectionTab = new FieldLayoutTab([
+        $mapTab = new FieldLayoutTab([
             'name' => 'Map',
             'layout' => $basinScoutFieldLayout,
         ]);
@@ -172,14 +175,14 @@ class m02_create_basinscout_sections extends Migration
         $mapPanelsCustomField = new CustomField();
         $mapPanelsCustomField->setFieldUid($mapPanelsField->uid);
 
-        $mapSectionTab->setElements([
+        $mapTab->setElements([
             $mapTitleCustomField,
             $mapBackgroundImageCustomField,
             $mapPanelsCustomField,
         ]);
 
         // Results Tab
-        $resultsSectionTab = new FieldLayoutTab([
+        $resultsTab = new FieldLayoutTab([
             'name' => 'Results',
             'layout' => $basinScoutFieldLayout,
         ]);
@@ -193,21 +196,35 @@ class m02_create_basinscout_sections extends Migration
         $resultsPanelsCustomField = new CustomField();
         $resultsPanelsCustomField->setFieldUid($resultsPanelsField->uid);
 
-        $resultsSectionTab->setElements([
+        $resultsTab->setElements([
             $resultsTitleCustomField,
             $resultsBackgroundImageCustomField,
             $resultsPanelsCustomField,
         ]);
 
+        // Set all tabs on the field layout
         $basinScoutFieldLayout->setTabs([
             $headerTab,
-            $introSectionTab,
-            $mapSectionTab,
-            $resultsSectionTab,
+            $introTab,
+            $mapTab,
+            $resultsTab,
         ]);
 
         $basinScoutEntryType->setFieldLayout($basinScoutFieldLayout);
-        $entriesService->saveEntryType($basinScoutEntryType);
+
+        if (!$entriesService->saveEntryType($basinScoutEntryType)) {
+            echo "Failed to save BasinScout entry type\n";
+            $errors = $basinScoutEntryType->getErrors();
+            if (!empty($errors)) {
+                echo "Entry type errors:\n";
+                foreach ($errors as $field => $fieldErrors) {
+                    foreach ($fieldErrors as $error) {
+                        echo "  - {$field}: {$error}\n";
+                    }
+                }
+            }
+            return false;
+        }
 
         return true;
     }
@@ -218,15 +235,10 @@ class m02_create_basinscout_sections extends Migration
     public function safeDown(): bool
     {
         $fieldsService = Craft::$app->getFields();
-        $entriesService = Craft::$app->getEntries();
 
-        // Delete main entry type
-        $basinScoutEntryType = $entriesService->getEntryTypeByHandle('basinScout');
-        if ($basinScoutEntryType) {
-            $entriesService->deleteEntryType($basinScoutEntryType);
-        }
+        echo "Note: You may need to manually delete the BasinScout section if it was created.\n";
 
-        // Delete Matrix fields for sections
+        // Delete Matrix fields
         $matrixFieldHandles = [
             'introPanels',
             'mapPanels',

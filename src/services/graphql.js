@@ -102,7 +102,7 @@ const BASINSCOUT_QUERY = `
           ... on mapPanel_Entry {
             id
             title
-            mapImage {
+            mapMedia {
               id
               title
               url
@@ -215,7 +215,7 @@ function transformGraphQLData(data) {
       panels:
         entry.mapPanels?.map((panel) => ({
           title: panel.title,
-          media: panel.mapImage?.[0]?.url || null,
+          media: panel.mapMedia?.[0]?.url || null,
           marker:
             panel.mapMarkers?.map((marker) => ({
               shape: marker.type, // Map 'type' to 'shape' for app compatibility
