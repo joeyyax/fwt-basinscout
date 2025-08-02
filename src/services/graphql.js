@@ -90,9 +90,7 @@ const BASINSCOUT_QUERY = `
                 id
                 sectionPretitle
                 sectionTitle
-                sectionContent {
-                  html
-                }
+                sectionContent
                 sectionStats {
                   statType
                   value
@@ -133,9 +131,7 @@ const BASINSCOUT_QUERY = `
                 id
                 sectionPretitle
                 sectionTitle
-                sectionContent {
-                  html
-                }
+                sectionContent
               }
             }
           }
@@ -149,9 +145,7 @@ const BASINSCOUT_QUERY = `
                 id
                 sectionPretitle
                 sectionTitle
-                sectionContent {
-                  html
-                }
+                sectionContent
                 sectionStats {
                   statType
                   value
@@ -196,7 +190,7 @@ function transformGraphQLData(data) {
             panel.introContentSections?.map((section) => ({
               pretitle: section.sectionPretitle,
               title: section.sectionTitle,
-              body: section.sectionContent?.html,
+              body: section.sectionContent,
               stats:
                 section.sectionStats?.length > 0
                   ? [
@@ -236,7 +230,7 @@ function transformGraphQLData(data) {
             panel.mapContentSections?.map((section) => ({
               pretitle: section.sectionPretitle,
               title: section.sectionTitle,
-              body: section.sectionContent?.html,
+              body: section.sectionContent,
             })) || [],
         })) || [],
     },
@@ -249,7 +243,7 @@ function transformGraphQLData(data) {
             panel.resultsContentSections?.map((section) => ({
               pretitle: section.sectionPretitle,
               title: section.sectionTitle,
-              body: section.sectionContent?.html,
+              body: section.sectionContent,
               stats:
                 section.sectionStats?.length > 0
                   ? [
