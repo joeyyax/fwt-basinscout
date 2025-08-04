@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks';
+import { useState, useEffect } from 'preact/hooks';
 import { registerComponent } from './utils/components.js';
 import { Header } from './components/Header.jsx';
 import { BackgroundContainer } from './components/BackgroundContainer.jsx';
@@ -9,6 +9,7 @@ import { ResultsSection } from './components/ResultsSection.jsx';
 import { ReturnToTop } from './components/ReturnToTop.jsx';
 import { ErrorModal } from './components/ErrorModal.jsx';
 import { useContent } from './hooks/useContent.js';
+import { SectionAnimationController } from './scripts/animations/sections.js';
 
 /**
  * Main App Component
@@ -19,6 +20,16 @@ import { useContent } from './hooks/useContent.js';
 export function App() {
   const { data, loading, error, source, retry } = useContent();
   const [showErrorModal, setShowErrorModal] = useState(false);
+
+  // Reinitialize background system when GraphQL data loads
+  useEffect(() => {
+    if (source === 'graphql' && data) {
+      // Add a small delay to ensure DOM has updated with new data-background attributes
+      setTimeout(() => {
+        SectionAnimationController.initializeBackgroundSystem();
+      }, 100);
+    }
+  }, [source, data]);
 
   // Show error modal when there's an error and we have data to show underneath
   if (error && data && !showErrorModal) {
