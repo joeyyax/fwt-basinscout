@@ -9,6 +9,10 @@ import { ResultsSection } from './components/ResultsSection.jsx';
 import { ReturnToTop } from './components/ReturnToTop.jsx';
 import { ErrorModal } from './components/ErrorModal.jsx';
 import { useContent } from './hooks/useContent.js';
+import {
+  useAnimationSystem,
+  useGSAPSetup,
+} from './hooks/useAnimationSystem.js';
 import { SectionAnimationController } from './scripts/animations/sections.js';
 
 /**
@@ -21,13 +25,19 @@ export function App() {
   const { data, loading, error, source, retry } = useContent();
   const [showErrorModal, setShowErrorModal] = useState(false);
 
-  // Reinitialize background system when GraphQL data loads
+  // Initialize GSAP setup immediately to prevent FOUC
+  useGSAPSetup();
+
+  // Initialize animation system with proper dependency management
+  const animationSystem = useAnimationSystem(data, source);
+
+  // Reinitialize background system when GraphQL data loads (replaces hacky 100ms timeout)
   useEffect(() => {
     if (source === 'graphql' && data) {
-      // Add a small delay to ensure DOM has updated with new data-background attributes
-      setTimeout(() => {
+      // Use requestAnimationFrame instead of setTimeout - eliminates the hacky delay
+      requestAnimationFrame(() => {
         SectionAnimationController.initializeBackgroundSystem();
-      }, 100);
+      });
     }
   }, [source, data]);
 

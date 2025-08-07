@@ -2,34 +2,41 @@
  * Content Hook
  *
  * Provides unified data access for BasinScout app.
- * Attempts to fetch from GraphQL first, falls back to static content.js
+ * - GraphQL mode: Only uses GraphQL data, never content.js
+ * - Local mode: Uses only static content.js data
  */
 
 import { useState, useEffect } from 'preact/hooks';
 import { fetchBasinScoutData } from '../services/graphql.js';
-
-// Fallback data for development/offline mode
-import { appData as fallbackData } from '../data/content.js';
 
 // Get content source from environment
 const CONTENT_SOURCE = import.meta.env.VITE_CONTENT_SOURCE || 'graphql';
 
 /**
  * Custom hook for fetching content data
- * Uses either local static data or GraphQL based on VITE_CONTENT_SOURCE
+ * - GraphQL mode: Only uses GraphQL data, never content.js
+ * - Local mode: Uses only static content.js data
  */
 export function useContent() {
-  const [data, setData] = useState(fallbackData); // Always start with fallback data
-  const [loading, setLoading] = useState(CONTENT_SOURCE === 'graphql'); // Only loading for GraphQL
+  // Initialize data based on content source - null initially
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(CONTENT_SOURCE === 'graphql');
   const [error, setError] = useState(null);
-  const [source, setSource] = useState(
-    CONTENT_SOURCE === 'local' ? 'local' : 'fallback'
-  );
+  const [source, setSource] = useState(null);
 
   const loadData = async () => {
-    // If using local content source, don't fetch from GraphQL
+    // If using local content source, load static data only
     if (CONTENT_SOURCE === 'local') {
-      return; // Data already set to fallbackData in useState
+      try {
+        // Dynamically import content.js only when using local mode
+        const contentModule = await import('../data/content.js');
+        setData(contentModule.appData);
+        setSource('local');
+      } catch (localError) {
+        console.error('Failed to load static content:', localError);
+        setError(localError);
+      }
+      return;
     }
 
     // Only fetch from GraphQL if content source is 'graphql'
@@ -44,6 +51,8 @@ export function useContent() {
       // eslint-disable-next-line no-console
       console.error('Failed to fetch GraphQL data:', graphqlError);
       setError(graphqlError);
+      // In GraphQL mode, we don't fall back to content.js
+      // The app should handle the error state appropriately
     } finally {
       setLoading(false);
     }

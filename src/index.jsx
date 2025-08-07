@@ -10,16 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const appContainer = document.getElementById('app');
   if (appContainer) {
     // Render Preact app with error boundary
+    // Animation system is now handled by the App component through hooks
     render(
       <ErrorBoundary>
         <App />
       </ErrorBoundary>,
       appContainer
     );
-
-    // Then initialize JavaScript after a short delay to ensure DOM is ready
-    setTimeout(() => {
-      import('./scripts/main.js');
-    }, 100);
   }
 });

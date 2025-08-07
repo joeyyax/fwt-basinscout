@@ -42,7 +42,7 @@ export class AppInitializer {
     // Always initialize background system immediately for showcase
     this.initializeBackgroundSystem();
 
-    // Handle optional app initialization delay
+    // Handle optional app initialization delay (this delay is legitimate for showcase)
     if (CONFIG.APP_INITIALIZATION_DELAY_MS > 0) {
       // Hide main content initially for the showcase
       this.hideAppContent();
@@ -57,7 +57,7 @@ export class AppInitializer {
         this.startApplicationAnimations();
       }, CONFIG.APP_INITIALIZATION_DELAY_MS);
     } else {
-      // No delay - start animations immediately
+      // No delay - start animations with proper timing
       this.startApplicationAnimations();
     }
   }
@@ -94,9 +94,9 @@ export class AppInitializer {
     }
   }
 
-  // Start all application animations (extracted from init for delay handling)
+  // Start all application animations (restored proper timing delays)
   static startApplicationAnimations() {
-    // Initialize panels after a small delay for smoother startup
+    // Initialize panels after a delay for smoother startup (this delay is legitimate)
     setTimeout(() => {
       // Initialize all panel animations (but skip background system - already initialized)
       AnimationController.initializePanelsOnly();
@@ -131,7 +131,7 @@ export class AppInitializer {
       // Ensure navigation is ready (not stuck in animating state)
       appState.setAnimating(false);
 
-      // Animate in the initial title first
+      // Animate in the initial title first (these delays are legitimate for sequencing)
       setTimeout(() => {
         AnimationController.animateInitialTitle();
       }, CONFIG.INITIAL_TITLE_ANIMATION_DELAY_MS);
