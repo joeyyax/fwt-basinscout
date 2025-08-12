@@ -20,13 +20,14 @@ const CONTENT_SOURCE = import.meta.env.VITE_CONTENT_SOURCE || 'graphql';
 export function useContent() {
   // Initialize data based on content source - null initially
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(CONTENT_SOURCE === 'graphql');
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [source, setSource] = useState(null);
 
   const loadData = async () => {
     // If using local content source, load static data only
     if (CONTENT_SOURCE === 'local') {
+      setLoading(true);
       try {
         // Dynamically import content.js only when using local mode
         const contentModule = await import('../data/content.js');
@@ -35,6 +36,8 @@ export function useContent() {
       } catch (localError) {
         console.error('Failed to load static content:', localError);
         setError(localError);
+      } finally {
+        setLoading(false);
       }
       return;
     }

@@ -69,31 +69,31 @@ export function App() {
 
       <Sections usePagination={false}>
         <IntroSection
-          backgroundImage={intro.backgroundImage}
+          backgroundImage={intro?.backgroundImage}
           backgroundScale="1.6 1.0"
           backgroundRotate="5deg 0deg"
           backgroundOpacity="0 1"
           titleAnimation="fade-up"
-          title={intro.title}
-          useOverflowDetector={intro.useOverflowDetector}
-          panels={intro.panels}
+          title={intro?.title}
+          useOverflowDetector={intro?.useOverflowDetector}
+          panels={intro?.panels}
         />
 
         <MapSection
-          backgroundImage={map.backgroundImage}
-          backgroundBlur={map.backgroundBlur}
-          titleAnimation={map.titleAnimation}
-          title={map.title}
-          usePagination={map.usePagination}
-          panels={map.panels}
+          backgroundImage={map?.backgroundImage}
+          backgroundBlur={map?.backgroundBlur}
+          titleAnimation={map?.titleAnimation}
+          title={map?.title}
+          usePagination={map?.usePagination}
+          panels={map?.panels}
         />
 
         <ResultsSection
-          backgroundImage={results.backgroundImage}
-          titleAnimation={results.titleAnimation}
-          title={results.title}
-          useOverflowDetector={results.useOverflowDetector}
-          panels={results.panels}
+          backgroundImage={results?.backgroundImage}
+          titleAnimation={results?.titleAnimation}
+          title={results?.title}
+          useOverflowDetector={results?.useOverflowDetector}
+          panels={results?.panels}
         />
       </Sections>
 
