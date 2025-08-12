@@ -106,7 +106,7 @@ const BASINSCOUT_QUERY = `
         mapPanels {
           ... on mapPanel_Entry {
             id
-            title
+            title:panelTitle
             mapMedia {
               id
               title
