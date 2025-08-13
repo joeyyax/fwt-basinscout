@@ -49,6 +49,21 @@ function copyAssets() {
         fs.cpSync(srcPath, destPath, { recursive: true });
         console.log(`  ✓ Copied: ${item} -> web/basinscout-img/`);
       }
+    } else if (item === 'assets') {
+      // Flatten assets directory into basinscout-assets/
+      if (fs.statSync(srcPath).isDirectory()) {
+        const assetItems = fs.readdirSync(srcPath);
+        for (const subItem of assetItems) {
+          const from = path.join(srcPath, subItem);
+          const to = path.join(webAssetsDir, subItem);
+          if (fs.statSync(from).isDirectory()) {
+            fs.cpSync(from, to, { recursive: true });
+          } else {
+            fs.copyFileSync(from, to);
+          }
+        }
+        console.log('  ✓ Copied: assets/* -> web/basinscout-assets/');
+      }
     } else {
       // Copy other assets (CSS, JS, etc.) to basinscout-assets/
       const destPath = path.join(webAssetsDir, item);
@@ -76,8 +91,8 @@ function generateTwigTemplate() {
   let html = fs.readFileSync(indexPath, 'utf8');
 
   // Update asset paths to use separate basinscout-assets/ and basinscout-img/ directories
-  html = html.replace(/href="\/assets\//g, 'href="/basinscout-assets/assets/');
-  html = html.replace(/src="\/assets\//g, 'src="/basinscout-assets/assets/');
+  html = html.replace(/href="\/assets\//g, 'href="/basinscout-assets/');
+  html = html.replace(/src="\/assets\//g, 'src="/basinscout-assets/');
   html = html.replace(/href="\/img\//g, 'href="/basinscout-img/');
   html = html.replace(/src="\/img\//g, 'src="/basinscout-img/');
 
